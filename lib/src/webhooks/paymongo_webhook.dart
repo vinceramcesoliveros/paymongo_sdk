@@ -5,9 +5,7 @@ import '../utils/utils.dart';
 
 enum WebhookAction { enable, disable }
 
-class PaymongoWebhook {
-  final String secret;
-  const PaymongoWebhook(this.secret);
+extension PaymongoWebhook on PayMongoClient {
   Future<String> createWebhook(
     final String url,
     final List<String> events,
@@ -24,7 +22,7 @@ class PaymongoWebhook {
         "events": events,
       },
     );
-    final client = PayMongoClient();
+    final client = PayMongoClient(secret);
     final response = await client.post(options);
     client.close();
     return response;
@@ -38,7 +36,7 @@ class PaymongoWebhook {
       path: '/webhooks/$id',
       secret: secret,
     );
-    final client = PayMongoClient();
+    final client = PayMongoClient(secret);
     final response = await client.get(options);
     client.close();
     return response;
@@ -49,7 +47,7 @@ class PaymongoWebhook {
       path: '/webhooks',
       secret: secret,
     );
-    final client = PayMongoClient();
+    final client = PayMongoClient(secret);
     final response = await client.get(options);
     client.close();
     return response;
@@ -63,7 +61,7 @@ class PaymongoWebhook {
       path: '/webhooks/$id/${describeEnum(action)}',
       secret: secret,
     );
-    final client = PayMongoClient();
+    final client = PayMongoClient(secret);
     final response = await client.post(options);
     client.close();
     return response;

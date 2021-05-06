@@ -1,15 +1,13 @@
 import '../src.dart';
 
-class PayMongoPaymentIntent {
-  final String secret;
-  const PayMongoPaymentIntent(this.secret);
+extension PayMongoPaymentIntent on PayMongoClient {
   Future<String> createPaymentIntent(PaymentIntentAttributes data) async {
     final options = PayMongoOptions(
       data: {'attributes': data.toMap()},
       path: '/payment_intents',
       secret: secret,
     );
-    final client = PayMongoClient();
+    final client = PayMongoClient(secret);
     final response = await client.post(options);
     client.close();
     return response;
@@ -22,7 +20,7 @@ class PayMongoPaymentIntent {
       secret: secret,
     );
 
-    final client = PayMongoClient();
+    final client = PayMongoClient(secret);
     final response = await client.get(options);
     client.close();
     return response;
@@ -41,7 +39,7 @@ class PayMongoPaymentIntent {
         'attributes': data.toMap(),
       },
     );
-    final client = PayMongoClient();
+    final client = PayMongoClient(secret);
     final response = await client.post(options);
     client.close();
     return response;

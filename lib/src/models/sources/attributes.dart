@@ -37,7 +37,7 @@ class Source {
   Map<String, dynamic> toMap() {
     return {
       'type': type,
-      'amount': amount,
+      'amount': amount.toCurrency(),
       'currency': currency,
       'redirect': redirect.toMap(),
       'billing': billing.toMap(),
@@ -47,7 +47,7 @@ class Source {
   factory Source.fromMap(Map<String, dynamic> map) {
     return Source(
       type: map['type'] ?? '',
-      amount: map['amount'] ?? 0.0,
+      amount: ((map['amount'] as num).toDouble() ?? 0.0),
       currency: map['currency'] ?? '',
       redirect: Redirect.fromMap(map['redirect']),
       billing: PayMongoBilling.fromMap(map['billing']),
