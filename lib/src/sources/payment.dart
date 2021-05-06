@@ -4,7 +4,7 @@ class PayMongoSource {
   final String secret;
   const PayMongoSource(this.secret);
 
-  Future<String> createSource(Source source) async {
+  Future<SourceResult> createSource(Source source) async {
     final options = PayMongoOptions(
       path: '/sources',
       secret: secret,
@@ -13,10 +13,10 @@ class PayMongoSource {
     final client = PayMongoClient();
     final response = await client.post(options);
     client.close();
-    return response;
+    return SourceResult.fromJson(response);
   }
 
-  Future<String> retreiveSource(int id) async {
+  Future<SourceResult> retreiveSource(int id) async {
     assert(id != null, "ID is required");
     final options = PayMongoOptions(path: '/sources/$id', secret: secret);
     final client = PayMongoClient();
@@ -24,6 +24,6 @@ class PayMongoSource {
     final response = await client.get(options);
 
     client.close();
-    return response;
+    return SourceResult.fromJson(response);
   }
 }

@@ -20,7 +20,7 @@ class PayMongoClient {
   String _request(http.Response response, String path) {
     final json = jsonDecode(response.body);
     if (response.statusCode != 200) {
-      throw HttpException(json['errors'], uri: Uri.parse(path));
+      throw HttpException(json['errors'], uri: response.request.url);
     }
     return json['data'];
   }
