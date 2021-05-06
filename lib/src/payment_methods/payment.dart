@@ -3,7 +3,7 @@ import 'package:paymongo_sdk/paymongo_sdk.dart';
 import '../models/models.dart';
 import '../src.dart';
 
-extension PayMongoPaymentMethod on PayMongoClient {
+extension PayMongoPaymentMethod on PayMongoSDK {
   Future<String> createPaymentMethod({
     PaymentMethod data,
   }) async {

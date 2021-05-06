@@ -1,7 +1,7 @@
 name: paymongo_sdk
 description: A new Flutter package project.
 version: 0.0.4
-author: null
+author: Vince Ramces Vicente OLiveros
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

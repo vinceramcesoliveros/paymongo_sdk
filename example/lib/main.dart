@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
               onPressed: () async {
                 final _amount = _cart.fold<num>(0,
                     (previousValue, element) => previousValue + element.amount);
-                final source = PayMongoClient(payMongoKey);
+                final source = PayMongoSDK(payMongoKey);
                 final url = 'google.com';
                 final result = await source.createSource(
                   Source(

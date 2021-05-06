@@ -1,20 +1,20 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
 import '../models/utils/options.dart';
 
-class PayMongoClient {
+class PayMongoSDK {
   final String secret;
-  PayMongoClient(this.secret);
+  final String _apiUrl;
+  PayMongoSDK(this.secret, [this._apiUrl = 'api.paymongo.com'])
+      : assert(_apiUrl != null, " API url must not be null"),
+        assert(secret != null, "API KEY must be provided");
 
-  static String _payMongoUrl = 'api.paymongo.com';
-  static set payMongoUrl(String url) => _payMongoUrl = url;
   T _request<T>(http.Response response, String path) {
     final json = jsonDecode(response.body);
     if (response.statusCode != 200) {
-      throw HttpException(json['errors'], uri: response.request.url);
+      throw http.ClientException(json['errors'], response.request.url);
     }
     return json['data'];
   }
@@ -23,7 +23,7 @@ class PayMongoClient {
     final _http = PayMongoHttp(secret);
     final body = jsonEncode({"data": options.data});
     final response = await _http.post(
-        Uri.https(_payMongoUrl, "v1${options.path}", options.params),
+        Uri.https(_apiUrl, "v1${options.path}", options.params),
         body: body);
     _http.close();
     return _request(response, options.path);
@@ -31,7 +31,7 @@ class PayMongoClient {
 
   Future<T> get<T>(PayMongoOptions options) async {
     final _http = PayMongoHttp(secret);
-    final uri = Uri.https(_payMongoUrl, "v1${options.path}", options.params);
+    final uri = Uri.https(_apiUrl, "v1${options.path}", options.params);
     final response = await _http.get(uri);
     _http.close();
     return _request(response, options.path);

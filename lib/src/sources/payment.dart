@@ -1,6 +1,6 @@
 import '../src.dart';
 
-extension PayMongoSource on PayMongoClient {
+extension PayMongoSource on PayMongoSDK {
   Future<SourceResult> createSource(Source source) async {
     final options = PayMongoOptions(
       path: '/sources',

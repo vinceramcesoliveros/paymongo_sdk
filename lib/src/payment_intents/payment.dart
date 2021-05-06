@@ -1,6 +1,6 @@
 import '../src.dart';
 
-extension PayMongoPaymentIntent on PayMongoClient {
+extension PayMongoPaymentIntent on PayMongoSDK {
   Future<String> createPaymentIntent(PaymentIntentAttributes data) async {
     final options = PayMongoOptions(
       data: {'attributes': data.toMap()},

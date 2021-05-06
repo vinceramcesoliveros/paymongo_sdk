@@ -5,7 +5,7 @@ import '../utils/utils.dart';
 
 enum WebhookAction { enable, disable }
 
-extension PaymongoWebhook on PayMongoClient {
+extension PaymongoWebhook on PayMongoSDK {
   Future<String> createWebhook(
     final String url,
     final List<String> events,

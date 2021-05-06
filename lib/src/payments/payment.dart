@@ -1,6 +1,6 @@
 import '../src.dart';
 
-extension PayMongoPayments on PayMongoClient {
+extension PayMongoPayments on PayMongoSDK {
   Future<PaymentMethodResource> createPayment(PaymentAttributes data,
       [int before, int after, int limit]) async {
     assert(data != null, "Data does not meet requirements");
