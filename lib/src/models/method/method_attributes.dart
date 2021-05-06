@@ -104,7 +104,7 @@ class PaymentMethodBilling {
     return {
       'address': address.toMap(),
       'details': details.toMap(),
-      'live_mode': liveMode,
+      'livemode': liveMode,
       'metadata': metadata,
       'created_at': createdAt.millisecondsSinceEpoch,
       'updated_at': updatedAt.millisecondsSinceEpoch,
@@ -115,10 +115,10 @@ class PaymentMethodBilling {
     return PaymentMethodBilling(
       address: PayMongoAddress.fromMap(map['address']),
       details: PayMongoDetails.fromMap(map['details']),
-      liveMode: map['liveMode'] ?? false,
+      liveMode: map['livemode'] ?? false,
       metadata: Map<String, dynamic>.from(map['metadata'] ?? const {}),
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt']),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at']),
+      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updated_at']),
     );
   }
 

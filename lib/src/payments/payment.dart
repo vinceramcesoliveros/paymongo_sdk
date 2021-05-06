@@ -1,7 +1,7 @@
 import '../src.dart';
 
 extension PayMongoPayments on PayMongoClient {
-  Future<String> createPayment(PaymentAttributes data,
+  Future<PaymentMethodResource> createPayment(PaymentAttributes data,
       [int before, int after, int limit]) async {
     assert(data != null, "Data does not meet requirements");
     if (before != null) {}
@@ -17,9 +17,9 @@ extension PayMongoPayments on PayMongoClient {
       },
     );
 
-    final response = await post(options);
+    final response = await post<Map<String, dynamic>>(options);
 
-    return response;
+    return PaymentMethodResource.fromMap(response);
   }
 
   Future<String> retreivePayment(int id) async {
