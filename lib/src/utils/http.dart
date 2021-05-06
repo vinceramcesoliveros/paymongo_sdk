@@ -7,13 +7,16 @@ import '../models/utils/options.dart';
 
 class PayMongoClient {
   final http.BaseClient _http;
-  const PayMongoClient({
+
+  PayMongoClient({
     http.BaseClient client,
   }) : _http = client;
   void close() {
     _http.close();
   }
 
+  static String _payMongoUrl = '';
+  static set payMongoUrl(String url) => _payMongoUrl = url;
   String _request(http.Response response, String path) {
     final json = jsonDecode(response.body);
     if (response.statusCode != 200) {
@@ -23,12 +26,13 @@ class PayMongoClient {
   }
 
   Future<String> post(PayMongoOptions options) async {
-    final response = await _http.post(Uri.parse(options.path));
+    final response =
+        await _http.post(Uri.https(_payMongoUrl, options.path, options.params));
     return _request(response, options.path);
   }
 
   Future<String> get(PayMongoOptions options) async {
-    final uri = Uri.parse(options.path);
+    final uri = Uri.https(_payMongoUrl, options.path);
     final response = await http.get(uri);
     return _request(response, options.path);
   }

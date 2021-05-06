@@ -6,23 +6,25 @@ class PayMongoOptions {
   final Map<String, dynamic> data;
   final String path;
   final String secret;
+  final Map<String, dynamic> params;
   PayMongoOptions({
     this.data,
     @required this.path,
     @required this.secret,
+    this.params,
   });
 
-  PayMongoOptions copyWith({
-    Map<String, dynamic> data,
-    String method,
-    String path,
-    String secret,
-  }) {
+  PayMongoOptions copyWith(
+      {Map<String, dynamic> data,
+      String method,
+      String path,
+      String secret,
+      Map<String, dynamic> params}) {
     return PayMongoOptions(
-      data: data ?? this.data,
-      path: path ?? this.path,
-      secret: secret ?? this.secret,
-    );
+        data: data ?? this.data,
+        path: path ?? this.path,
+        secret: secret ?? this.secret,
+        params: params ?? this.params);
   }
 
   Map<String, dynamic> toMap() {
@@ -30,6 +32,7 @@ class PayMongoOptions {
       'data': data,
       'path': path,
       'secret': secret,
+      'params': params,
     };
   }
 
@@ -38,6 +41,7 @@ class PayMongoOptions {
       data: Map<String, dynamic>.from(map['data'] ?? const {}),
       path: map['path'] ?? '',
       secret: map['secret'] ?? '',
+      params: map['params'] ?? '',
     );
   }
 
@@ -48,7 +52,7 @@ class PayMongoOptions {
 
   @override
   String toString() {
-    return 'PayMongoRequest(data: $data, path: $path, secret: $secret)';
+    return 'PayMongoOptions(data: $data, path: $path, secret: $secret, params: $params)';
   }
 
   @override
@@ -58,11 +62,12 @@ class PayMongoOptions {
     return other is PayMongoOptions &&
         mapEquals(other.data, data) &&
         other.path == path &&
-        other.secret == secret;
+        other.secret == secret &&
+        mapEquals(other.params, params);
   }
 
   @override
   int get hashCode {
-    return data.hashCode ^ path.hashCode ^ secret.hashCode;
+    return data.hashCode ^ path.hashCode ^ secret.hashCode ^ params.hashCode;
   }
 }

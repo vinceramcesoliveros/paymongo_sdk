@@ -1,16 +1,23 @@
 import '../src.dart';
 
 class PayMongoPayments {
-  final String secret;
-  const PayMongoPayments(this.secret);
+  final String _secret;
+  const PayMongoPayments(this._secret);
 
-  Future<String> createPayment(PaymentIntentAttributes data) async {
+  Future<String> createPayment(PaymentAttributes data,
+      [int before, int after, int limit]) async {
     assert(data != null, "Data does not meet requirements");
+    if (before != null) {}
     final options = PayMongoOptions(
       path: '/payments',
-      secret: secret,
+      secret: _secret,
       data: {
         'attributes': data.toMap(),
+      },
+      params: {
+        'before': before,
+        'after': after,
+        'limit': limit,
       },
     );
     final client = PayMongoClient();
@@ -21,7 +28,7 @@ class PayMongoPayments {
 
   Future<String> retreivePayment(int id) async {
     final options = PayMongoOptions(
-      secret: secret,
+      secret: _secret,
       path: '/payments/$id',
     );
     final client = PayMongoClient();
@@ -31,7 +38,7 @@ class PayMongoPayments {
   }
 
   Future<String> listPayments() async {
-    final options = PayMongoOptions(path: '/payments', secret: secret);
+    final options = PayMongoOptions(path: '/payments', secret: _secret);
     final client = PayMongoClient();
     final response = await client.get(options);
     client.close();
