@@ -7,8 +7,7 @@ import 'package:paymongo_sdk/paymongo_sdk.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'shoes.dart';
 
-const payMongoKey = String.fromEnvironment('apiKey',
-    defaultValue: 'pk_test_Dpe7cKewo7JpHyF2iBra5Sjm');
+const payMongoKey = String.fromEnvironment('apiKey');
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(home: MyApp()));
@@ -66,7 +65,7 @@ class _MyAppState extends State<MyApp> {
               onPressed: () async {
                 final _amount = _cart.fold<num>(0,
                     (previousValue, element) => previousValue + element.amount);
-                final source = PayMongoSource(payMongoKey);
+                final source = PayMongoClient(payMongoKey);
                 final url = 'google.com';
                 final result = await source.createSource(
                   Source(

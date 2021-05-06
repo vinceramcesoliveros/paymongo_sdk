@@ -9,12 +9,10 @@ extension PayMongoPaymentMethod on PayMongoClient {
   }) async {
     final options = PayMongoOptions(
       path: '/payment_methods',
-      secret: secret,
       data: data.toMap(),
     );
-    final client = PayMongoClient(secret);
-    final response = await client.post(options);
-    client.close();
+
+    final response = await post(options);
     return response;
   }
 
@@ -23,11 +21,9 @@ extension PayMongoPaymentMethod on PayMongoClient {
 
     final options = PayMongoOptions(
       path: '/payment_methods/$id',
-      secret: secret,
     );
-    final client = PayMongoClient(secret);
-    final response = await client.get(options);
-    client.close();
+
+    final response = await get(options);
     return response;
   }
 }

@@ -7,7 +7,6 @@ extension PayMongoPayments on PayMongoClient {
     if (before != null) {}
     final options = PayMongoOptions(
       path: '/payments',
-      secret: secret,
       data: {
         'attributes': data.toMap(),
       },
@@ -17,28 +16,27 @@ extension PayMongoPayments on PayMongoClient {
         'limit': limit,
       },
     );
-    final client = PayMongoClient(secret);
-    final response = await client.post(options);
-    client.close();
+
+    final response = await post(options);
+
     return response;
   }
 
   Future<String> retreivePayment(int id) async {
     final options = PayMongoOptions(
-      secret: secret,
       path: '/payments/$id',
     );
-    final client = PayMongoClient(secret);
-    final response = await client.get(options);
-    client.close();
+
+    final response = await get(options);
+
     return response;
   }
 
   Future<String> listPayments() async {
-    final options = PayMongoOptions(path: '/payments', secret: secret);
-    final client = PayMongoClient(secret);
-    final response = await client.get(options);
-    client.close();
+    final options = PayMongoOptions(path: '/payments');
+
+    final response = await get(options);
+
     return response;
   }
 }

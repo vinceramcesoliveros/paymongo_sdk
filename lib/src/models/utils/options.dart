@@ -5,12 +5,10 @@ import 'package:flutter/foundation.dart';
 class PayMongoOptions {
   final Map<String, dynamic> data;
   final String path;
-  final String secret;
   final Map<String, dynamic> params;
   PayMongoOptions({
     this.data,
     @required this.path,
-    @required this.secret,
     this.params,
   });
 
@@ -23,7 +21,6 @@ class PayMongoOptions {
     return PayMongoOptions(
         data: data ?? this.data,
         path: path ?? this.path,
-        secret: secret ?? this.secret,
         params: params ?? this.params);
   }
 
@@ -31,7 +28,6 @@ class PayMongoOptions {
     return {
       'data': data,
       'path': path,
-      'secret': secret,
       'params': params,
     };
   }
@@ -40,7 +36,6 @@ class PayMongoOptions {
     return PayMongoOptions(
       data: Map<String, dynamic>.from(map['data'] ?? const {}),
       path: map['path'] ?? '',
-      secret: map['secret'] ?? '',
       params: map['params'] ?? '',
     );
   }
@@ -52,7 +47,7 @@ class PayMongoOptions {
 
   @override
   String toString() {
-    return 'PayMongoOptions(data: $data, path: $path, secret: $secret, params: $params)';
+    return 'PayMongoOptions(data: $data, path: $path,  params: $params)';
   }
 
   @override
@@ -62,12 +57,11 @@ class PayMongoOptions {
     return other is PayMongoOptions &&
         mapEquals(other.data, data) &&
         other.path == path &&
-        other.secret == secret &&
         mapEquals(other.params, params);
   }
 
   @override
   int get hashCode {
-    return data.hashCode ^ path.hashCode ^ secret.hashCode ^ params.hashCode;
+    return data.hashCode ^ path.hashCode ^ params.hashCode;
   }
 }

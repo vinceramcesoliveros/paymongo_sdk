@@ -5,11 +5,9 @@ extension PayMongoPaymentIntent on PayMongoClient {
     final options = PayMongoOptions(
       data: {'attributes': data.toMap()},
       path: '/payment_intents',
-      secret: secret,
     );
-    final client = PayMongoClient(secret);
-    final response = await client.post(options);
-    client.close();
+    final response = await post(options);
+
     return response;
   }
 
@@ -17,12 +15,10 @@ extension PayMongoPaymentIntent on PayMongoClient {
     assert(id != null, "Payment Intent ID is required.");
     final options = PayMongoOptions(
       path: '/payment_intents/$id',
-      secret: secret,
     );
 
-    final client = PayMongoClient(secret);
-    final response = await client.get(options);
-    client.close();
+    final response = await get(options);
+
     return response;
   }
 
@@ -34,14 +30,11 @@ extension PayMongoPaymentIntent on PayMongoClient {
     assert(data?.toMap()?.isNotEmpty ?? true, "Data is required");
     final options = PayMongoOptions(
       path: '/payment_intents/$id/attach',
-      secret: secret,
       data: {
         'attributes': data.toMap(),
       },
     );
-    final client = PayMongoClient(secret);
-    final response = await client.post(options);
-    client.close();
+    final response = await post(options);
     return response;
   }
 }

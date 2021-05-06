@@ -6,15 +6,8 @@ import 'package:http/http.dart' as http;
 import '../models/utils/options.dart';
 
 class PayMongoClient {
-  final http.BaseClient _http;
   final String secret;
-  PayMongoClient(
-    this.secret, {
-    http.BaseClient client,
-  }) : _http = client ?? PayMongoHttp(secret);
-  void close() {
-    _http.close();
-  }
+  PayMongoClient(this.secret);
 
   static String _payMongoUrl = 'api.paymongo.com';
   static set payMongoUrl(String url) => _payMongoUrl = url;
@@ -27,16 +20,20 @@ class PayMongoClient {
   }
 
   Future<T> post<T>(PayMongoOptions options) async {
+    final _http = PayMongoHttp(secret);
     final body = jsonEncode({"data": options.data});
     final response = await _http.post(
         Uri.https(_payMongoUrl, "v1${options.path}", options.params),
         body: body);
+    _http.close();
     return _request(response, options.path);
   }
 
   Future<T> get<T>(PayMongoOptions options) async {
+    final _http = PayMongoHttp(secret);
     final uri = Uri.https(_payMongoUrl, "v1${options.path}", options.params);
-    final response = await http.get(uri);
+    final response = await _http.get(uri);
+    _http.close();
     return _request(response, options.path);
   }
 }

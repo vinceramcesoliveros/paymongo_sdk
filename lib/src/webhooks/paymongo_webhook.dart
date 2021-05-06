@@ -12,7 +12,6 @@ extension PaymongoWebhook on PayMongoClient {
   ) async {
     final options = PayMongoOptions(
       path: '/webhooks',
-      secret: secret,
       data: {
         'attributes': {
           "url": url,
@@ -22,9 +21,9 @@ extension PaymongoWebhook on PayMongoClient {
         "events": events,
       },
     );
-    final client = PayMongoClient(secret);
-    final response = await client.post(options);
-    client.close();
+
+    final response = await post(options);
+
     return response;
   }
 
@@ -34,22 +33,20 @@ extension PaymongoWebhook on PayMongoClient {
         'id': id,
       },
       path: '/webhooks/$id',
-      secret: secret,
     );
-    final client = PayMongoClient(secret);
-    final response = await client.get(options);
-    client.close();
+
+    final response = await get(options);
+
     return response;
   }
 
   Future<String> listWebhooks() async {
     final options = PayMongoOptions(
       path: '/webhooks',
-      secret: secret,
     );
-    final client = PayMongoClient(secret);
-    final response = await client.get(options);
-    client.close();
+
+    final response = await get(options);
+
     return response;
   }
 
@@ -59,11 +56,10 @@ extension PaymongoWebhook on PayMongoClient {
 
     final options = PayMongoOptions(
       path: '/webhooks/$id/${describeEnum(action)}',
-      secret: secret,
     );
-    final client = PayMongoClient(secret);
-    final response = await client.post(options);
-    client.close();
+
+    final response = await post(options);
+
     return response;
   }
 }
