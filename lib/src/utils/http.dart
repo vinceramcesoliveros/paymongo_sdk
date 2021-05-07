@@ -23,7 +23,7 @@ class PayMongoSDK {
     final _http = PayMongoHttp(secret);
     final body = jsonEncode({"data": options.data});
     final response = await _http.post(
-        Uri.https(_apiUrl, "v1${options.path}", options.params),
+        Uri.https(_apiUrl, "v1${options.path}", options?.params),
         body: body);
     _http.close();
     return _request(response, options.path);
