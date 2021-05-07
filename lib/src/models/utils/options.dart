@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 class PayMongoOptions {
   final Map<String, dynamic> data;
   final String path;
-  final Map<String, dynamic> params;
+  final Map<String, String> params;
   PayMongoOptions({
     this.data,
     @required this.path,
