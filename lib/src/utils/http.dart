@@ -14,7 +14,7 @@ class PayMongoSDK {
   T _request<T>(http.Response response, String path) {
     final json = jsonDecode(response.body);
     if (response.statusCode != 200) {
-      throw http.ClientException(json['errors'], response.request.url);
+      throw http.ClientException("${json['errors']}", response.request.url);
     }
     return json['data'];
   }

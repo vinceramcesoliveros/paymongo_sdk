@@ -7,7 +7,8 @@ import 'package:paymongo_sdk/paymongo_sdk.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'shoes.dart';
 
-const payMongoKey = String.fromEnvironment('apiKey');
+const payMongoKey = String.fromEnvironment('apiKey',
+    defaultValue: 'pk_test_Dpe7cKewo7JpHyF2iBra5Sjm');
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(home: MyApp()));
@@ -89,7 +90,7 @@ class _MyAppState extends State<MyApp> {
                     ),
                   ),
                 );
-                final response = await Navigator.push(
+                final response = await Navigator.push<String>(
                   context,
                   CupertinoPageRoute(
                     builder: (context) => CheckoutPage(
@@ -98,7 +99,9 @@ class _MyAppState extends State<MyApp> {
                     ),
                   ),
                 );
-                debugPrint("$response");
+                debugPrint("==============================");
+                debugPrint("||$response||");
+                debugPrint("==============================");
               },
               label: Text('Single Payment(${_cart?.length})'),
               icon: const Icon(Icons.credit_card),
@@ -245,7 +248,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           debuggingEnabled: kDebugMode,
           navigationDelegate: (request) async {
             if (request.url == widget.returnUrl) {
-              Navigator.pop(context, true);
+              Navigator.pop(context, widget.returnUrl);
               return NavigationDecision.prevent;
             }
             return NavigationDecision.navigate;
