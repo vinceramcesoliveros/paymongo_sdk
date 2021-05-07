@@ -11,9 +11,9 @@ extension PayMongoPayments on PayMongoSDK {
         'attributes': data.toMap(),
       },
       params: {
-        'before': before,
-        'after': after,
-        'limit': limit,
+        'before': "$before",
+        'after': "$after",
+        'limit': "$limit",
       },
     );
 
