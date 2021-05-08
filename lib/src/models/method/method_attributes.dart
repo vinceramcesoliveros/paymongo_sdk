@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
 
 import '../utils/address.dart';
 
-class PaymentMethod {
+class PaymentMethod extends Equatable {
   final PaymentMethodBilling? billing;
   final PayMongoDetails? details;
   final String type;
@@ -63,9 +63,12 @@ class PaymentMethod {
 
   @override
   int get hashCode => billing.hashCode ^ details.hashCode ^ type.hashCode;
+
+  @override
+  List<Object?> get props => [billing, details, type];
 }
 
-class PaymentMethodBilling {
+class PaymentMethodBilling extends Equatable {
   final PayMongoAddress? address;
   final PayMongoDetails? details;
   final bool? liveMode;
@@ -128,31 +131,15 @@ class PaymentMethodBilling {
       PaymentMethodBilling.fromMap(json.decode(source));
 
   @override
-  String toString() {
-    return 'PaymentMethodBilling(address: $address, details: $details, liveMode: $liveMode, metadata: $metadata, createdAt: $createdAt, updatedAt: $updatedAt)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PaymentMethodBilling &&
-        other.address == address &&
-        other.details == details &&
-        other.liveMode == liveMode &&
-        mapEquals(other.metadata, metadata) &&
-        other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
-  }
-
-  @override
-  int get hashCode {
-    return address.hashCode ^
-        details.hashCode ^
-        liveMode.hashCode ^
-        metadata.hashCode ^
-        createdAt.hashCode ^
-        updatedAt.hashCode;
+  List<Object?> get props {
+    return [
+      address,
+      details,
+      liveMode,
+      metadata,
+      createdAt,
+      updatedAt,
+    ];
   }
 }
 

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
 
-class PayMongoOptions {
+class PayMongoOptions extends Equatable {
   final Map<String, dynamic>? data;
   final String path;
   final Map<String, String>? params;
@@ -46,22 +46,5 @@ class PayMongoOptions {
       PayMongoOptions.fromMap(json.decode(source));
 
   @override
-  String toString() {
-    return 'PayMongoOptions(data: $data, path: $path,  params: $params)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PayMongoOptions &&
-        mapEquals(other.data, data) &&
-        other.path == path &&
-        mapEquals(other.params, params);
-  }
-
-  @override
-  int get hashCode {
-    return data.hashCode ^ path.hashCode ^ params.hashCode;
-  }
+  List<Object?> get props => [data, path, params];
 }

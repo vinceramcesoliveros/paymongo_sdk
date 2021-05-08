@@ -1,8 +1,10 @@
 import 'dart:convert';
-import '../utils/currency.dart';
-import 'package:flutter/foundation.dart';
 
-class PaymentIntentAttributes {
+import 'package:equatable/equatable.dart';
+
+import '../utils/currency.dart';
+
+class PaymentIntentAttributes extends Equatable {
   final double amount;
   final List<String> paymentMethodAllowed;
   final PaymentIntentOptions options;
@@ -47,22 +49,7 @@ class PaymentIntentAttributes {
       PaymentIntentAttributes.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'PaymentIntentAttributes(amount: $amount, paymentMethodAllowed: $paymentMethodAllowed, options: $options)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PaymentIntentAttributes &&
-        other.amount == amount &&
-        listEquals(other.paymentMethodAllowed, paymentMethodAllowed) &&
-        other.options == options;
-  }
-
-  @override
-  int get hashCode =>
-      amount.hashCode ^ paymentMethodAllowed.hashCode ^ options.hashCode;
+  List<Object> get props => [amount, paymentMethodAllowed, options];
 }
 
 class PaymentIntentOptions {
@@ -119,35 +106,9 @@ class PaymentIntentOptions {
 
   factory PaymentIntentOptions.fromJson(String source) =>
       PaymentIntentOptions.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'PaymentIntentOptions(card: $card, description: $description, statementDescriptor: $statementDescriptor, currency: $currency, metadata: $metadata)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PaymentIntentOptions &&
-        other.card == card &&
-        other.description == description &&
-        other.statementDescriptor == statementDescriptor &&
-        other.currency == currency &&
-        mapEquals(other.metadata, metadata);
-  }
-
-  @override
-  int get hashCode {
-    return card.hashCode ^
-        description.hashCode ^
-        statementDescriptor.hashCode ^
-        currency.hashCode ^
-        metadata.hashCode;
-  }
 }
 
-class PaymentIntentCard {
+class PaymentIntentCard extends Equatable {
   final String? requestThreedSecure;
   PaymentIntentCard({
     this.requestThreedSecure,
@@ -192,4 +153,7 @@ class PaymentIntentCard {
 
   @override
   int get hashCode => requestThreedSecure.hashCode;
+
+  @override
+  List<Object?> get props => [requestThreedSecure];
 }

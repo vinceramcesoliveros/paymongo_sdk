@@ -1,9 +1,13 @@
-import 'package:flutter/foundation.dart';
-
 import '../src.dart';
 import '../utils/utils.dart';
 
 enum WebhookAction { enable, disable }
+
+extension WebhookExtension on WebhookAction {
+  String enumToString() {
+    return toString().split(".").last;
+  }
+}
 
 extension PaymongoWebhook on PayMongoSDK {
   Future<String?> createWebhook(
@@ -52,7 +56,7 @@ extension PaymongoWebhook on PayMongoSDK {
 
   Future<String?> toggleWebhook(int id, WebhookAction action) async {
     final options = PayMongoOptions(
-      path: '/webhooks/$id/${describeEnum(action)}',
+      path: '/webhooks/$id/${action.enumToString()}',
     );
 
     final response = await post(options);

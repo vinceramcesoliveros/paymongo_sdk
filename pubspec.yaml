@@ -1,20 +1,17 @@
 name: paymongo_sdk
-description: A new Flutter package project.
+description: Unofficial PayMongo SDK written in Dart for flutter
 version: 1.0.0
 author: Vince Ramces Vicente OLiveros
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
-  flutter: ">=1.17.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   http: ^0.13.3
+  equatable: ^2.0.0
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
+  test: ^1.17.3
   pedantic: ^1.11.0
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
