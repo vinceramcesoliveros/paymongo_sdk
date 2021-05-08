@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 import '../models.dart';
 
 class Source {
@@ -11,19 +9,19 @@ class Source {
   final Redirect redirect;
   final PayMongoBilling billing;
   Source({
-    @required this.type,
-    @required this.amount,
-    @required this.currency,
-    @required this.redirect,
-    @required this.billing,
+    required this.type,
+    required this.amount,
+    required this.currency,
+    required this.redirect,
+    required this.billing,
   });
 
   Source copyWith({
-    String type,
-    double amount,
-    String currency,
-    Redirect redirect,
-    PayMongoBilling billing,
+    String? type,
+    double? amount,
+    String? currency,
+    Redirect? redirect,
+    PayMongoBilling? billing,
   }) {
     return Source(
       type: type ?? this.type,
@@ -47,7 +45,7 @@ class Source {
   factory Source.fromMap(Map<String, dynamic> map) {
     return Source(
       type: map['type'] ?? '',
-      amount: ((map['amount'] as num).toDouble() ?? 0.0),
+      amount: (map['amount'] as num).toDouble(),
       currency: map['currency'] ?? '',
       redirect: Redirect.fromMap(map['redirect']),
       billing: PayMongoBilling.fromMap(map['billing']),

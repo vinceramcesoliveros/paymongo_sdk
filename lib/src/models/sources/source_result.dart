@@ -3,9 +3,9 @@ import 'dart:convert';
 import '../models.dart';
 
 class SourceResult {
-  final String id;
-  final String type;
-  final Source attributes;
+  final String? id;
+  final String? type;
+  final Source? attributes;
   SourceResult({
     this.id,
     this.type,
@@ -13,9 +13,9 @@ class SourceResult {
   });
 
   SourceResult copyWith({
-    String id,
-    String type,
-    Source attributes,
+    String? id,
+    String? type,
+    Source? attributes,
   }) {
     return SourceResult(
       id: id ?? this.id,
@@ -28,7 +28,7 @@ class SourceResult {
     return {
       'id': id,
       'type': type,
-      'attributes': attributes.toMap(),
+      'attributes': attributes!.toMap(),
     };
   }
 

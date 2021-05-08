@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 class PayMongoAddress {
-  final String city;
-  final String country;
-  final String line1;
-  final String line2;
-  final String postalCode;
-  final String state;
+  final String? city;
+  final String? country;
+  final String? line1;
+  final String? line2;
+  final String? postalCode;
+  final String? state;
   PayMongoAddress({
     this.city,
     this.country,
@@ -17,12 +17,12 @@ class PayMongoAddress {
   });
 
   PayMongoAddress copyWith({
-    String city,
-    String country,
-    String line1,
-    String line2,
-    String postalCode,
-    String state,
+    String? city,
+    String? country,
+    String? line1,
+    String? line2,
+    String? postalCode,
+    String? state,
   }) {
     return PayMongoAddress(
       city: city ?? this.city,

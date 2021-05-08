@@ -5,8 +5,8 @@ import 'package:flutter/foundation.dart';
 import '../utils/address.dart';
 
 class PaymentMethod {
-  final PaymentMethodBilling billing;
-  final PayMongoDetails details;
+  final PaymentMethodBilling? billing;
+  final PayMongoDetails? details;
   final String type;
   const PaymentMethod({
     this.billing,
@@ -15,9 +15,9 @@ class PaymentMethod {
   });
 
   PaymentMethod copyWith({
-    PaymentMethodBilling billing,
-    PayMongoDetails details,
-    String type,
+    PaymentMethodBilling? billing,
+    PayMongoDetails? details,
+    String? type,
   }) {
     return PaymentMethod(
       billing: billing ?? this.billing,
@@ -28,9 +28,9 @@ class PaymentMethod {
 
   Map<String, dynamic> toMap() {
     return {
-      'billing': billing.toMap(),
-      'details': details.toMap(),
-      'type': type ?? 'card',
+      'billing': billing?.toMap(),
+      'details': details?.toMap(),
+      'type': type,
     };
   }
 
@@ -66,13 +66,13 @@ class PaymentMethod {
 }
 
 class PaymentMethodBilling {
-  final PayMongoAddress address;
-  final PayMongoDetails details;
-  final bool liveMode;
+  final PayMongoAddress? address;
+  final PayMongoDetails? details;
+  final bool? liveMode;
 
-  final Map<String, dynamic> metadata;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final Map<String, dynamic>? metadata;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
   PaymentMethodBilling({
     this.address,
     this.details,
@@ -83,12 +83,12 @@ class PaymentMethodBilling {
   });
 
   PaymentMethodBilling copyWith({
-    PayMongoAddress address,
-    PayMongoDetails details,
-    bool liveMode,
-    Map<String, dynamic> metadata,
-    DateTime createdAt,
-    DateTime updatedAt,
+    PayMongoAddress? address,
+    PayMongoDetails? details,
+    bool? liveMode,
+    Map<String, dynamic>? metadata,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return PaymentMethodBilling(
       address: address ?? this.address,
@@ -102,12 +102,12 @@ class PaymentMethodBilling {
 
   Map<String, dynamic> toMap() {
     return {
-      'address': address.toMap(),
-      'details': details.toMap(),
+      'address': address!.toMap(),
+      'details': details!.toMap(),
       'livemode': liveMode,
       'metadata': metadata,
-      'created_at': createdAt.millisecondsSinceEpoch,
-      'updated_at': updatedAt.millisecondsSinceEpoch,
+      'created_at': createdAt!.millisecondsSinceEpoch,
+      'updated_at': updatedAt!.millisecondsSinceEpoch,
     };
   }
 
@@ -163,17 +163,17 @@ class PayMongoDetails {
   final String cardNumber;
 
   PayMongoDetails({
-    @required this.last4,
-    @required this.expireMonth,
-    @required this.expireYear,
-    @required this.cardNumber,
+    required this.last4,
+    required this.expireMonth,
+    required this.expireYear,
+    required this.cardNumber,
   });
 
   PayMongoDetails copyWith({
-    String last4,
-    int expireMonth,
-    int expireYear,
-    String cardNumber,
+    String? last4,
+    int? expireMonth,
+    int? expireYear,
+    String? cardNumber,
   }) {
     return PayMongoDetails(
       last4: last4 ?? this.last4,

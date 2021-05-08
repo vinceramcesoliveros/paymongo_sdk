@@ -262,10 +262,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   content: Text('$error'),
                   actions: [
                     TextButton(
-                      child: const Text('close'),
                       onPressed: () {
                         Navigator.pop(context, false);
                       },
+                      child: const Text('close'),
                     )
                   ],
                 );

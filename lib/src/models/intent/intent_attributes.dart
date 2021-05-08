@@ -7,15 +7,15 @@ class PaymentIntentAttributes {
   final List<String> paymentMethodAllowed;
   final PaymentIntentOptions options;
   PaymentIntentAttributes({
-    @required this.amount,
-    @required this.paymentMethodAllowed,
-    @required this.options,
+    required this.amount,
+    required this.paymentMethodAllowed,
+    required this.options,
   });
 
   PaymentIntentAttributes copyWith({
-    double amount,
-    List<String> paymentMethodAllowed,
-    PaymentIntentOptions options,
+    double? amount,
+    List<String>? paymentMethodAllowed,
+    PaymentIntentOptions? options,
   }) {
     return PaymentIntentAttributes(
       amount: amount ?? this.amount,
@@ -27,7 +27,7 @@ class PaymentIntentAttributes {
   Map<String, dynamic> toMap() {
     return {
       'amount': amount.toCurrency(),
-      'payment_method_allowed': paymentMethodAllowed ?? ['card'],
+      'payment_method_allowed': paymentMethodAllowed,
       'payment_method_options': options.toMap(),
     };
   }
@@ -37,8 +37,7 @@ class PaymentIntentAttributes {
       amount: map['amount'] ?? 0.0,
       paymentMethodAllowed:
           List<String>.from(map['payment_method_allowed'] ?? const []),
-      options: PaymentIntentOptions.fromMap(map['payment_method_options']) ??
-          PaymentIntentOptions(),
+      options: PaymentIntentOptions.fromMap(map['payment_method_options']),
     );
   }
 
@@ -67,11 +66,11 @@ class PaymentIntentAttributes {
 }
 
 class PaymentIntentOptions {
-  final PaymentIntentCard card;
-  final String description;
-  final String statementDescriptor;
-  final String currency;
-  final Map<String, dynamic> metadata;
+  final PaymentIntentCard? card;
+  final String? description;
+  final String? statementDescriptor;
+  final String? currency;
+  final Map<String, dynamic>? metadata;
   PaymentIntentOptions({
     this.card,
     this.description,
@@ -81,11 +80,11 @@ class PaymentIntentOptions {
   });
 
   PaymentIntentOptions copyWith({
-    PaymentIntentCard card,
-    String description,
-    String statementDescriptor,
-    String currency,
-    Map<String, dynamic> metadata,
+    PaymentIntentCard? card,
+    String? description,
+    String? statementDescriptor,
+    String? currency,
+    Map<String, dynamic>? metadata,
   }) {
     return PaymentIntentOptions(
       card: card ?? this.card,
@@ -98,7 +97,7 @@ class PaymentIntentOptions {
 
   Map<String, dynamic> toMap() {
     return {
-      'card': card.toMap(),
+      'card': card!.toMap(),
       'description': description,
       'statement_descriptor': statementDescriptor,
       'currency': currency ?? 'PHP',
@@ -108,7 +107,7 @@ class PaymentIntentOptions {
 
   factory PaymentIntentOptions.fromMap(Map<String, dynamic> map) {
     return PaymentIntentOptions(
-      card: PaymentIntentCard.fromMap(map['card']) ?? PaymentIntentCard(),
+      card: PaymentIntentCard.fromMap(map['card']),
       description: map['description'] ?? '',
       statementDescriptor: map['statement_descriptor'] ?? '',
       currency: map['currency'] ?? '',
@@ -149,13 +148,13 @@ class PaymentIntentOptions {
 }
 
 class PaymentIntentCard {
-  final String requestThreedSecure;
+  final String? requestThreedSecure;
   PaymentIntentCard({
     this.requestThreedSecure,
   });
 
   PaymentIntentCard copyWith({
-    String requestThreedSecure,
+    String? requestThreedSecure,
   }) {
     return PaymentIntentCard(
       requestThreedSecure: requestThreedSecure ?? this.requestThreedSecure,

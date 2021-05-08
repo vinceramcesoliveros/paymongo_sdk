@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 import '../utils/billing.dart';
 
 class PayMongoTokenAttributes {
@@ -9,15 +7,15 @@ class PayMongoTokenAttributes {
   final int expireMonth;
   final int expireYear;
   final String cvc;
-  final PayMongoBilling billing;
-  final String name;
-  final String email;
-  final String phone;
+  final PayMongoBilling? billing;
+  final String? name;
+  final String? email;
+  final String? phone;
   PayMongoTokenAttributes({
-    @required this.number,
-    @required this.expireMonth,
-    @required this.expireYear,
-    @required this.cvc,
+    required this.number,
+    required this.expireMonth,
+    required this.expireYear,
+    required this.cvc,
     this.billing,
     this.name,
     this.email,
@@ -25,14 +23,14 @@ class PayMongoTokenAttributes {
   });
 
   PayMongoTokenAttributes copyWith({
-    String number,
-    int expireMonth,
-    int expireYear,
-    String cvc,
-    PayMongoBilling billing,
-    String name,
-    String email,
-    String phone,
+    String? number,
+    int? expireMonth,
+    int? expireYear,
+    String? cvc,
+    PayMongoBilling? billing,
+    String? name,
+    String? email,
+    String? phone,
   }) {
     return PayMongoTokenAttributes(
       number: number ?? this.number,
@@ -52,7 +50,7 @@ class PayMongoTokenAttributes {
       'expireMonth': expireMonth,
       'expireYear': expireYear,
       'cvc': cvc,
-      'billing': billing.toMap(),
+      'billing': billing!.toMap(),
       'name': name,
       'email': email,
       'phone': phone,

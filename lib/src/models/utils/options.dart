@@ -3,25 +3,25 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 class PayMongoOptions {
-  final Map<String, dynamic> data;
+  final Map<String, dynamic>? data;
   final String path;
-  final Map<String, String> params;
+  final Map<String, String>? params;
   PayMongoOptions({
     this.data,
-    @required this.path,
+    required this.path,
     this.params,
   });
 
   PayMongoOptions copyWith(
-      {Map<String, dynamic> data,
-      String method,
-      String path,
-      String secret,
-      Map<String, dynamic> params}) {
+      {Map<String, dynamic>? data,
+      String? method,
+      String? path,
+      String? secret,
+      Map<String, dynamic>? params}) {
     return PayMongoOptions(
         data: data ?? this.data,
         path: path ?? this.path,
-        params: params ?? this.params);
+        params: params as Map<String, String>? ?? this.params);
   }
 
   Map<String, dynamic> toMap() {
@@ -36,7 +36,7 @@ class PayMongoOptions {
     return PayMongoOptions(
       data: Map<String, dynamic>.from(map['data'] ?? const {}),
       path: map['path'] ?? '',
-      params: map['params'] ?? '',
+      params: map['params'] ?? '' as Map<String, String>?,
     );
   }
 

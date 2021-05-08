@@ -3,9 +3,9 @@ import 'dart:convert';
 import '../models.dart';
 
 class PaymentMethodResource {
-  final String id;
-  final String type;
-  final PaymentMethod attributes;
+  final String? id;
+  final String? type;
+  final PaymentMethod? attributes;
   PaymentMethodResource({
     this.id,
     this.type,
@@ -13,9 +13,9 @@ class PaymentMethodResource {
   });
 
   PaymentMethodResource copyWith({
-    String id,
-    String type,
-    PaymentMethod attributes,
+    String? id,
+    String? type,
+    PaymentMethod? attributes,
   }) {
     return PaymentMethodResource(
       id: id ?? this.id,
@@ -28,7 +28,7 @@ class PaymentMethodResource {
     return {
       'id': id,
       'type': type,
-      'attributes': attributes.toMap(),
+      'attributes': attributes!.toMap(),
     };
   }
 

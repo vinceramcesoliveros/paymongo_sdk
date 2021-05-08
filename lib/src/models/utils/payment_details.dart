@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 class PayMongoPaymentDetails {
-  final int cardNumber;
-  final int expMonth;
-  final int expYear;
-  final String cvc;
+  final int? cardNumber;
+  final int? expMonth;
+  final int? expYear;
+  final String? cvc;
   PayMongoPaymentDetails({
     this.cardNumber,
     this.expMonth,
@@ -13,10 +13,10 @@ class PayMongoPaymentDetails {
   });
 
   PayMongoPaymentDetails copyWith({
-    int cardNumber,
-    int expMonth,
-    int expYear,
-    String cvc,
+    int? cardNumber,
+    int? expMonth,
+    int? expYear,
+    String? cvc,
   }) {
     return PayMongoPaymentDetails(
       cardNumber: cardNumber ?? this.cardNumber,

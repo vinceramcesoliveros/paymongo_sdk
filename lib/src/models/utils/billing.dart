@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 import 'address.dart';
 
 class PayMongoBilling {
@@ -10,17 +8,17 @@ class PayMongoBilling {
   final String email;
   final PayMongoAddress address;
   PayMongoBilling({
-    @required this.name,
-    @required this.phone,
-    @required this.email,
-    @required this.address,
+    required this.name,
+    required this.phone,
+    required this.email,
+    required this.address,
   });
 
   PayMongoBilling copyWith({
-    String name,
-    String phone,
-    String email,
-    PayMongoAddress address,
+    String? name,
+    String? phone,
+    String? email,
+    PayMongoAddress? address,
   }) {
     return PayMongoBilling(
       name: name ?? this.name,
@@ -44,7 +42,7 @@ class PayMongoBilling {
       name: map['name'] ?? '',
       phone: map['phone'] ?? '',
       email: map['email'] ?? '',
-      address: PayMongoAddress.fromMap(map['address']) ?? PayMongoAddress(),
+      address: PayMongoAddress.fromMap(map['address']),
     );
   }
 

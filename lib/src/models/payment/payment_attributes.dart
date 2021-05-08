@@ -1,27 +1,27 @@
 import 'dart:convert';
+
 import '../utils/currency.dart';
-import 'package:flutter/foundation.dart';
 
 class PaymentAttributes {
   final double amount;
-  final String description;
+  final String? description;
   final String currency;
-  final String statementDescriptor;
+  final String? statementDescriptor;
   final PaymentSource source;
   PaymentAttributes({
-    @required this.amount,
+    required this.amount,
     this.description,
-    @required this.currency,
+    required this.currency,
     this.statementDescriptor,
-    @required this.source,
+    required this.source,
   });
 
   PaymentAttributes copyWith({
-    double amount,
-    String description,
-    String currency,
-    String statementDescriptor,
-    PaymentSource source,
+    double? amount,
+    String? description,
+    String? currency,
+    String? statementDescriptor,
+    PaymentSource? source,
   }) {
     return PaymentAttributes(
       amount: amount ?? this.amount,
@@ -88,13 +88,13 @@ class PaymentSource {
   final String id;
   final String type;
   PaymentSource({
-    @required this.id,
-    @required this.type,
+    required this.id,
+    required this.type,
   });
 
   PaymentSource copyWith({
-    String id,
-    String type,
+    String? id,
+    String? type,
   }) {
     return PaymentSource(
       id: id ?? this.id,

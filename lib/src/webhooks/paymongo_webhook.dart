@@ -6,7 +6,7 @@ import '../utils/utils.dart';
 enum WebhookAction { enable, disable }
 
 extension PaymongoWebhook on PayMongoSDK {
-  Future<String> createWebhook(
+  Future<String?> createWebhook(
     final String url,
     final List<String> events,
   ) async {
@@ -27,7 +27,7 @@ extension PaymongoWebhook on PayMongoSDK {
     return response;
   }
 
-  Future<String> retreiveWebhook(int id) async {
+  Future<String?> retreiveWebhook(int id) async {
     final options = PayMongoOptions(
       data: {
         'id': id,
@@ -40,7 +40,7 @@ extension PaymongoWebhook on PayMongoSDK {
     return response;
   }
 
-  Future<String> listWebhooks() async {
+  Future<String?> listWebhooks() async {
     final options = PayMongoOptions(
       path: '/webhooks',
     );
@@ -50,10 +50,7 @@ extension PaymongoWebhook on PayMongoSDK {
     return response;
   }
 
-  Future<String> toggleWebhook(int id, WebhookAction action) async {
-    assert(id != null, "Webhook id is required");
-    assert(action != null, "Invalid Action, Must be enable or disable");
-
+  Future<String?> toggleWebhook(int id, WebhookAction action) async {
     final options = PayMongoOptions(
       path: '/webhooks/$id/${describeEnum(action)}',
     );

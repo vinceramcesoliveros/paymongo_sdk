@@ -9,15 +9,20 @@ extension PayMongoSource on PayMongoSDK {
       },
     );
 
-    final response = await post<Map<String, dynamic>>(options);
+    final response = await post<Map<String, dynamic>>(options) ?? {};
     return SourceResult.fromMap(response);
   }
 
   Future<SourceResult> retreiveSource(int id) async {
-    assert(id != null, "ID is required");
+    if (id.runtimeType != int) {
+      throw ArgumentError("ID is required");
+    }
+    if (id <= 0) {
+      throw ArgumentError("ID must be greater than 0");
+    }
     final options = PayMongoOptions(path: 'sources/$id');
 
-    final response = await get(options);
+    final response = await get<Map<String, dynamic>>(options) ?? {};
 
     return SourceResult.fromMap(response);
   }

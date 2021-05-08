@@ -1,21 +1,19 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 class PaymentIntentAttach {
   final String paymentMethod;
-  final String clientKey;
-  final String returnUrl;
+  final String? clientKey;
+  final String? returnUrl;
   PaymentIntentAttach({
-    @required this.paymentMethod,
+    required this.paymentMethod,
     this.clientKey,
     this.returnUrl,
   });
 
   PaymentIntentAttach copyWith({
-    String paymentMethod,
-    String clientKey,
-    String returnUrl,
+    String? paymentMethod,
+    String? clientKey,
+    String? returnUrl,
   }) {
     return PaymentIntentAttach(
       paymentMethod: paymentMethod ?? this.paymentMethod,

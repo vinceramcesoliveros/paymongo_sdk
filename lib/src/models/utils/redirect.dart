@@ -1,21 +1,19 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 class Redirect {
   final String success;
   final String failed;
-  final String checkoutUrl;
+  final String? checkoutUrl;
   Redirect({
-    @required this.success,
-    @required this.failed,
+    required this.success,
+    required this.failed,
     this.checkoutUrl,
   });
 
   Redirect copyWith({
-    String success,
-    String failed,
-    String checkoutUrl,
+    String? success,
+    String? failed,
+    String? checkoutUrl,
   }) {
     return Redirect(
       success: success ?? this.success,
