@@ -4,7 +4,12 @@ import 'package:http/http.dart' as http;
 
 import '../models/utils/options.dart';
 
+/// {@template paymonggosdk}
+///
+/// {@endtemplate}
 class PayMongoSDK {
+  /// key generated from paymongo dashboard
+  /// you can use `--dart-define` command to store your private key.
   final String secret;
   final String _apiUrl;
   PayMongoSDK(this.secret, [this._apiUrl = 'api.paymongo.com']);
@@ -12,9 +17,9 @@ class PayMongoSDK {
   T? _request<T>(http.Response response, String path) {
     final json = jsonDecode(response.body);
     if (response.statusCode != 200) {
-      throw http.ClientException("${json['errors']}", response.request!.url);
+      throw http.ClientException("${json['errors']}", response.request?.url);
     }
-    return json['data'];
+    return json?['data'] as T?;
   }
 
   Future<T?> post<T>(PayMongoOptions options) async {
