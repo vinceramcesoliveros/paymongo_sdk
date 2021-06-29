@@ -4,7 +4,7 @@ import '../models/models.dart';
 import '../src.dart';
 
 extension PayMongoPaymentMethod on PayMongoSDK {
-  Future<String?> createPaymentMethod({
+  Future<String> createPaymentMethod({
     required PaymentMethod data,
   }) async {
     final options = PayMongoOptions(
@@ -12,11 +12,11 @@ extension PayMongoPaymentMethod on PayMongoSDK {
       data: data.toMap(),
     );
 
-    final response = await post(options);
+    final response = await post<String>(options);
     return response;
   }
 
-  Future<String?> retreivePaymentMethod(int id) async {
+  Future<String> retreivePaymentMethod(int id) async {
     if (id <= 0) {
       throw ArgumentError("ID must be real number");
     }

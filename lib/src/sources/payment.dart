@@ -9,7 +9,7 @@ extension PayMongoSource on PayMongoSDK {
       },
     );
 
-    final response = await post<Map<String, dynamic>>(options) ?? {};
+    final response = await post<Map<String, dynamic>>(options);
     return SourceResult.fromMap(response);
   }
 
@@ -22,7 +22,7 @@ extension PayMongoSource on PayMongoSDK {
     }
     final options = PayMongoOptions(path: 'sources/$id');
 
-    final response = await get<Map<String, dynamic>>(options) ?? {};
+    final response = await get<Map<String, dynamic>>(options);
 
     return SourceResult.fromMap(response);
   }

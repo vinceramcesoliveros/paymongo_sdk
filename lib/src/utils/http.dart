@@ -14,15 +14,15 @@ class PayMongoSDK {
   final String _apiUrl;
   PayMongoSDK(this.secret, [this._apiUrl = 'api.paymongo.com']);
 
-  T? _request<T>(http.Response response, String path) {
+  T _request<T>(http.Response response, String path) {
     final json = jsonDecode(response.body);
     if (response.statusCode != 200) {
       throw http.ClientException("${json['errors']}", response.request?.url);
     }
-    return json?['data'] as T?;
+    return json?['data'] as T;
   }
 
-  Future<T?> post<T>(PayMongoOptions options) async {
+  Future<T> post<T>(PayMongoOptions options) async {
     final _http = PayMongoHttp(secret);
     final body = jsonEncode({"data": options.data});
     final response = await _http.post(
@@ -32,7 +32,7 @@ class PayMongoSDK {
     return _request(response, options.path);
   }
 
-  Future<T?> get<T>(PayMongoOptions options) async {
+  Future<T> get<T>(PayMongoOptions options) async {
     final _http = PayMongoHttp(secret);
     final uri = Uri.https(_apiUrl, "v1${options.path}", options.params);
     final response = await _http.get(uri);

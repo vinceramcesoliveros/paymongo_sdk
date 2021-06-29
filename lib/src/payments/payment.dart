@@ -15,7 +15,7 @@ extension PayMongoPayments on PayMongoSDK {
       },
     );
 
-    final response = await post<Map<String, dynamic>>(options) ?? {};
+    final response = await post<Map<String, dynamic>>(options);
 
     return PaymentResource.fromMap(response);
   }
@@ -25,13 +25,13 @@ extension PayMongoPayments on PayMongoSDK {
       path: '/payments/$id',
     );
 
-    final response = await get<Map<String, dynamic>>(options) ?? {};
+    final response = await get<Map<String, dynamic>>(options);
     return PaymentResource.fromMap(response);
   }
 
   Future<List<PaymentResource>> listPayments() async {
     final options = PayMongoOptions(path: '/payments');
-    final response = await get<List<Map<String, dynamic>>>(options) ?? [];
+    final response = await get<List<Map<String, dynamic>>>(options);
     return response.map((data) => PaymentResource.fromMap(data)).toList();
   }
 }

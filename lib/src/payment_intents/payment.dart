@@ -38,7 +38,7 @@ extension PayMongoPaymentIntent on PayMongoSDK {
         'attributes': data.toMap(),
       },
     );
-    final response = await post<Map<String, dynamic>>(options) ?? {};
+    final response = await post<Map<String, dynamic>>(options);
     return response;
   }
 }
