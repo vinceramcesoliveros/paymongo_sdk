@@ -5,22 +5,22 @@ import 'package:paymongo_sdk/paymongo_sdk.dart';
 class PaymentResource {
   final String? id;
   final String? source;
-  final PaymentMethodBilling? billing;
+  final String? type;
   PaymentResource({
     this.id,
     this.source,
-    this.billing,
+    this.type,
   });
 
   PaymentResource copyWith({
     String? id,
     String? source,
-    PaymentMethodBilling? billing,
+    String? type,
   }) {
     return PaymentResource(
       id: id ?? this.id,
       source: source ?? this.source,
-      billing: billing ?? this.billing,
+      type: type ?? this.type,
     );
   }
 
@@ -28,15 +28,15 @@ class PaymentResource {
     return {
       'id': id,
       'source': source,
-      'billing': billing!.toMap(),
+      'type': type,
     };
   }
 
   factory PaymentResource.fromMap(Map<String, dynamic> map) {
     return PaymentResource(
-      id: map['id'] ?? '',
-      source: map['source'] ?? '',
-      billing: PaymentMethodBilling.fromMap(map['billing']),
+      id: map['id'],
+      source: map['source'],
+      type: map['type'],
     );
   }
 
@@ -46,8 +46,7 @@ class PaymentResource {
       PaymentResource.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'PaymentResource(id: $id, source: $source, billing: $billing)';
+  String toString() => 'PaymentResource(id: $id, source: $source, type: $type)';
 
   @override
   bool operator ==(Object other) {
@@ -56,9 +55,9 @@ class PaymentResource {
     return other is PaymentResource &&
         other.id == id &&
         other.source == source &&
-        other.billing == billing;
+        other.type == type;
   }
 
   @override
-  int get hashCode => id.hashCode ^ source.hashCode ^ billing.hashCode;
+  int get hashCode => id.hashCode ^ source.hashCode ^ type.hashCode;
 }
