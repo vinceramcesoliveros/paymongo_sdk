@@ -1,6 +1,6 @@
 name: paymongo_sdk
 description: Unofficial PayMongo SDK written in Dart for flutter
-version: 1.0.1
+version: 1.0.2
 author: Vince Ramces Vicente OLiveros
 
 environment:

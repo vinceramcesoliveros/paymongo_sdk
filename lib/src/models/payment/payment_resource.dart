@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 class PaymentResource {
-  final int? id;
-  final int? source;
+  final String? id;
+  final String? source;
   final PaymentMethodBilling? billing;
   PaymentResource({
     this.id,
@@ -13,8 +13,8 @@ class PaymentResource {
   });
 
   PaymentResource copyWith({
-    int? id,
-    int? source,
+    String? id,
+    String? source,
     PaymentMethodBilling? billing,
   }) {
     return PaymentResource(
@@ -34,8 +34,8 @@ class PaymentResource {
 
   factory PaymentResource.fromMap(Map<String, dynamic> map) {
     return PaymentResource(
-      id: map['id'] ?? 0,
-      source: map['source'] ?? 0,
+      id: map['id'] ?? '',
+      source: map['source'] ?? '',
       billing: PaymentMethodBilling.fromMap(map['billing']),
     );
   }
