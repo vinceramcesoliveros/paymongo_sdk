@@ -21,7 +21,11 @@ import '../src.dart';
 class PayMongoSDK {
   /// {@macro paymonggosdk}
   PayMongoSDK(this.secret, {this.http, String apiUrl = 'api.paymongo.com'})
-      : _apiUrl = apiUrl;
+      : _apiUrl = apiUrl,
+        assert(
+          secret.isNotEmpty,
+          "API KEY must be provided, go to PayMongo Dashboard",
+        );
 
   /// key generated from paymongo dashboard
   /// you can use `--dart-define` command to store your private key.
