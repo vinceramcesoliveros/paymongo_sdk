@@ -5,7 +5,16 @@ import 'package:http/http.dart' as _http;
 import '../models/utils/options.dart';
 
 /// {@template paymonggosdk}
+/// ### 🚧 DO NOT USE SECRET KEY IN PRODUCTION
+///
 /// Initialize PayMongo SDK.
+///
+///
+/// The code provided is an example of using a secret key
+/// ```dart
+/// final publicKeyClient = PayMongoSDK(publicKey);
+/// final secretKeyClient = PayMongoSDK(secretKey);
+/// ```
 /// {@endtemplate}
 class PayMongoSDK {
   /// {@macro paymonggosdk}
