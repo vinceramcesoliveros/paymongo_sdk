@@ -13,6 +13,7 @@ dependencies:
 dev_dependencies:
   test: ^1.17.9
   very_good_analysis: ^2.1.2
+  mocktail: ^0.1.4
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.

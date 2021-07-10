@@ -4,7 +4,7 @@ class Redirect {
   final String success;
   final String failed;
   final String? checkoutUrl;
-  Redirect({
+  const Redirect({
     required this.success,
     required this.failed,
     this.checkoutUrl,

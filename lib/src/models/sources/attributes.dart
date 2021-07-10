@@ -8,7 +8,7 @@ class Source {
   final String currency;
   final Redirect redirect;
   final PayMongoBilling billing;
-  Source({
+  const Source({
     required this.type,
     required this.amount,
     required this.currency,

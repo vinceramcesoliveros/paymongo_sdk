@@ -6,7 +6,7 @@ class PayMongoOptions extends Equatable {
   final Map<String, dynamic>? data;
   final String path;
   final Map<String, String>? params;
-  PayMongoOptions({
+  const PayMongoOptions({
     this.data,
     required this.path,
     this.params,

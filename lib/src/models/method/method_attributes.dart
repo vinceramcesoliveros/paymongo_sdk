@@ -76,7 +76,7 @@ class PaymentMethodBilling extends Equatable {
   final Map<String, dynamic>? metadata;
   final DateTime? createdAt;
   final DateTime? updatedAt;
-  PaymentMethodBilling({
+  const PaymentMethodBilling({
     this.address,
     this.details,
     this.liveMode,

@@ -5,7 +5,7 @@ class PayMongoPaymentDetails {
   final int? expMonth;
   final int? expYear;
   final String? cvc;
-  PayMongoPaymentDetails({
+  const PayMongoPaymentDetails({
     this.cardNumber,
     this.expMonth,
     this.expYear,

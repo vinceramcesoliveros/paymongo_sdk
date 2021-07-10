@@ -7,7 +7,7 @@ class PayMongoBilling {
   final String phone;
   final String email;
   final PayMongoAddress address;
-  PayMongoBilling({
+  const PayMongoBilling({
     required this.name,
     required this.phone,
     required this.email,

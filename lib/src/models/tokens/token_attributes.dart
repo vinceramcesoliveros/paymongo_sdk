@@ -11,7 +11,7 @@ class PayMongoTokenAttributes {
   final String? name;
   final String? email;
   final String? phone;
-  PayMongoTokenAttributes({
+  const PayMongoTokenAttributes({
     required this.number,
     required this.expireMonth,
     required this.expireYear,

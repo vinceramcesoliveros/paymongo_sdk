@@ -1,12 +1,10 @@
 import 'dart:convert';
 
-import 'package:paymongo_sdk/paymongo_sdk.dart';
-
 class PaymentResource {
   final String? id;
   final String? source;
   final String? type;
-  PaymentResource({
+  const PaymentResource({
     this.id,
     this.source,
     this.type,

@@ -4,7 +4,7 @@ class PaymentIntentAttach {
   final String paymentMethod;
   final String? clientKey;
   final String? returnUrl;
-  PaymentIntentAttach({
+  const PaymentIntentAttach({
     required this.paymentMethod,
     this.clientKey,
     this.returnUrl,

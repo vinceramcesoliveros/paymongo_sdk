@@ -6,7 +6,7 @@ class SourceResult {
   final String? id;
   final String? type;
   final Source? attributes;
-  SourceResult({
+  const SourceResult({
     this.id,
     this.type,
     this.attributes,

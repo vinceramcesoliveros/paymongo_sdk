@@ -8,7 +8,7 @@ class PaymentAttributes {
   final String currency;
   final String? statementDescriptor;
   final PaymentSource source;
-  PaymentAttributes({
+  const PaymentAttributes({
     required this.amount,
     this.description,
     required this.currency,
@@ -87,7 +87,7 @@ class PaymentAttributes {
 class PaymentSource {
   final String id;
   final String type;
-  PaymentSource({
+  const PaymentSource({
     required this.id,
     required this.type,
   });

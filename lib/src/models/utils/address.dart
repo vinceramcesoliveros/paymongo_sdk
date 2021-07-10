@@ -7,7 +7,7 @@ class PayMongoAddress {
   final String? line2;
   final String? postalCode;
   final String? state;
-  PayMongoAddress({
+  const PayMongoAddress({
     this.city,
     this.country,
     this.line1,

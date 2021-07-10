@@ -6,7 +6,7 @@ class PaymentMethodResource {
   final String? id;
   final String? type;
   final PaymentMethod? attributes;
-  PaymentMethodResource({
+  const PaymentMethodResource({
     this.id,
     this.type,
     this.attributes,

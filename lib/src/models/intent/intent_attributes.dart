@@ -8,7 +8,7 @@ class PaymentIntentAttributes extends Equatable {
   final double amount;
   final List<String> paymentMethodAllowed;
   final PaymentIntentOptions options;
-  PaymentIntentAttributes({
+  const PaymentIntentAttributes({
     required this.amount,
     required this.paymentMethodAllowed,
     required this.options,

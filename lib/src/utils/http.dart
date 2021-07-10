@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as _http;
+import '../src.dart';
 
-import '../models/utils/options.dart';
-
-/// {@template paymonggosdk}
-/// ### 🚧 DO NOT USE SECRET KEY IN PRODUCTION
 ///
+/// ### 🚧 DO NOT USE SECRET KEY IN PRODUCTION
+/// {@template paymonggosdk}
+/// Following methods will use secret key
+///
+/// - [createPayment]
 /// Initialize PayMongo SDK.
 ///
 ///
@@ -50,7 +52,7 @@ class PayMongoSDK {
 
   /// make GET response
   Future<T> get<T>(PayMongoOptions options) async {
-    final _http = PayMongoHttp(secret);
+    final _http = http ?? PayMongoHttp(secret);
     final uri = Uri.https(_apiUrl, "v1${options.path}", options.params);
     final response = await _http.get(uri);
     _http.close();
@@ -59,15 +61,15 @@ class PayMongoSDK {
 }
 
 /// {@template paymongohttp}
-/// Alternative HTTP client for processing. can be extensible for custom http
-/// client
+/// Alternative HTTP client. can be extensible for custom http
+/// client. use [base64] to generate authorization key.
 /// {@endtemplate}
 ///
 class PayMongoHttp extends _http.BaseClient {
   /// {@macro paymongohttp}
   PayMongoHttp(this.apiKey);
 
-  /// api key can be used private or public
+  /// uses public or secret PayMongo key.
   final String apiKey;
   @override
   Future<_http.StreamedResponse> send(_http.BaseRequest request) {
