@@ -1,15 +1,40 @@
 import 'dart:convert';
 
+///{@template payment_intent_attach}
+///{@endtemplate}
 class PaymentIntentAttach {
-  final String paymentMethod;
-  final String? clientKey;
-  final String? returnUrl;
+  /// Converts [Map<String,dynamic>] to [PaymentIntentAttach] class
+  /// {@macro payment_intent_attach}
+  factory PaymentIntentAttach.fromMap(Map<String, dynamic> map) {
+    return PaymentIntentAttach(
+      paymentMethod: map['payment_method'] ?? '',
+      clientKey: map['client_key'] ?? '',
+      returnUrl: map['return_url'] ?? '',
+    );
+  }
+
+  /// Converts [String] of json to [PaymentIntentAttach] class
+  /// {@macro payment_intent_attach}
+  factory PaymentIntentAttach.fromJson(String source) =>
+      PaymentIntentAttach.fromMap(json.decode(source));
+
+  /// {@macro payment_intent_attach}
   const PaymentIntentAttach({
     required this.paymentMethod,
     this.clientKey,
     this.returnUrl,
   });
 
+  ///
+  final String paymentMethod;
+
+  ///
+  final String? clientKey;
+
+  ///
+  final String? returnUrl;
+
+  /// {@macro payment_intent_attach}
   PaymentIntentAttach copyWith({
     String? paymentMethod,
     String? clientKey,
@@ -22,6 +47,9 @@ class PaymentIntentAttach {
     );
   }
 
+  /// Converts [PaymentIntentAttach] to [Map<String,dynamic>]
+  ///
+  /// {@macro payment_intent_attach}
   Map<String, dynamic> toMap() {
     return {
       'payment_method': paymentMethod,
@@ -30,22 +58,16 @@ class PaymentIntentAttach {
     };
   }
 
-  factory PaymentIntentAttach.fromMap(Map<String, dynamic> map) {
-    return PaymentIntentAttach(
-      paymentMethod: map['payment_method'] ?? '',
-      clientKey: map['client_key'] ?? '',
-      returnUrl: map['return_url'] ?? '',
-    );
-  }
-
+  /// Converts [Map<String,dynamic>] to [String] json
   String toJson() => json.encode(toMap());
 
-  factory PaymentIntentAttach.fromJson(String source) =>
-      PaymentIntentAttach.fromMap(json.decode(source));
-
   @override
-  String toString() =>
-      'PaymentIntentAttach(paymentMethod: $paymentMethod, clientKey: $clientKey, returnUrl: $returnUrl)';
+  String toString() => '''
+      PaymentIntentAttach(paymentMethod: $paymentMethod, 
+      clientKey: $clientKey, 
+      returnUrl: $returnUrl
+      )
+      ''';
 
   @override
   bool operator ==(Object other) {

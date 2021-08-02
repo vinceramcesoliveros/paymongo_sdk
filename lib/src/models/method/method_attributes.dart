@@ -4,16 +4,38 @@ import 'package:equatable/equatable.dart';
 
 import '../utils/address.dart';
 
+///{@template payment_method}
 class PaymentMethod extends Equatable {
-  final PaymentMethodBilling? billing;
-  final PayMongoDetails? details;
-  final String type;
+  /// {@macro payment_method}
   const PaymentMethod({
     this.billing,
     this.details,
     this.type = 'card',
   });
 
+  /// {@macro payment_method}
+  factory PaymentMethod.fromMap(Map<String, dynamic> map) {
+    return PaymentMethod(
+      billing: PaymentMethodBilling.fromMap(map['billing']),
+      details: PayMongoDetails.fromMap(map['details']),
+      type: map['type'] ?? 'card',
+    );
+  }
+
+  /// {@macro payment_method}
+  factory PaymentMethod.fromJson(String source) =>
+      PaymentMethod.fromMap(json.decode(source));
+
+  ///
+  final PaymentMethodBilling? billing;
+
+  ///
+  final PayMongoDetails? details;
+
+  ///
+  final String type;
+
+  /// {@macro payment_method}
   PaymentMethod copyWith({
     PaymentMethodBilling? billing,
     PayMongoDetails? details,
@@ -26,6 +48,10 @@ class PaymentMethod extends Equatable {
     );
   }
 
+  ///
+  String toJson() => json.encode(toMap());
+
+  ///
   Map<String, dynamic> toMap() {
     return {
       'billing': billing?.toMap(),
@@ -33,19 +59,6 @@ class PaymentMethod extends Equatable {
       'type': type,
     };
   }
-
-  factory PaymentMethod.fromMap(Map<String, dynamic> map) {
-    return PaymentMethod(
-      billing: PaymentMethodBilling.fromMap(map['billing']),
-      details: PayMongoDetails.fromMap(map['details']),
-      type: map['type'] ?? 'card',
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory PaymentMethod.fromJson(String source) =>
-      PaymentMethod.fromMap(json.decode(source));
 
   @override
   String toString() =>
