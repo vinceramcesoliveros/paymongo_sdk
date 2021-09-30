@@ -1,13 +1,19 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-
-import '../utils/currency.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 /// {@template payment_intent_attributes}
 ///
 /// {@endtemplate}
 class PaymentIntentAttributes extends Equatable {
+  /// {@macro payment_intent_attributes}
+  const PaymentIntentAttributes({
+    required this.amount,
+    this.paymentMethodAllowed = const ['cash'],
+    required this.options,
+  });
+
   /// {@macro payment_intent_attributes}
   factory PaymentIntentAttributes.fromMap(Map<String, dynamic> map) {
     return PaymentIntentAttributes(
@@ -22,17 +28,13 @@ class PaymentIntentAttributes extends Equatable {
   factory PaymentIntentAttributes.fromJson(String source) =>
       PaymentIntentAttributes.fromMap(json.decode(source));
 
-  /// {@macro payment_intent_attributes}
-  const PaymentIntentAttributes({
-    required this.amount,
-    required this.paymentMethodAllowed,
-    required this.options,
-  });
-
   ///
   final double amount;
 
-  ///
+  /// default value must be ['card']
+  /// ```dart
+  /// List<String> paymenthMethodAllowed = ['cash']
+  /// ```
   final List<String> paymentMethodAllowed;
 
   ///
@@ -114,14 +116,14 @@ class PaymentIntentOptions {
     PaymentIntentCard? card,
     String? description,
     String? statementDescriptor,
-    String? currency,
+    String currency = 'PHP',
     Map<String, dynamic>? metadata,
   }) {
     return PaymentIntentOptions(
       card: card ?? this.card,
       description: description ?? this.description,
       statementDescriptor: statementDescriptor ?? this.statementDescriptor,
-      currency: currency ?? this.currency,
+      currency: currency.isEmpty ? 'PHP' : currency,
       metadata: metadata ?? this.metadata,
     );
   }
@@ -129,7 +131,7 @@ class PaymentIntentOptions {
   ///
   Map<String, dynamic> toMap() {
     return {
-      'card': card!.toMap(),
+      'card': card?.toMap(),
       'description': description,
       'statement_descriptor': statementDescriptor,
       'currency': currency ?? 'PHP',

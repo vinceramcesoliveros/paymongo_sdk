@@ -1,16 +1,6 @@
 import 'package:paymongo_sdk/src/src.dart';
 
 extension PayMongoPaymentIntent on PayMongoSDK {
-  Future<String?> createPaymentIntent(PaymentIntentAttributes data) async {
-    final options = PayMongoOptions(
-      data: {'attributes': data.toMap()},
-      path: '/payment_intents',
-    );
-    final response = await post(options);
-
-    return response;
-  }
-
   Future<String?> retreivePaymentIntent(int id) async {
     if (id <= 0) {
       throw ArgumentError("ID must be greater than 0");
@@ -23,6 +13,18 @@ extension PayMongoPaymentIntent on PayMongoSDK {
     final response = await get(options);
 
     return response;
+  }
+
+  Future<PaymentIntentResponse> createPaymentIntent(
+      PaymentIntentAttributes attributes) async {
+    if (attributes.amount <= 100) {
+      throw ArgumentError("Amount should be at least above P 100.00");
+    }
+    final options = PayMongoOptions(path: '/payment_intents', data: {
+      'attribues': attributes.toMap(),
+    });
+    final response = await post<Map<String, dynamic>>(options);
+    return PaymentIntentResponse.fromMap(response);
   }
 
   Future<Map<String, dynamic>> attachToPaymentIntent(
