@@ -1,8 +1,5 @@
 import 'package:paymongo_sdk/paymongo_sdk.dart';
 
-import '../models/models.dart';
-import '../src.dart';
-
 extension PayMongoPaymentMethod on PayMongoSDK {
   Future<String> createPaymentMethod({
     required PaymentMethod data,

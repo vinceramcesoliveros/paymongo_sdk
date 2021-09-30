@@ -1,4 +1,4 @@
-import '../src.dart';
+import 'package:paymongo_sdk/src/src.dart';
 
 extension PayMongoPaymentIntent on PayMongoSDK {
   Future<String?> createPaymentIntent(PaymentIntentAttributes data) async {
