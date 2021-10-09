@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
+import 'package:paymongo_sdk/src/models/models.dart';
 
 /// {@template payment_intent_attributes}
 ///
@@ -11,7 +12,9 @@ class PaymentIntentAttributes extends Equatable {
   const PaymentIntentAttributes({
     required this.amount,
     this.paymentMethodAllowed = const ['cash'],
-    required this.options,
+    this.options = const PaymentIntentOptions(
+      card: PaymentIntentCard(),
+    ),
   });
 
   /// {@macro payment_intent_attributes}

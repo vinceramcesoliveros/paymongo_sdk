@@ -1,5 +1,6 @@
 import 'package:paymongo_sdk/src/src.dart';
 
+/// Payment intent for CREDIT/DEBIT CARD.
 extension PayMongoPaymentIntent on PayMongoSDK {
   Future<String?> retreivePaymentIntent(int id) async {
     if (id <= 0) {
