@@ -22,18 +22,18 @@ extension PayMongoPaymentIntent on PayMongoSDK {
       throw ArgumentError("Amount should be at least above P 100.00");
     }
     final options = PayMongoOptions(path: '/payment_intents', data: {
-      'attribues': attributes.toMap(),
+      'attributes': attributes.toMap(),
     });
     final response = await post<Map<String, dynamic>>(options);
     return PaymentIntentResponse.fromMap(response);
   }
 
-  Future<Map<String, dynamic>> attachToPaymentIntent(
-    int id,
+  Future<PaymentIntentAttachResponse> attachToPaymentIntent(
+    String id,
     PaymentIntentAttach data,
   ) async {
-    if (id <= 0) {
-      throw ArgumentError("id must be real integer");
+    if (id.isEmpty) {
+      throw ArgumentError("Payment Method ID must not be empty");
     }
     final options = PayMongoOptions(
       path: '/payment_intents/$id/attach',
@@ -42,6 +42,7 @@ extension PayMongoPaymentIntent on PayMongoSDK {
       },
     );
     final response = await post<Map<String, dynamic>>(options);
-    return response;
+    final result = PaymentIntentAttachResponse.fromMap(response);
+    return result;
   }
 }

@@ -1,9 +1,9 @@
 name: paymongo_sdk
 description: Unofficial PayMongo SDK written in Dart for flutter
-version: 1.0.3
+version: 1.1.0
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.14.0 <3.0.0"
 
 dependencies:
   http: ^0.13.3

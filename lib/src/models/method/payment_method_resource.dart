@@ -5,7 +5,7 @@ import '../models.dart';
 class PaymentMethodResource {
   final String? id;
   final String? type;
-  final PaymentMethod? attributes;
+  final PaymentMethodAttributes? attributes;
   const PaymentMethodResource({
     this.id,
     this.type,
@@ -15,7 +15,7 @@ class PaymentMethodResource {
   PaymentMethodResource copyWith({
     String? id,
     String? type,
-    PaymentMethod? attributes,
+    PaymentMethodAttributes? attributes,
   }) {
     return PaymentMethodResource(
       id: id ?? this.id,
@@ -36,7 +36,7 @@ class PaymentMethodResource {
     return PaymentMethodResource(
       id: map['id'] ?? '',
       type: map['type'] ?? '',
-      attributes: PaymentMethod.fromMap(map['attributes']),
+      attributes: PaymentMethodAttributes.fromMap(map['attributes']),
     );
   }
 

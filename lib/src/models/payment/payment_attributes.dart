@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../utils/currency.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 class PaymentAttributes {
   final double amount;

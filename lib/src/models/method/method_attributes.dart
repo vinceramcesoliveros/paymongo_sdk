@@ -1,84 +1,110 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-
-import '../utils/address.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 ///{@template payment_method}
-class PaymentMethod extends Equatable {
+class PaymentMethodAttributes extends Equatable {
   /// {@macro payment_method}
-  const PaymentMethod({
-    this.billing,
-    this.details,
+  const PaymentMethodAttributes({
     this.type = 'card',
+    required this.details,
+    required this.billing,
   });
-
-  /// {@macro payment_method}
-  factory PaymentMethod.fromMap(Map<String, dynamic> map) {
-    return PaymentMethod(
-      billing: PaymentMethodBilling.fromMap(map['billing']),
-      details: PayMongoDetails.fromMap(map['details']),
-      type: map['type'] ?? 'card',
-    );
-  }
-
-  /// {@macro payment_method}
-  factory PaymentMethod.fromJson(String source) =>
-      PaymentMethod.fromMap(json.decode(source));
-
-  ///
-  final PaymentMethodBilling? billing;
-
-  ///
-  final PayMongoDetails? details;
-
-  ///
   final String type;
+  final PaymentMethodDetails details;
+  final PayMongoBilling billing;
+  @override
+  List<Object> get props => [type, details, billing];
 
-  /// {@macro payment_method}
-  PaymentMethod copyWith({
-    PaymentMethodBilling? billing,
-    PayMongoDetails? details,
-    String? type,
-  }) {
-    return PaymentMethod(
-      billing: billing ?? this.billing,
-      details: details ?? this.details,
-      type: type ?? this.type,
-    );
-  }
-
-  ///
-  String toJson() => json.encode(toMap());
-
-  ///
   Map<String, dynamic> toMap() {
     return {
-      'billing': billing?.toMap(),
-      'details': details?.toMap(),
       'type': type,
+      'details': details.toMap(),
+      'billing': billing.toMap(),
     };
   }
 
-  @override
-  String toString() =>
-      'PayMongoAttributes(billing: $billing, details: $details, type: $type)';
+  factory PaymentMethodAttributes.fromMap(Map<String, dynamic> map) {
+    return PaymentMethodAttributes(
+      type: map['type'] ?? '',
+      details: PaymentMethodDetails.fromMap(map['details']),
+      billing: PayMongoBilling.fromMap(map['billing']),
+    );
+  }
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
+  String toJson() => json.encode(toMap());
 
-    return other is PaymentMethod &&
-        other.billing == billing &&
-        other.details == details &&
-        other.type == type;
+  factory PaymentMethodAttributes.fromJson(String source) =>
+      PaymentMethodAttributes.fromMap(json.decode(source));
+
+  PaymentMethodAttributes copyWith({
+    String? type,
+    PaymentMethodDetails? details,
+    PayMongoBilling? billing,
+  }) {
+    return PaymentMethodAttributes(
+      type: type ?? this.type,
+      details: details ?? this.details,
+      billing: billing ?? this.billing,
+    );
   }
 
   @override
-  int get hashCode => billing.hashCode ^ details.hashCode ^ type.hashCode;
+  bool get stringify => true;
+}
+
+class PaymentMethodDetails extends Equatable {
+  final String cardNumber;
+  final int expMonth;
+  final int expYear;
+  final String cvc;
+  const PaymentMethodDetails({
+    required this.cardNumber,
+    required this.expMonth,
+    required this.expYear,
+    required this.cvc,
+  });
 
   @override
-  List<Object?> get props => [billing, details, type];
+  List<Object> get props => [cardNumber, expMonth, expYear, cvc];
+
+  PaymentMethodDetails copyWith({
+    String? cardNumber,
+    int? expMonth,
+    int? expYear,
+    String? cvc,
+  }) {
+    return PaymentMethodDetails(
+      cardNumber: cardNumber ?? this.cardNumber,
+      expMonth: expMonth ?? this.expMonth,
+      expYear: expYear ?? this.expYear,
+      cvc: cvc ?? this.cvc,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'card_number': cardNumber,
+      'exp_month': expMonth,
+      'exp_year': expYear,
+      'cvc': cvc,
+    };
+  }
+
+  factory PaymentMethodDetails.fromMap(Map<String, dynamic> map) {
+    return PaymentMethodDetails(
+      cardNumber: map['card_number'] ?? '',
+      expMonth: map['exp_month'] ?? 0,
+      expYear: map['exp_ear'] ?? 0,
+      cvc: map['cvc'] ?? '',
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory PaymentMethodDetails.fromJson(String source) =>
+      PaymentMethodDetails.fromMap(json.decode(source));
 }
 
 class PaymentMethodBilling extends Equatable {

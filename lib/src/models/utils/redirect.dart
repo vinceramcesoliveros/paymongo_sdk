@@ -1,24 +1,34 @@
 import 'dart:convert';
 
-class Redirect {
+import 'package:equatable/equatable.dart';
+
+class Redirect extends Equatable {
   final String success;
   final String failed;
   final String? checkoutUrl;
+  final String? url;
+  final String? returnUrl;
   const Redirect({
     required this.success,
     required this.failed,
     this.checkoutUrl,
+    this.url,
+    this.returnUrl,
   });
 
   Redirect copyWith({
     String? success,
     String? failed,
     String? checkoutUrl,
+    String? url,
+    String? returnUrl,
   }) {
     return Redirect(
       success: success ?? this.success,
       failed: failed ?? this.failed,
       checkoutUrl: checkoutUrl ?? this.checkoutUrl,
+      url: url ?? this.url,
+      returnUrl: returnUrl ?? this.returnUrl,
     );
   }
 
@@ -27,6 +37,8 @@ class Redirect {
       'success': success,
       'failed': failed,
       'checkout_url': checkoutUrl,
+      'url': url,
+      'return_url': returnUrl,
     };
   }
 
@@ -34,7 +46,9 @@ class Redirect {
     return Redirect(
       success: map['success'] ?? '',
       failed: map['failed'] ?? '',
-      checkoutUrl: map['checkout_url'] ?? '',
+      checkoutUrl: map['checkout_url'],
+      url: map['url'],
+      returnUrl: map['return_url'],
     );
   }
 
@@ -44,19 +58,13 @@ class Redirect {
       Redirect.fromMap(json.decode(source));
 
   @override
-  String toString() =>
-      'Redirect(success: $success, failed: $failed, checkoutUrl: $checkoutUrl)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Redirect &&
-        other.success == success &&
-        other.failed == failed &&
-        other.checkoutUrl == checkoutUrl;
+  List<Object?> get props {
+    return [
+      success,
+      failed,
+      checkoutUrl,
+      url,
+      returnUrl,
+    ];
   }
-
-  @override
-  int get hashCode => success.hashCode ^ failed.hashCode ^ checkoutUrl.hashCode;
 }

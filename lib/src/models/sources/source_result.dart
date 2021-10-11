@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../models.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 class SourceResult {
   final String? id;

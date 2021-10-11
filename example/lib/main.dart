@@ -9,6 +9,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'shoes.dart';
 
 const payMongoKey = String.fromEnvironment('apiKey', defaultValue: '');
+const secretKey = String.fromEnvironment('secretKey', defaultValue: '');
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(home: MyApp()));
@@ -20,7 +21,7 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with PaymongoEventHandler {
   final List<Shoe> _shoes = List.generate(5, (index) {
     return Shoe(
       amount: 100 * index,
@@ -64,45 +65,9 @@ class _MyAppState extends State<MyApp> {
           children: [
             FloatingActionButton.extended(
               onPressed: () async {
-                final _amount = _cart.fold<num>(0,
-                    (previousValue, element) => previousValue + element.amount);
-                final sdk = PayMongoSDK(payMongoKey);
-                final url = 'google.com';
-                final _source = Source(
-                  type: "gcash",
-                  amount: _amount.toDouble(),
-                  currency: 'PHP',
-                  redirect: Redirect(
-                    success: "https://$url/success",
-                    failed: "https://$url/failed",
-                  ),
-                  billing: PayMongoBilling(
-                    address: PayMongoAddress(
-                      city: "Cotabato City",
-                      country: "PH",
-                      state: "Mindanao",
-                      line1: "Secret Address",
-                    ),
-                    name: "Anonymous",
-                    email: "test@gmail.com",
-                    phone: "09123456002",
-                  ),
-                );
-                final result = await sdk.createSource(_source);
-                final response = await Navigator.push<String>(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => CheckoutPage(
-                      url: result.attributes.redirect.checkoutUrl,
-                      returnUrl: result.attributes.redirect.success,
-                    ),
-                  ),
-                );
-                debugPrint("==============================");
-                debugPrint("||$response||");
-                debugPrint("==============================");
+                await _handleCredit(_cart);
               },
-              label: Text('Single Payment(${_cart?.length})'),
+              label: Text('Single Payment(${_cart.length})'),
               icon: const Icon(Icons.credit_card),
             ),
           ],
@@ -112,8 +77,8 @@ class _MyAppState extends State<MyApp> {
 
 class _ShoeCard extends StatelessWidget {
   const _ShoeCard({
-    Key key,
-    @required this.shoe,
+    Key? key,
+    required this.shoe,
   }) : super(key: key);
 
   final Shoe shoe;
@@ -143,7 +108,7 @@ class _ShoeCard extends StatelessWidget {
 // ignore: public_member_api_docs
 class CheckoutPage extends StatefulWidget {
   // ignore: public_member_api_docs
-  const CheckoutPage({this.url, this.returnUrl});
+  const CheckoutPage({required this.url, required this.returnUrl});
   // ignore: public_member_api_docs
   final String url;
   final String returnUrl;
@@ -206,5 +171,119 @@ class _CheckoutPageState extends State<CheckoutPage> {
         ),
       )),
     );
+  }
+}
+
+mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
+  final sdk = PayMongoSDK(payMongoKey);
+  final secret = PayMongoSDK(secretKey);
+
+  Future<void> _handleCredit(List<Shoe> _cart) async {
+    try {
+      final _amount = _cart.fold<num>(
+          0, (previousValue, element) => previousValue + element.amount);
+      final createdPaymentMethod = await sdk.createPaymentMethod(
+          data: PaymentMethodAttributes(
+        billing: PayMongoBilling(
+          name: 'Vince',
+          email: "vince@gmail.com",
+          phone: "09555841041",
+          address: PayMongoAddress(
+            line1: "test address",
+            line2: "test 2 address",
+            city: "Cotabato City",
+            state: "Maguindanao",
+            postalCode: "9600",
+            country: "PH",
+          ),
+        ),
+        details: PaymentMethodDetails(
+          cardNumber: '4120000000000007',
+          expMonth: 2,
+          expYear: 27,
+          cvc: "123",
+        ),
+      ));
+
+      final intent = await secret.createPaymentIntent(
+        PaymentIntentAttributes(
+            amount: _amount.toDouble(),
+            description: "Test payment",
+            statementDescriptor: "Test payment descriptor",
+            metadata: {
+              "environment": kReleaseMode ? "LIVE" : "DEV",
+            }),
+      );
+      if (intent.attributes.status == 'awaiting_payment_method' &&
+          (intent.attributes.lastPaymentError?.isNotEmpty ?? false)) {
+        debugPrint('${intent.attributes.lastPaymentError}');
+        return;
+      }
+      final result = await sdk.onPaymentListener(
+        intent: intent,
+        paymentMethod: createdPaymentMethod.id,
+      );
+      final redirect = result?.nextAction?.redirect;
+      if (redirect?.url != null) {
+        debugPrint("${redirect?.url}");
+        final res = await Navigator.push(context,
+            CupertinoPageRoute(builder: (context) {
+          return CheckoutPage(
+            returnUrl: redirect?.returnUrl ?? '',
+            url: redirect?.url ?? '',
+          );
+        }));
+        if (res != null) {
+          debugPrint("$res");
+        }
+      }
+      debugPrint("$intent");
+    } catch (e) {
+      debugPrint('$e');
+    }
+  }
+
+  Future<void> _handleGcash(List<Shoe> _cart) async {
+    final _amount = _cart.fold<num>(
+        0, (previousValue, element) => previousValue + element.amount);
+    final url = 'google.com';
+    final _source = Source(
+      type: "gcash",
+      amount: _amount.toDouble(),
+      currency: 'PHP',
+      redirect: Redirect(
+        success: "https://$url/success",
+        failed: "https://$url/failed",
+      ),
+      billing: PayMongoBilling(
+        address: PayMongoAddress(
+          city: "Cotabato City",
+          country: "PH",
+          state: "Mindanao",
+          line1: "Secret Address",
+        ),
+        name: "Anonymous",
+        email: "test@gmail.com",
+        phone: "09123456002",
+      ),
+    );
+    final result = await sdk.createSource(_source);
+    final paymentUrl = result.attributes?.redirect.checkoutUrl ?? '';
+    final successLink = result.attributes?.redirect.success ?? '';
+    if (paymentUrl.isNotEmpty) {
+      final response = await Navigator.push<String>(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => CheckoutPage(
+            url: paymentUrl,
+            returnUrl: successLink,
+          ),
+        ),
+      );
+
+      debugPrint("==============================");
+      debugPrint("||$response||");
+      debugPrint("==============================");
+    }
   }
 }

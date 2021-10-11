@@ -1,13 +1,11 @@
-import 'package:flutter/foundation.dart';
-
 /// Example Object
 class Shoe {
   ///
   const Shoe({
-    @required this.amount,
-    @required this.currency,
-    @required this.description,
-    @required this.name,
+    required this.amount,
+    required this.currency,
+    required this.description,
+    required this.name,
   });
 
   /// Example name

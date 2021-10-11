@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as _http;
-import '../src.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 ///
 /// ### 🚧 DO NOT USE SECRET KEY IN PRODUCTION
@@ -39,6 +40,9 @@ class PayMongoSDK {
     final json = jsonDecode(response.body);
     if (response.statusCode != 200) {
       throw _http.ClientException("${json['errors']}", response.request?.url);
+    }
+    if (json?['errors'] != null) {
+      throw HttpException(json?['errors'], uri: response.request?.url);
     }
     return json?['data'] as T;
   }
