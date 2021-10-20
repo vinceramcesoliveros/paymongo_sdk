@@ -4,8 +4,19 @@ import 'package:equatable/equatable.dart';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 ///{@template payment_intent_attach}
+/// Use to attach Payment Intent and returns a [PaymentIntentAttachResponse]
+/// object
+///
+/// https://developers.paymongo.com/docs/accepting-cards#3-send-card-information-to-paymongo
 ///{@endtemplate}
 class PaymentIntentAttach extends Equatable {
+  /// {@macro payment_intent_attach}
+  const PaymentIntentAttach({
+    required this.paymentMethod,
+    this.clientKey,
+    this.returnUrl,
+  });
+
   /// Converts [Map<String,dynamic>] to [PaymentIntentAttach] class
   /// {@macro payment_intent_attach}
   factory PaymentIntentAttach.fromMap(Map<String, dynamic> map) {
@@ -21,20 +32,17 @@ class PaymentIntentAttach extends Equatable {
   factory PaymentIntentAttach.fromJson(String source) =>
       PaymentIntentAttach.fromMap(json.decode(source));
 
-  /// {@macro payment_intent_attach}
-  const PaymentIntentAttach({
-    required this.paymentMethod,
-    this.clientKey,
-    this.returnUrl,
-  });
-
-  ///
+  /// id of PaymentMethod to attach to the PaymentIntent
   final String paymentMethod;
 
-  ///
+  /// From [PaymentIntentResponse] client key if the key used is
+  /// a public API key
   final String? clientKey;
 
-  ///
+  /// An optional value for card payment method but required for paymaya.
+  /// The URL to redirect your customer back to after they authenticate
+  /// or cancel their payment. This parameter is only used for redirect-based
+  /// payment methods.
   final String? returnUrl;
 
   /// {@macro payment_intent_attach}
