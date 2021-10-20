@@ -1,6 +1,6 @@
 # paymongo_sdk
  
-![PayMongo](https://raw.githubusercontent.com/paymongo/phlogos/master/logos/paymongo/paymongo.svg)
+![PayMongo](assets/readme_headline.png)
 <center><h1>A dart implementation of PayMongo Client SDK.<h1></center>
 
 ## Flutter package for paymongo
@@ -29,9 +29,18 @@ you can register your account here https://dashboard.paymongo.com/login.
 Go to Developers and locate the _Public Key_ and _Secret Key_. 
 copy the key and use it in your project.
 
+### TODO
+|                                   Payment                                   | Documentation | Production |
+| :-------------------------------------------------------------------------: | :-----------: | :--------: |
+|   [GCash](https://developers.paymongo.com/docs/accepting-gcash-payments)    |       🚧       |     ✅      |
+|    [Debit/Credit](https://developers.paymongo.com/docs/accepting-cards)     |       🚧       |     ✅      |
+| [PayMaya](https://developers.paymongo.com/docs/accepting-paymaya-payments)  |       ❌       |     ❌      |
+| [Grab Pay](https://developers.paymongo.com/docs/accepting-grabpay-payments) |       🚧       |     ❌      |
+_Let me know if you have concerns with the SDK by creating an [issue](https://github.com/ram231/paymongo_sdk/issues)_
+
 ## Usage
 
-full [**example**](./example/lib/main.dart) project.
+full [example](./example/lib/main.dart) project.
 
 ```dart
 /// for dart standalone project usage
