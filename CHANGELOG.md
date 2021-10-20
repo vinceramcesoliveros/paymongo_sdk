@@ -1,6 +1,8 @@
-## [1.0.2] Update Dependencies & Add Documentation
+## [1.1.1] Update Dependencies & Add Documentation
 - Added docs for Payment Intent Attach
 - Update http dependency
+- Update README for PayMaya implementation timeline
+- Update Headline logo
 ## [1.1.0] Beta version
 - Allow credit/debit payment
 > Note: You should create a payment method id so that you can reuse it for every payment intent.
