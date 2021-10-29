@@ -277,7 +277,7 @@ class PaymentIntentAttachResponseAttributes extends Equatable {
       'last_payment_error': lastPaymentError,
       'payment_method_allowed': paymentMethodAllowed,
       'payments': payments.map((x) => x.toMap()).toList(),
-      'next_action': nextAction,
+      'next_action': nextAction?.toMap(),
       'payment_method_options': paymentMethodOptions.toMap(),
       'metadata': metadata,
     };
