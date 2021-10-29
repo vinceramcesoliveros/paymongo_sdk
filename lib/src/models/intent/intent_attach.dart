@@ -301,7 +301,9 @@ class PaymentIntentAttachResponseAttributes extends Equatable {
       payments: List<PaymentAttributesResponse>.from(
           map['payments']?.map((x) => PaymentAttributesResponse.fromMap(x)) ??
               const []),
-      nextAction: PaymentIntentNextAction.fromMap(map['next_action']),
+      nextAction: map['next_action'] != null
+          ? PaymentIntentNextAction.fromMap(map['next_action'])
+          : null,
       paymentMethodOptions: map['payment_method_options'] != null
           ? PaymentMethodOptions.fromMap(map['payment_method_options'])
           : const PaymentMethodOptions(),

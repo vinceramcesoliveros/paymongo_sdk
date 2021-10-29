@@ -66,7 +66,7 @@ class PaymentIntentResponseAttributes extends Equatable {
   final String? lastPaymentError;
   final List<String> paymentMethodAllowed;
   final List<String> payments;
-  final PaymentIntentNextAction nextAction;
+  final PaymentIntentNextAction? nextAction;
   final PaymentMethodOptions paymentMethodOptions;
   final Map<String, dynamic> metadata;
   const PaymentIntentResponseAttributes({
@@ -82,7 +82,7 @@ class PaymentIntentResponseAttributes extends Equatable {
     required this.lastPaymentError,
     required this.paymentMethodAllowed,
     required this.payments,
-    required this.nextAction,
+    this.nextAction,
     required this.paymentMethodOptions,
     required this.metadata,
   });
@@ -137,7 +137,7 @@ class PaymentIntentResponseAttributes extends Equatable {
       'last_payment_error': lastPaymentError,
       'payment_method_allowed': paymentMethodAllowed,
       'payments': payments,
-      'next_action': nextAction,
+      'next_action': nextAction?.toMap(),
       'payment_method_options': paymentMethodOptions.toMap(),
       'metadata': metadata,
     };
@@ -158,7 +158,9 @@ class PaymentIntentResponseAttributes extends Equatable {
       paymentMethodAllowed:
           List<String>.from(map['payment_method_allowed'] ?? const []),
       payments: List<String>.from(map['payments'] ?? const []),
-      nextAction: PaymentIntentNextAction.fromMap(map['next_action']),
+      nextAction: map['next_action']
+          ? PaymentIntentNextAction.fromMap(map['next_action'])
+          : null,
       paymentMethodOptions:
           PaymentMethodOptions.fromMap(map['payment_method_options']),
       metadata: Map<String, dynamic>.from(map['metadata'] ?? const {}),
