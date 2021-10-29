@@ -53,6 +53,40 @@ class PaymentIntentResponse extends Equatable {
   List<Object> get props => [id, type, attributes];
 }
 
+class PaymentsIntentResponse extends Equatable {
+  final String id;
+  final String type;
+  final PaymentAttributesResponse attributes;
+  const PaymentsIntentResponse({
+    required this.id,
+    required this.type,
+    required this.attributes,
+  });
+
+  @override
+  List<Object?> get props => [id, type, attributes];
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'type': type,
+      'attributes': attributes.toMap(),
+    };
+  }
+
+  factory PaymentsIntentResponse.fromMap(Map<String, dynamic> map) {
+    return PaymentsIntentResponse(
+        id: map['id'] ?? '',
+        type: map['type'] ?? '',
+        attributes: PaymentAttributesResponse.fromMap(map['attributes']));
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory PaymentsIntentResponse.fromJson(String source) =>
+      PaymentsIntentResponse.fromMap(json.decode(source));
+}
+
 class PaymentIntentResponseAttributes extends Equatable {
   final int amount;
   final String currency;
@@ -65,7 +99,7 @@ class PaymentIntentResponseAttributes extends Equatable {
   final DateTime updatedAt;
   final String? lastPaymentError;
   final List<String> paymentMethodAllowed;
-  final List<PaymentAttributesResponse> payments;
+  final List<PaymentsIntentResponse> payments;
   final PaymentIntentNextAction? nextAction;
   final PaymentMethodOptions paymentMethodOptions;
   final Map<String, dynamic> metadata;
@@ -99,7 +133,7 @@ class PaymentIntentResponseAttributes extends Equatable {
     DateTime? updatedAt,
     String? lastPaymentError,
     List<String>? paymentMethodAllowed,
-    List<PaymentAttributesResponse>? payments,
+    List<PaymentsIntentResponse>? payments,
     PaymentIntentNextAction? nextAction,
     PaymentMethodOptions? paymentMethodOptions,
     Map<String, dynamic>? metadata,
@@ -157,8 +191,8 @@ class PaymentIntentResponseAttributes extends Equatable {
       lastPaymentError: map['last_payment_error'] ?? '',
       paymentMethodAllowed:
           List<String>.from(map['payment_method_allowed'] ?? const []),
-      payments: List<PaymentAttributesResponse>.from(
-          map['payments']?.map((x) => PaymentAttributesResponse.fromMap(x)) ??
+      payments: List<PaymentsIntentResponse>.from(
+          map['payments']?.map((x) => PaymentsIntentResponse.fromMap(x)) ??
               const []),
       nextAction: map['next_action'] != null
           ? PaymentIntentNextAction.fromMap(map['next_action'])

@@ -23,8 +23,8 @@ class PaymentAttributesResponse extends Equatable {
   final String statementDescriptor;
   final String status;
   final int? taxAmount;
-  final List<Object> refunds;
-  final List<Object> taxes;
+  final List<Object>? refunds;
+  final List<Object>? taxes;
   final DateTime availableAt;
   final DateTime createdAt;
   final DateTime paidAt;
@@ -116,61 +116,59 @@ class PaymentAttributesResponse extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'access_url': accessUrl,
+      'accessUrl': accessUrl,
       'amount': amount,
-      'balance_transaction_id': balanceTransactionId,
+      'balanceTransactionId': balanceTransactionId,
       'billing': billing.toMap(),
       'currency': currency,
       'description': description,
       'disputed': disputed,
-      'external_reference_number': externalReferenceNumber,
+      'externalReferenceNumber': externalReferenceNumber,
       'fee': fee,
-      'foreign_fee': foreignFee,
+      'foreignFee': foreignFee,
       'livemode': livemode,
-      'net_amount': netAmount,
+      'netAmount': netAmount,
       'origin': origin,
+      'paymentIntentId': paymentIntentId,
       'payout': payout,
       'source': source.toMap(),
-      'statement_descriptor': statementDescriptor,
+      'statementDescriptor': statementDescriptor,
       'status': status,
-      'tax_amount': taxAmount,
-      'refunds': refunds.toList(),
-      'taxes': taxes.toList(),
-      'available_at': availableAt.millisecondsSinceEpoch,
-      'created_at': createdAt.millisecondsSinceEpoch,
-      'paid_at': paidAt.millisecondsSinceEpoch,
-      'updated_at': updatedAt.millisecondsSinceEpoch,
-      'payment_intent_id': paymentIntentId,
+      'taxAmount': taxAmount,
+      'availableAt': availableAt.millisecondsSinceEpoch,
+      'createdAt': createdAt.millisecondsSinceEpoch,
+      'paidAt': paidAt.millisecondsSinceEpoch,
+      'updatedAt': updatedAt.millisecondsSinceEpoch,
     };
   }
 
   factory PaymentAttributesResponse.fromMap(Map<String, dynamic> map) {
     return PaymentAttributesResponse(
-      accessUrl: map['access_url'],
+      accessUrl: map['accessUrl'],
       amount: map['amount'] ?? 0,
-      balanceTransactionId: map['balance_transaction_id'] ?? '',
+      balanceTransactionId: map['balanceTransactionId'] ?? '',
       billing: PayMongoBilling.fromMap(map['billing']),
-      currency: map['currency'] ?? 'PHP',
+      currency: map['currency'] ?? '',
       description: map['description'] ?? '',
       disputed: map['disputed'] ?? false,
-      externalReferenceNumber: map['external_reference_number'],
+      externalReferenceNumber: map['externalReferenceNumber'],
       fee: map['fee'] ?? 0,
-      foreignFee: map['foreign_fee'] ?? 0,
+      foreignFee: map['foreignFee'] ?? 0,
       livemode: map['livemode'] ?? false,
-      netAmount: map['net_amount'] ?? 0,
+      netAmount: map['netAmount'] ?? 0,
       origin: map['origin'] ?? '',
+      paymentIntentId: map['paymentIntentId'] ?? '',
       payout: map['payout'] ?? '',
       source: PaymentAttributeSourceResponse.fromMap(map['source']),
-      statementDescriptor: map['statement_descriptor'] ?? '',
+      statementDescriptor: map['statementDescriptor'] ?? '',
       status: map['status'] ?? '',
-      taxAmount: map['tax_amount'],
-      refunds: List<Object>.from(map['refunds'] ?? const []),
-      taxes: List<Object>.from(map['taxes'] ?? const []),
-      availableAt: DateTime.fromMillisecondsSinceEpoch(map['available_at']),
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at']),
-      paidAt: DateTime.fromMillisecondsSinceEpoch(map['paid_at']),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updated_at']),
-      paymentIntentId: map['payment_intent_id'],
+      taxAmount: map['taxAmount'],
+      refunds: map['refunds'],
+      taxes: map['taxes'],
+      availableAt: DateTime.fromMillisecondsSinceEpoch(map['availableAt']),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
+      paidAt: DateTime.fromMillisecondsSinceEpoch(map['paidAt']),
+      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt']),
     );
   }
 
