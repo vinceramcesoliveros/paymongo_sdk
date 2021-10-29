@@ -73,7 +73,22 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
           debugPrint("$res");
         }
       }
-      debugPrint("$intent");
+      final paymentIntentId =
+          intent.attributes.clientKey.split('_client').first;
+
+      final clientKey = intent.attributes.clientKey;
+      final requery = await sdk.retrievePaymentIntentClient(
+        clientKey: clientKey,
+        paymentIntentId: paymentIntentId,
+      );
+      debugPrint("$requery");
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("Payment ${requery.attributes.status}"),
+            );
+          });
     } catch (e) {
       debugPrint('$e');
     }
