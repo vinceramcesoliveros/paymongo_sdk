@@ -17,7 +17,7 @@ class CheckoutPage extends StatefulWidget {
   _CheckoutPageState createState() => _CheckoutPageState();
 }
 
-class _CheckoutPageState extends State<CheckoutPage> {
+class _CheckoutPageState extends State<CheckoutPage> with UrlIFrameParser {
   final Completer<WebViewController> _controller = Completer();
 
   @override
@@ -36,7 +36,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           body: SafeArea(
         child: WebView(
           onWebViewCreated: _controller.complete,
-          initialUrl: widget.url,
+          initialUrl: toCheckoutURL(widget.url),
           javascriptMode: JavascriptMode.unrestricted,
           debuggingEnabled: kDebugMode,
           navigationDelegate: (request) async {
@@ -45,6 +45,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
               return NavigationDecision.prevent;
             }
             return NavigationDecision.navigate;
+          },
+          javascriptChannels: {
+            JavascriptChannel(
+                name: 'Paymongo',
+                onMessageReceived: (JavascriptMessage message) {
+                  Navigator.pop(context);
+                }),
           },
           onWebResourceError: (error) async {
             final dialog = await showDialog(
@@ -71,5 +78,57 @@ class _CheckoutPageState extends State<CheckoutPage> {
         ),
       )),
     );
+  }
+}
+
+mixin UrlIFrameParser<T extends StatefulWidget> on State<T> {
+  String toCheckoutURL(String url) {
+    return Uri.dataFromString('''
+    <html>
+
+<head>
+    <style>
+        body {
+            overflow: hidden
+        }
+
+        .embed-paymongo {
+            position: relative;
+            padding-bottom: 56.25%;
+            padding-top: 0px;
+            height: 0px;
+            overflow: hidden;
+        }
+
+        .embed-paymongo iframe,
+        .embed-paymongo object,
+        .embed-paymongo embed {
+            border: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <iframe style="width:100%;height:100%;top:0;left:0;position:absolute;" frameborder="0" allowfullscreen="1"
+        allow="accelerometer;  encrypted-media;" webkitallowfullscreen mozallowfullscreen allowfullscreen
+        src="${url}"></iframe>
+</body>
+<script>
+    window.addEventListener('message', ev => {
+        Paymongo.postMessage(ev.data);
+        return;
+    })
+</script>
+
+</html>
+    
+    
+    ''', mimeType: 'text/html').toString();
   }
 }

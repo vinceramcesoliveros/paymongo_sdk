@@ -90,14 +90,12 @@ class _PaymentOptionListState extends State<PaymentOptionList>
           ListTile(
             title: Text("GCash Payment"),
             onTap: () async {
-              Navigator.pop(context);
               await gcashPayment(widget.cart);
             },
           ),
           ListTile(
             title: Text("Credit/Deibt Payment"),
             onTap: () async {
-              Navigator.pop(context);
               await cardPayment(widget.cart);
             },
           ),

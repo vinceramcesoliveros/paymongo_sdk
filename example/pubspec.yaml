@@ -30,7 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.3
   paymongo_sdk:
     path: ../
-  webview_flutter: ^2.1.1
+  webview_flutter: ^2.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

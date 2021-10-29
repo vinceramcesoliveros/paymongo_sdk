@@ -65,7 +65,7 @@ class PaymentIntentResponseAttributes extends Equatable {
   final DateTime updatedAt;
   final String? lastPaymentError;
   final List<String> paymentMethodAllowed;
-  final List<String> payments;
+  final List<PaymentAttributesResponse> payments;
   final PaymentIntentNextAction? nextAction;
   final PaymentMethodOptions paymentMethodOptions;
   final Map<String, dynamic> metadata;
@@ -99,7 +99,7 @@ class PaymentIntentResponseAttributes extends Equatable {
     DateTime? updatedAt,
     String? lastPaymentError,
     List<String>? paymentMethodAllowed,
-    List<String>? payments,
+    List<PaymentAttributesResponse>? payments,
     PaymentIntentNextAction? nextAction,
     PaymentMethodOptions? paymentMethodOptions,
     Map<String, dynamic>? metadata,
@@ -157,7 +157,9 @@ class PaymentIntentResponseAttributes extends Equatable {
       lastPaymentError: map['last_payment_error'] ?? '',
       paymentMethodAllowed:
           List<String>.from(map['payment_method_allowed'] ?? const []),
-      payments: List<String>.from(map['payments'] ?? const []),
+      payments: List<PaymentAttributesResponse>.from(
+          map['payments']?.map((x) => PaymentAttributesResponse.fromMap(x)) ??
+              const []),
       nextAction: map['next_action'] != null
           ? PaymentIntentNextAction.fromMap(map['next_action'])
           : null,

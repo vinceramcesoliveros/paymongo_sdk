@@ -6,6 +6,8 @@ enum PaymentMethodStatus {
   processing,
   succeeded,
   awaitingNextAction,
+  failed,
+  cancelled,
 }
 typedef PayMongoIntentAuthentication = void Function(String url);
 
