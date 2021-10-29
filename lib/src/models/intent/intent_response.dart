@@ -158,7 +158,7 @@ class PaymentIntentResponseAttributes extends Equatable {
       paymentMethodAllowed:
           List<String>.from(map['payment_method_allowed'] ?? const []),
       payments: List<String>.from(map['payments'] ?? const []),
-      nextAction: map['next_action']
+      nextAction: map['next_action'] != null
           ? PaymentIntentNextAction.fromMap(map['next_action'])
           : null,
       paymentMethodOptions:
