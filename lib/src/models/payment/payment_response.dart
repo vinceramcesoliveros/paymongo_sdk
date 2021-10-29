@@ -23,8 +23,8 @@ class PaymentAttributesResponse extends Equatable {
   final String statementDescriptor;
   final String status;
   final int? taxAmount;
-  final List<Object>? refunds;
-  final List<Object>? taxes;
+  final List<dynamic>? refunds;
+  final List<dynamic>? taxes;
   final DateTime availableAt;
   final DateTime createdAt;
   final DateTime paidAt;
