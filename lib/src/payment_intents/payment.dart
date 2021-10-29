@@ -2,7 +2,7 @@ import 'package:paymongo_sdk/src/src.dart';
 
 /// Payment intent for CREDIT/DEBIT CARD.
 extension PayMongoPaymentIntent on PayMongoSDK {
-  Future<PaymentIntentResponse> retrievePaymentIntentClient({
+  Future<PaymentIntentAttachResponse> retrievePaymentIntentClient({
     required String paymentIntentId,
     required String clientKey,
   }) async {
@@ -11,7 +11,7 @@ extension PayMongoPaymentIntent on PayMongoSDK {
       'client_key': clientKey,
     });
     final response = await get<Map<String, dynamic>>(options);
-    return PaymentIntentResponse.fromMap(response);
+    return PaymentIntentAttachResponse.fromMap(response);
   }
 
   Future<String?> retreivePaymentIntent(int id) async {
