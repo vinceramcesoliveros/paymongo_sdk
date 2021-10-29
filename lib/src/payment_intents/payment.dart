@@ -2,7 +2,7 @@ import 'package:paymongo_sdk/src/src.dart';
 
 /// Payment intent for CREDIT/DEBIT CARD.
 extension PayMongoPaymentIntent on PayMongoSDK {
-  Future<PaymentIntentAttachResponse> retrievePaymentIntentClient({
+  Future<PaymentIntentResponse> retrievePaymentIntentClient({
     required String paymentIntentId,
     required String clientKey,
   }) async {
@@ -11,7 +11,7 @@ extension PayMongoPaymentIntent on PayMongoSDK {
       'client_key': clientKey,
     });
     final response = await get<Map<String, dynamic>>(options);
-    return PaymentIntentAttachResponse.fromMap(response);
+    return PaymentIntentResponse.fromMap(response);
   }
 
   Future<String?> retreivePaymentIntent(int id) async {
@@ -179,7 +179,7 @@ class PaymentIntent
   }
 
   @override
-  Future<PaymentIntentAttachResponse> retrieveIntentClient(
+  Future<PaymentIntentResponse> retrieveIntentClient(
       String paymentIntentId, String clientKey) async {
     final _http = PayMongoHttp(_apiKey);
     final options =
@@ -192,6 +192,6 @@ class PaymentIntent
     _http.close();
     final json = serialize<Map<String, dynamic>>(response, options.path);
 
-    return PaymentIntentAttachResponse.fromMap(json);
+    return PaymentIntentResponse.fromMap(json);
   }
 }

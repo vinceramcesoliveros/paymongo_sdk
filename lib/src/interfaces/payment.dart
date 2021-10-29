@@ -14,7 +14,7 @@ abstract class PaymentIntentInterface<R, P, A, AR>
   Future<AR> attach(String id, A attributes);
 
   /// Retrieve payment intent. Used for re-query to check payment status
-  Future<AR> retrieveIntentClient(String paymentIntentId, String clientKey);
+  Future<R> retrieveIntentClient(String paymentIntentId, String clientKey);
 }
 
 /// Use for [retrieve],[create],[listAll] endpoints via Secret Key
