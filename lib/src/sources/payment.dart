@@ -1,4 +1,4 @@
-import '../src.dart';
+import 'package:paymongo_sdk/src/src.dart';
 
 /// Instance of Source to provide a different payment gateway.
 /// Options allowed are GCash and GrabPay
@@ -38,7 +38,7 @@ extension PayMongoSource on PayMongoSDK {
   ///   );
   ///   final result = await sdk.createSource(_source);
   /// ```
-  Future<SourceResult> createSource(Source source) async {
+  Future<SourceResult> createSource(SourceAttributes source) async {
     final options = PayMongoOptions(
       path: '/sources',
       data: {
@@ -60,5 +60,46 @@ extension PayMongoSource on PayMongoSDK {
     final response = await get<Map<String, dynamic>>(options);
 
     return SourceResult.fromMap(response);
+  }
+}
+
+/// {@template source_client_sdk}
+/// {@endtemplate}
+class Source
+    with PaymentSerializer
+    implements PublicPaymentInterface<SourceResult, SourceAttributes> {
+  /// {@macro souce_client_sdk}
+  const Source(
+    this._apiKey,
+    this._url,
+  );
+
+  final String _apiKey;
+
+  final String _url;
+  @override
+  Future<SourceResult> create(SourceAttributes attributes) async {
+    final _http = PayMongoHttp(_apiKey);
+    final options = PayMongoOptions(path: '/sources', data: {
+      "attributes": attributes.toMap(),
+    });
+    final response =
+        await _http.post(Uri.https(_url, "v1${options.path}", options.params));
+    _http.close();
+    final json = serialize<String>(response, options.path);
+    return SourceResult.fromJson(json);
+  }
+
+  @override
+  Future<SourceResult> retrieve(int id) async {
+    assert(!id.isNegative, "ID must be positive number");
+    final _http = PayMongoHttp(_apiKey);
+    final options = PayMongoOptions(path: 'sources/$id');
+
+    final response =
+        await _http.get(Uri.https(_url, "v1${options.path}", options.params));
+    _http.close();
+    final json = serialize<Map<String, dynamic>>(response, options.path);
+    return SourceResult.fromMap(json);
   }
 }

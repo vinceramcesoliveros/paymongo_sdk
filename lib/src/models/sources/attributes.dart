@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import '../models.dart';
 
-class Source {
+class SourceAttributes {
   final String type;
   final double amount;
   final String currency;
   final Redirect redirect;
   final PayMongoBilling billing;
-  const Source({
+  const SourceAttributes({
     required this.type,
     required this.amount,
     required this.currency,
@@ -16,14 +16,14 @@ class Source {
     required this.billing,
   });
 
-  Source copyWith({
+  SourceAttributes copyWith({
     String? type,
     double? amount,
     String? currency,
     Redirect? redirect,
     PayMongoBilling? billing,
   }) {
-    return Source(
+    return SourceAttributes(
       type: type ?? this.type,
       amount: amount ?? this.amount,
       currency: currency ?? this.currency,
@@ -42,8 +42,8 @@ class Source {
     };
   }
 
-  factory Source.fromMap(Map<String, dynamic> map) {
-    return Source(
+  factory SourceAttributes.fromMap(Map<String, dynamic> map) {
+    return SourceAttributes(
       type: map['type'] ?? '',
       amount: (map['amount'] as num).toDouble(),
       currency: map['currency'] ?? '',
@@ -54,7 +54,8 @@ class Source {
 
   String toJson() => json.encode(toMap());
 
-  factory Source.fromJson(String source) => Source.fromMap(json.decode(source));
+  factory SourceAttributes.fromJson(String source) =>
+      SourceAttributes.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -65,7 +66,7 @@ class Source {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Source &&
+    return other is SourceAttributes &&
         other.type == type &&
         other.amount == amount &&
         other.currency == currency &&

@@ -5,7 +5,7 @@ import 'package:paymongo_sdk/paymongo_sdk.dart';
 class SourceResult {
   final String? id;
   final String? type;
-  final Source? attributes;
+  final SourceAttributes? attributes;
   const SourceResult({
     this.id,
     this.type,
@@ -15,7 +15,7 @@ class SourceResult {
   SourceResult copyWith({
     String? id,
     String? type,
-    Source? attributes,
+    SourceAttributes? attributes,
   }) {
     return SourceResult(
       id: id ?? this.id,
@@ -36,7 +36,7 @@ class SourceResult {
     return SourceResult(
       id: map['id'] ?? '',
       type: map['type'] ?? '',
-      attributes: Source.fromMap(map['attributes']),
+      attributes: SourceAttributes.fromMap(map['attributes']),
     );
   }
 

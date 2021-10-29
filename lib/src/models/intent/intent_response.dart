@@ -66,7 +66,7 @@ class PaymentIntentResponseAttributes extends Equatable {
   final String? lastPaymentError;
   final List<String> paymentMethodAllowed;
   final List<String> payments;
-  final String nextAction;
+  final PaymentIntentNextAction nextAction;
   final PaymentMethodOptions paymentMethodOptions;
   final Map<String, dynamic> metadata;
   const PaymentIntentResponseAttributes({
@@ -100,7 +100,7 @@ class PaymentIntentResponseAttributes extends Equatable {
     String? lastPaymentError,
     List<String>? paymentMethodAllowed,
     List<String>? payments,
-    String? nextAction,
+    PaymentIntentNextAction? nextAction,
     PaymentMethodOptions? paymentMethodOptions,
     Map<String, dynamic>? metadata,
   }) {

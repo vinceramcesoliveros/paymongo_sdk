@@ -19,6 +19,7 @@ import 'package:paymongo_sdk/paymongo_sdk.dart';
 /// final secretKeyClient = PayMongoSDK(secretKey);
 /// ```
 /// {@endtemplate}
+
 class PayMongoSDK {
   /// {@macro paymonggosdk}
   PayMongoSDK(this.secret, {this.http, String apiUrl = 'api.paymongo.com'})

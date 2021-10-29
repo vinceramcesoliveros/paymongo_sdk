@@ -50,9 +50,80 @@ extension PayMongoPayments on PayMongoSDK {
   }
 
   /// Get all payments
+  @Deprecated("Use Payment.listAll")
   Future<List<PaymentResource>> listPayments() async {
     final options = PayMongoOptions(path: '/payments');
     final response = await get<List<Map<String, dynamic>>>(options);
     return response.map((data) => PaymentResource.fromMap(data)).toList();
+  }
+}
+
+///{@template secret_payment_client}
+///{@endtemplate}
+class Payment
+    with
+        PaymentSerializer
+    implements
+        SecretPaymentInterface<PaymentAttributesResponse, PaymentAttributes,
+            PaymentListQueryParams> {
+  ///{@macro secret_payment_client}
+  Payment(String apiKey, String url)
+      : _apiKey = apiKey,
+        _url = url;
+
+  ///
+  final String _apiKey;
+
+  ///
+  final String _url;
+
+  @override
+  Future<PaymentAttributesResponse> create(PaymentAttributes attributes) async {
+    final options = PayMongoOptions(
+      path: '/payments',
+      data: {
+        'attributes': attributes.toMap(),
+      },
+    );
+
+    final _http = PayMongoHttp(_apiKey);
+    final response =
+        await _http.post(Uri.https(_url, "v1${options.path}", options.params));
+    _http.close();
+
+    final json = serialize<String>(response, options.path);
+    return PaymentAttributesResponse.fromJson(json);
+  }
+
+  @override
+  Future<PaymentAttributesResponse> listAll(PaymentAttributes attributes,
+      [PaymentListQueryParams? queryParams]) async {
+    final options = PayMongoOptions(
+      path: '/payments',
+      params: queryParams?.toMap(),
+    );
+    final _http = PayMongoHttp(_apiKey);
+    final response =
+        await _http.get(Uri.https(_url, "v1${options.path}", options.params));
+    _http.close();
+
+    final json = serialize<String>(response, options.path);
+
+    return PaymentAttributesResponse.fromJson(json);
+  }
+
+  @override
+  Future<PaymentAttributesResponse> retrieve(int id) async {
+    final options = PayMongoOptions(
+      path: '/payments/$id',
+    );
+    final _http = PayMongoHttp(_apiKey);
+    final response =
+        await _http.get(Uri.https(_url, "v1${options.path}", options.params));
+    _http.close();
+
+    final json = serialize<String>(response, options.path);
+
+    return PaymentAttributesResponse.fromJson(json);
   }
 }

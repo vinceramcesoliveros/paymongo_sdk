@@ -9,7 +9,8 @@ extension PayMongoPaymentMethod on PayMongoSDK {
     required PaymentIntentResponse intent,
   }) async {
     try {
-      final paymentIntentId = intent.attributes.clientKey.split('_client')[0];
+      final paymentIntentId =
+          intent.attributes.clientKey.split('_client').first;
 
       final clientKey = intent.attributes.clientKey;
       final attachment = await attachToPaymentIntent(
@@ -21,7 +22,14 @@ extension PayMongoPaymentMethod on PayMongoSDK {
       );
       switch (attachment.attributes.status) {
         case "succeeded":
-          break;
+          return PaymentResult(
+            id: intent.id,
+            clientKey: intent.attributes.clientKey,
+            status: PaymentMethodStatus.succeeded,
+            paymentMethod: paymentMethod,
+            authenticateUrl:
+                "https://api.paymongo.com/v1/payment_intents/$paymentIntentId?client_key=$clientKey",
+          );
         case "awaiting_payment_method":
           return PaymentResult(
             id: intent.id,
@@ -72,5 +80,47 @@ extension PayMongoPaymentMethod on PayMongoSDK {
 
     final response = await get(options);
     return response;
+  }
+}
+
+/// {@template payment_method_client}
+/// {@endtemplate}
+class PaymentMethod
+    with PaymentSerializer
+    implements
+        PublicPaymentInterface<PaymentMethodResponse, PaymentMethodAttributes> {
+  /// {@macro payment_method_client}
+  PaymentMethod(String apiKey, String url)
+      : _apiKey = apiKey,
+        _url = url;
+  final String _apiKey;
+
+  final String _url;
+  @override
+  Future<PaymentMethodResponse> create(
+      PaymentMethodAttributes attributes) async {
+    final _http = PayMongoHttp(_apiKey);
+    final options = PayMongoOptions(path: '/sources', data: {
+      "attributes": attributes.toMap(),
+    });
+    final response =
+        await _http.post(Uri.https(_url, "v1${options.path}", options.params));
+    _http.close();
+
+    final json = serialize<String>(response, options.path);
+    return PaymentMethodResponse.fromJson(json);
+  }
+
+  @override
+  Future<PaymentMethodResponse> retrieve(int id) async {
+    assert(!id.isNegative, "ID must be positive number");
+    final _http = PayMongoHttp(_apiKey);
+    final options = PayMongoOptions(path: 'sources/$id');
+
+    final response =
+        await _http.get(Uri.https(_url, "v1${options.path}", options.params));
+    _http.close();
+    final json = serialize<Map<String, dynamic>>(response, options.path);
+    return PaymentMethodResponse.fromMap(json);
   }
 }
