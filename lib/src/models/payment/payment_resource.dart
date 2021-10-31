@@ -1,27 +1,53 @@
 import 'dart:convert';
 
-class PaymentResource {
-  final String? id;
-  final String? source;
-  final String? type;
-  const PaymentResource({
+import 'package:equatable/equatable.dart';
+
+/// {@template create_payment_response}
+class CreatePaymentResponse extends Equatable {
+  /// {@template create_payment_response}
+  const CreatePaymentResponse({
     this.id,
     this.source,
     this.type,
   });
 
-  PaymentResource copyWith({
+  /// {@template create_payment_response}
+  factory CreatePaymentResponse.fromMap(Map<String, dynamic> map) {
+    return CreatePaymentResponse(
+      id: map['id'],
+      source: map['source'],
+      type: map['type'],
+    );
+  }
+
+  /// {@template create_payment_response}
+  factory CreatePaymentResponse.fromJson(String source) =>
+      CreatePaymentResponse.fromMap(json.decode(source));
+
+  ///
+  final String? id;
+
+  ///
+  final String? source;
+
+  ///
+  final String? type;
+
+  /// {@template create_payment_response}
+
+  CreatePaymentResponse copyWith({
     String? id,
     String? source,
     String? type,
   }) {
-    return PaymentResource(
+    return CreatePaymentResponse(
       id: id ?? this.id,
       source: source ?? this.source,
       type: type ?? this.type,
     );
   }
 
+  /// {@template create_payment_response}
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -30,32 +56,9 @@ class PaymentResource {
     };
   }
 
-  factory PaymentResource.fromMap(Map<String, dynamic> map) {
-    return PaymentResource(
-      id: map['id'],
-      source: map['source'],
-      type: map['type'],
-    );
-  }
-
+  /// {@template create_payment_response}
   String toJson() => json.encode(toMap());
 
-  factory PaymentResource.fromJson(String source) =>
-      PaymentResource.fromMap(json.decode(source));
-
   @override
-  String toString() => 'PaymentResource(id: $id, source: $source, type: $type)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PaymentResource &&
-        other.id == id &&
-        other.source == source &&
-        other.type == type;
-  }
-
-  @override
-  int get hashCode => id.hashCode ^ source.hashCode ^ type.hashCode;
+  List<Object?> get props => [id, source, type];
 }

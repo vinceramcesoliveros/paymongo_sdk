@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:http/http.dart';
-import 'package:meta/meta.dart';
 import 'package:paymongo_sdk/lib.dart';
 
 /// Use for Retrieve/Create response via Public Key
@@ -30,6 +29,8 @@ abstract class SecretPaymentInterface<R, P, QP>
 }
 
 /// {@template payment_gateway}
+/// Http Client for [fetch]-ing and [post]-ing API.
+/// handles opening and closing http
 /// {@endtemplate}
 class PaymentGateway extends Equatable {
   //// {@macro payment_gateway}
@@ -38,9 +39,13 @@ class PaymentGateway extends Equatable {
     required this.apiKey,
   });
 
+  /// defaults to api.paymongo.com
   final String url;
+
+  /// can be public or secret key
   final String apiKey;
 
+  /// GET request
   Future<Response> fetch(PayMongoOptions options) async {
     final _http = PayMongoHttp(apiKey);
 
@@ -50,7 +55,7 @@ class PaymentGateway extends Equatable {
     return response;
   }
 
-  @internal
+  /// POST request
   Future<Response> post(PayMongoOptions options) async {
     final _http = PayMongoHttp(apiKey);
 

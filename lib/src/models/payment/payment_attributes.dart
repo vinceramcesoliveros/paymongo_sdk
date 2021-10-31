@@ -1,14 +1,14 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
 
-class PaymentAttributes {
-  final double amount;
-  final String? description;
-  final String currency;
-  final String? statementDescriptor;
-  final PaymentSource source;
-  const PaymentAttributes({
+/// {@template create_payment_attr}
+/// https://developers.paymongo.com/reference/create-a-payment
+/// {@endtemplate}
+class CreatePaymentAttributes extends Equatable {
+  ///{@macro create_payment_attr}
+  const CreatePaymentAttributes({
     required this.amount,
     this.description,
     required this.currency,
@@ -16,14 +16,45 @@ class PaymentAttributes {
     required this.source,
   });
 
-  PaymentAttributes copyWith({
+  ///{@macro create_payment_attr}
+  factory CreatePaymentAttributes.fromMap(Map<String, dynamic> map) {
+    return CreatePaymentAttributes(
+      amount: map['amount'] ?? 0.0,
+      description: map['description'] ?? '',
+      currency: map['currency'] ?? '',
+      statementDescriptor: map['statementDescriptor'] ?? '',
+      source: PaymentSource.fromMap(map['source']),
+    );
+  }
+
+  ///{@macro create_payment_attr}
+  factory CreatePaymentAttributes.fromJson(String source) =>
+      CreatePaymentAttributes.fromMap(json.decode(source));
+
+  /// the package handles converting the amount * 100
+  final double amount;
+
+  /// description can be viewed on the paymongo dashboard
+  final String? description;
+
+  /// defaults to PHP
+  final String currency;
+
+  ///
+  final String? statementDescriptor;
+
+  ///
+  final PaymentSource source;
+
+  ///{@macro create_payment_attr}
+  CreatePaymentAttributes copyWith({
     double? amount,
     String? description,
     String? currency,
     String? statementDescriptor,
     PaymentSource? source,
   }) {
-    return PaymentAttributes(
+    return CreatePaymentAttributes(
       amount: amount ?? this.amount,
       description: description ?? this.description,
       currency: currency ?? this.currency,
@@ -32,6 +63,7 @@ class PaymentAttributes {
     );
   }
 
+  ///{@macro create_payment_attr}
   Map<String, dynamic> toMap() {
     return {
       'amount': amount.toCurrency(),
@@ -42,56 +74,49 @@ class PaymentAttributes {
     };
   }
 
-  factory PaymentAttributes.fromMap(Map<String, dynamic> map) {
-    return PaymentAttributes(
-      amount: map['amount'] ?? 0.0,
-      description: map['description'] ?? '',
-      currency: map['currency'] ?? '',
-      statementDescriptor: map['statementDescriptor'] ?? '',
-      source: PaymentSource.fromMap(map['source']),
-    );
-  }
-
+  ///{@macro create_payment_attr}
   String toJson() => json.encode(toMap());
 
-  factory PaymentAttributes.fromJson(String source) =>
-      PaymentAttributes.fromMap(json.decode(source));
-
   @override
-  String toString() {
-    return 'PaymentAttributes(amount: $amount, description: $description, currency: $currency, statementDescriptor: $statementDescriptor, source: $source)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PaymentAttributes &&
-        other.amount == amount &&
-        other.description == description &&
-        other.currency == currency &&
-        other.statementDescriptor == statementDescriptor &&
-        other.source == source;
-  }
-
-  @override
-  int get hashCode {
-    return amount.hashCode ^
-        description.hashCode ^
-        currency.hashCode ^
-        statementDescriptor.hashCode ^
-        source.hashCode;
+  List<Object?> get props {
+    return [
+      amount,
+      description,
+      currency,
+      statementDescriptor,
+      source,
+    ];
   }
 }
 
-class PaymentSource {
-  final String id;
-  final String type;
+/// {@template payment_source}
+/// {@endtemplate}
+class PaymentSource extends Equatable {
+  ///{@macro payment_source}
   const PaymentSource({
     required this.id,
     required this.type,
   });
 
+  ///{@macro payment_source}
+  factory PaymentSource.fromMap(Map<String, dynamic> map) {
+    return PaymentSource(
+      id: map['id'] ?? '',
+      type: map['type'] ?? '',
+    );
+  }
+
+  ///{@macro payment_source}
+  factory PaymentSource.fromJson(String source) =>
+      PaymentSource.fromMap(json.decode(source));
+
+  ///
+  final String id;
+
+  ///
+  final String type;
+
+  ///{@macro payment_source}
   PaymentSource copyWith({
     String? id,
     String? type,
@@ -102,6 +127,7 @@ class PaymentSource {
     );
   }
 
+  ///{@macro payment_source}
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -109,28 +135,9 @@ class PaymentSource {
     };
   }
 
-  factory PaymentSource.fromMap(Map<String, dynamic> map) {
-    return PaymentSource(
-      id: map['id'] ?? '',
-      type: map['type'] ?? '',
-    );
-  }
-
+  ///{@macro payment_source}
   String toJson() => json.encode(toMap());
 
-  factory PaymentSource.fromJson(String source) =>
-      PaymentSource.fromMap(json.decode(source));
-
   @override
-  String toString() => 'PaymentSource(id: $id, type: $type)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PaymentSource && other.id == id && other.type == type;
-  }
-
-  @override
-  int get hashCode => id.hashCode ^ type.hashCode;
+  List<Object> get props => [id, type];
 }

@@ -1,40 +1,18 @@
 import 'dart:convert';
 
-class PaymentListQueryParams {
-  final String before;
-  final String after;
-  final String limit;
-  PaymentListQueryParams({
+import 'package:equatable/equatable.dart';
+
+/// {@template query_payments}
+/// {@endtemplate query_payments}
+class PaymentListQueryParams extends Equatable {
+  /// {@macro query_payments}
+  const PaymentListQueryParams({
     this.before = "",
     this.after = "",
     this.limit = "10",
   });
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PaymentListQueryParams &&
-        other.before == before &&
-        other.after == after &&
-        other.limit == limit;
-  }
-
-  @override
-  int get hashCode => before.hashCode ^ after.hashCode ^ limit.hashCode;
-
-  @override
-  String toString() =>
-      'PaymentListQueryParams(before: $before, after: $after, limit: $limit)';
-
-  Map<String, String> toMap() {
-    return {
-      'before': before,
-      'after': after,
-      'limit': limit,
-    };
-  }
-
+  /// {@macro query_payments}
   factory PaymentListQueryParams.fromMap(Map<String, dynamic> map) {
     return PaymentListQueryParams(
       before: map['before'] ?? '',
@@ -43,8 +21,31 @@ class PaymentListQueryParams {
     );
   }
 
-  String toJson() => json.encode(toMap());
-
+  /// {@macro query_payments}
   factory PaymentListQueryParams.fromJson(String source) =>
       PaymentListQueryParams.fromMap(json.decode(source));
+
+  /// via resource ID and not by date
+  final String before;
+
+  /// via resource ID and not by date
+  final String after;
+
+  /// limit of response data
+  final String limit;
+
+  /// {@macro query_payments}
+  Map<String, String> toMap() {
+    return {
+      'before': before,
+      'after': after,
+      'limit': limit,
+    };
+  }
+
+  /// {@macro query_payments}
+  String toJson() => json.encode(toMap());
+
+  @override
+  List<Object> get props => [before, after, limit];
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
 
+///
 class PaymentAttributesResponse extends Equatable {
   final String? accessUrl;
   final int amount;

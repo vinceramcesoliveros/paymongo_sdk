@@ -3,16 +3,39 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
 
-class PaymentMethodResponse {
-  final String id;
-  final String type;
-  final PaymentMethodAttributesResponse attributes;
+/// {@template payment_method_response}
+/// {@endtemplate}
+class PaymentMethodResponse extends Equatable {
+  /// {@macro payment_method_response}
   const PaymentMethodResponse({
     required this.id,
     required this.type,
     required this.attributes,
   });
 
+  /// {@macro payment_method_response}
+  factory PaymentMethodResponse.fromMap(Map<String, dynamic> map) {
+    return PaymentMethodResponse(
+      id: map['id'] ?? '',
+      type: map['type'] ?? '',
+      attributes: PaymentMethodAttributesResponse.fromMap(map['attributes']),
+    );
+  }
+
+  /// {@macro payment_method_response}
+  factory PaymentMethodResponse.fromJson(String source) =>
+      PaymentMethodResponse.fromMap(json.decode(source));
+
+  ///
+  final String id;
+
+  ///
+  final String type;
+
+  ///
+  final PaymentMethodAttributesResponse attributes;
+
+  /// {@macro payment_method_response}
   PaymentMethodResponse copyWith({
     String? id,
     String? type,
@@ -25,6 +48,7 @@ class PaymentMethodResponse {
     );
   }
 
+  /// {@macro payment_method_response}
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -33,38 +57,21 @@ class PaymentMethodResponse {
     };
   }
 
-  factory PaymentMethodResponse.fromMap(Map<String, dynamic> map) {
-    return PaymentMethodResponse(
-      id: map['id'] ?? '',
-      type: map['type'] ?? '',
-      attributes: PaymentMethodAttributesResponse.fromMap(map['attributes']),
-    );
-  }
-
+  /// {@macro payment_method_response}
   String toJson() => json.encode(toMap());
-
-  factory PaymentMethodResponse.fromJson(String source) =>
-      PaymentMethodResponse.fromMap(json.decode(source));
 
   @override
   String toString() =>
       'PaymentMethodResponse(id: $id, type: $type, attributes: $attributes)';
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PaymentMethodResponse &&
-        other.id == id &&
-        other.type == type &&
-        other.attributes == attributes;
-  }
-
-  @override
-  int get hashCode => id.hashCode ^ type.hashCode ^ attributes.hashCode;
+  List<Object> get props => [id, type, attributes];
 }
 
+///{@template payment_response_attributes}
+///{@endtemplate}
 class PaymentMethodAttributesResponse extends Equatable {
+  ///{@macro payment_response_attributes}
   const PaymentMethodAttributesResponse({
     this.livemode = false,
     this.type = 'card',
@@ -75,6 +82,7 @@ class PaymentMethodAttributesResponse extends Equatable {
     required this.metadata,
   });
 
+  ///{@macro payment_response_attributes}
   factory PaymentMethodAttributesResponse.fromMap(Map<String, dynamic> map) {
     return PaymentMethodAttributesResponse(
       livemode: map['livemode'] ?? false,
@@ -87,11 +95,14 @@ class PaymentMethodAttributesResponse extends Equatable {
     );
   }
 
-  String toJson() => json.encode(toMap());
-
+  ///{@macro payment_response_attributes}
   factory PaymentMethodAttributesResponse.fromJson(String source) =>
       PaymentMethodAttributesResponse.fromMap(json.decode(source));
 
+  ///{@macro payment_response_attributes}
+  String toJson() => json.encode(toMap());
+
+  ///{@macro payment_response_attributes}
   PaymentMethodAttributesResponse copyWith({
     bool? livemode,
     String? type,
@@ -112,14 +123,28 @@ class PaymentMethodAttributesResponse extends Equatable {
     );
   }
 
+  ///
   final bool livemode;
+
+  ///
   final String type;
+
+  ///
   final PayMongoBilling billing;
+
+  ///
   final DateTime createdAt;
+
+  ///
   final DateTime updatedAt;
+
+  ///
   final PaymentMethodDetails details;
+
+  ///
   final Map<String, dynamic> metadata;
 
+  ///{@macro payment_response_attributes}
   Map<String, dynamic> toMap() {
     return {
       'livemode': livemode,

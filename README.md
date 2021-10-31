@@ -1,4 +1,4 @@
-# paymongo_sdk
+# PayMongo SDK
  
 ![PayMongo](assets/readme_headline.png)
 <center><h1>A dart implementation of PayMongo Client SDK.<h1></center>
@@ -7,20 +7,6 @@
 
 The flutter package for paymongo will be in separate package. This is to separate
 what endpoints to use in the frontend or backend APIs.
-
-**Release date: TBD**. I'm not quite sure if there is a timeline for this. But if there
-are problems facing from our end, we'll fix it immediately.
-
-## Installation
-
-There are two instances of PayMongo SDK.
-
-### Public Key
-Use for e-Wallet payment and/or obtaining payment logs from the PayMongo Dashboard.
-
-### Secret Key
-Use for creating payment in paymongo
-
 
 ### Create Account
 you can register your account here https://dashboard.paymongo.com/login.
@@ -50,9 +36,9 @@ import 'package:paymongo_sdk/paymongo_sdk.dart'
 void main() async {
     /// apiKey can be either public key or secret key.
     /// but do not use secret key in your front-end.
-    final sdk = PayMongoSDK(apiKey);
-
-    final data = Source(
+    
+    final publicSDK = PaymongoClient<PaymongoPublic>(apiKey);
+    final data = SourceAttributes(
     type: 'gcash',
     amount: amount,
     currency: 'PHP',
@@ -63,7 +49,7 @@ void main() async {
     billing: billing,
     );
 
-    final result = await sdk.createSource(data)
+    final result = await publicSDK.instance.source.create(data);
 }
 
 ```

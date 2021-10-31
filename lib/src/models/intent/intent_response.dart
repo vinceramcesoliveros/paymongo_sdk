@@ -3,16 +3,39 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
 
+/// {@template payment_intent_response}
+/// {@endtemplate}
 class PaymentIntentResponse extends Equatable {
-  final String id;
-  final String type;
-  final PaymentIntentResponseAttributes attributes;
+  /// {@macro payment_intent_response}
   const PaymentIntentResponse({
     required this.id,
     required this.type,
     required this.attributes,
   });
 
+  /// {@macro payment_intent_response}
+  factory PaymentIntentResponse.fromMap(Map<String, dynamic> map) {
+    return PaymentIntentResponse(
+      id: map['id'] ?? '',
+      type: map['type'] ?? '',
+      attributes: PaymentIntentResponseAttributes.fromMap(map['attributes']),
+    );
+  }
+
+  /// {@macro payment_intent_response}
+  factory PaymentIntentResponse.fromJson(String source) =>
+      PaymentIntentResponse.fromMap(json.decode(source));
+
+  ///
+  final String id;
+
+  ///
+  final String type;
+
+  ///
+  final PaymentIntentResponseAttributes attributes;
+
+  /// {@macro payment_intent_response}
   PaymentIntentResponse copyWith({
     String? id,
     String? type,
@@ -25,6 +48,7 @@ class PaymentIntentResponse extends Equatable {
     );
   }
 
+  /// {@macro payment_intent_response}
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -33,18 +57,8 @@ class PaymentIntentResponse extends Equatable {
     };
   }
 
-  factory PaymentIntentResponse.fromMap(Map<String, dynamic> map) {
-    return PaymentIntentResponse(
-      id: map['id'] ?? '',
-      type: map['type'] ?? '',
-      attributes: PaymentIntentResponseAttributes.fromMap(map['attributes']),
-    );
-  }
-
+  /// {@macro payment_intent_response}
   String toJson() => json.encode(toMap());
-
-  factory PaymentIntentResponse.fromJson(String source) =>
-      PaymentIntentResponse.fromMap(json.decode(source));
 
   @override
   bool get stringify => true;
@@ -53,19 +67,42 @@ class PaymentIntentResponse extends Equatable {
   List<Object> get props => [id, type, attributes];
 }
 
+/// {@template payment_intent_response}
+/// payment intent response
+/// {@endtemplate}
 class PaymentsIntentResponse extends Equatable {
-  final String id;
-  final String type;
-  final PaymentAttributesResponse attributes;
+  ///{@macro payment_intent_response}
   const PaymentsIntentResponse({
     required this.id,
     required this.type,
     required this.attributes,
   });
 
+  ///{@macro payment_intent_response}
+  factory PaymentsIntentResponse.fromMap(Map<String, dynamic> map) {
+    return PaymentsIntentResponse(
+        id: map['id'] ?? '',
+        type: map['type'] ?? '',
+        attributes: CreatePaymentResponse.fromMap(map['attributes']));
+  }
+
+  ///{@macro payment_intent_response}
+  factory PaymentsIntentResponse.fromJson(String source) =>
+      PaymentsIntentResponse.fromMap(json.decode(source));
+
+  ///
+  final String id;
+
+  ///
+  final String type;
+
+  ///
+  final CreatePaymentResponse attributes;
+
   @override
   List<Object?> get props => [id, type, attributes];
 
+  ///{@macro payment_intent_response}
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -74,35 +111,14 @@ class PaymentsIntentResponse extends Equatable {
     };
   }
 
-  factory PaymentsIntentResponse.fromMap(Map<String, dynamic> map) {
-    return PaymentsIntentResponse(
-        id: map['id'] ?? '',
-        type: map['type'] ?? '',
-        attributes: PaymentAttributesResponse.fromMap(map['attributes']));
-  }
-
+  ///{@macro payment_intent_response}
   String toJson() => json.encode(toMap());
-
-  factory PaymentsIntentResponse.fromJson(String source) =>
-      PaymentsIntentResponse.fromMap(json.decode(source));
 }
 
+///{@template payment_intent_response_attributes}
+///{@endtemplate}
 class PaymentIntentResponseAttributes extends Equatable {
-  final int amount;
-  final String currency;
-  final String description;
-  final String statementDescriptor;
-  final String status;
-  final bool livemode;
-  final String clientKey;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final String? lastPaymentError;
-  final List<String> paymentMethodAllowed;
-  final List<PaymentsIntentResponse> payments;
-  final PaymentIntentNextAction? nextAction;
-  final PaymentMethodOptions paymentMethodOptions;
-  final Map<String, dynamic> metadata;
+  ///{@macro payment_intent_response_attributes}
   const PaymentIntentResponseAttributes({
     required this.amount,
     required this.currency,
@@ -121,6 +137,83 @@ class PaymentIntentResponseAttributes extends Equatable {
     required this.metadata,
   });
 
+  ///{@macro payment_intent_response_attributes}
+  factory PaymentIntentResponseAttributes.fromMap(Map<String, dynamic> map) {
+    return PaymentIntentResponseAttributes(
+      amount: map['amount'] ?? 0,
+      currency: map['currency'] ?? '',
+      description: map['description'] ?? '',
+      statementDescriptor: map['statement_descriptor'] ?? '',
+      status: map['status'] ?? '',
+      livemode: map['livemode'] ?? false,
+      clientKey: map['client_key'] ?? '',
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at']),
+      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updated_at']),
+      lastPaymentError: map['last_payment_error'] ?? '',
+      paymentMethodAllowed:
+          List<String>.from(map['payment_method_allowed'] ?? const []),
+      payments: List<PaymentsIntentResponse>.from(
+          map['payments']?.map((x) => PaymentsIntentResponse.fromMap(x)) ??
+              const []),
+      nextAction: map['next_action'] != null
+          ? PaymentIntentNextAction.fromMap(map['next_action'])
+          : null,
+      paymentMethodOptions:
+          PaymentMethodOptions.fromMap(map['payment_method_options']),
+      metadata: Map<String, dynamic>.from(map['metadata'] ?? const {}),
+    );
+  }
+
+  ///{@macro payment_intent_response_attributes}
+  factory PaymentIntentResponseAttributes.fromJson(String source) =>
+      PaymentIntentResponseAttributes.fromMap(json.decode(source));
+
+  ///
+  final int amount;
+
+  ///
+  final String currency;
+
+  ///
+  final String description;
+
+  ///
+  final String statementDescriptor;
+
+  ///
+  final String status;
+
+  ///
+  final bool livemode;
+
+  ///
+  final String clientKey;
+
+  ///
+  final DateTime createdAt;
+
+  ///
+  final DateTime updatedAt;
+
+  ///
+  final String? lastPaymentError;
+
+  ///
+  final List<String> paymentMethodAllowed;
+
+  ///
+  final List<PaymentsIntentResponse> payments;
+
+  ///
+  final PaymentIntentNextAction? nextAction;
+
+  ///
+  final PaymentMethodOptions paymentMethodOptions;
+
+  ///
+  final Map<String, dynamic> metadata;
+
+  ///{@macro payment_intent_response_attributes}
   PaymentIntentResponseAttributes copyWith({
     int? amount,
     String? currency,
@@ -157,6 +250,7 @@ class PaymentIntentResponseAttributes extends Equatable {
     );
   }
 
+  ///{@macro payment_intent_response_attributes}
   Map<String, dynamic> toMap() {
     return {
       'amount': amount,
@@ -177,36 +271,8 @@ class PaymentIntentResponseAttributes extends Equatable {
     };
   }
 
-  factory PaymentIntentResponseAttributes.fromMap(Map<String, dynamic> map) {
-    return PaymentIntentResponseAttributes(
-      amount: map['amount'] ?? 0,
-      currency: map['currency'] ?? '',
-      description: map['description'] ?? '',
-      statementDescriptor: map['statement_descriptor'] ?? '',
-      status: map['status'] ?? '',
-      livemode: map['livemode'] ?? false,
-      clientKey: map['client_key'] ?? '',
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at']),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updated_at']),
-      lastPaymentError: map['last_payment_error'] ?? '',
-      paymentMethodAllowed:
-          List<String>.from(map['payment_method_allowed'] ?? const []),
-      payments: List<PaymentsIntentResponse>.from(
-          map['payments']?.map((x) => PaymentsIntentResponse.fromMap(x)) ??
-              const []),
-      nextAction: map['next_action'] != null
-          ? PaymentIntentNextAction.fromMap(map['next_action'])
-          : null,
-      paymentMethodOptions:
-          PaymentMethodOptions.fromMap(map['payment_method_options']),
-      metadata: Map<String, dynamic>.from(map['metadata'] ?? const {}),
-    );
-  }
-
+  ///{@macro payment_intent_response_attributes}
   String toJson() => json.encode(toMap());
-
-  factory PaymentIntentResponseAttributes.fromJson(String source) =>
-      PaymentIntentResponseAttributes.fromMap(json.decode(source));
 
   @override
   bool get stringify => true;
@@ -233,10 +299,36 @@ class PaymentIntentResponseAttributes extends Equatable {
   }
 }
 
+/// {@template payment_method_options}
+/// properties are initialized by default.
+/// {@endtemplate}
 class PaymentMethodOptions extends Equatable {
+  /// {@macro payment_method_options}
   const PaymentMethodOptions({
     this.card = const PaymentIntentCard(),
   });
+
+  /// {@macro payment_method_options}
+  factory PaymentMethodOptions.fromMap(Map<String, dynamic> map) {
+    return PaymentMethodOptions(
+      card: map['card'] != null
+          ? PaymentIntentCard.fromMap(map['card'])
+          : const PaymentIntentCard(),
+    );
+  }
+
+  /// {@macro payment_method_options}
+  factory PaymentMethodOptions.fromJson(String source) =>
+      PaymentMethodOptions.fromMap(json.decode(source));
+
+  /// {@macro payment_method_options}
+  PaymentMethodOptions copyWith({
+    PaymentIntentCard? card,
+  }) {
+    return PaymentMethodOptions(
+      card: card ?? this.card,
+    );
+  }
 
   ///```json
   /// "card": {
@@ -247,32 +339,15 @@ class PaymentMethodOptions extends Equatable {
   @override
   List<Object> get props => [card];
 
+  /// {@macro payment_method_options}
   Map<String, dynamic> toMap() {
     return {
       'card': card.toMap(),
     };
   }
 
-  factory PaymentMethodOptions.fromMap(Map<String, dynamic> map) {
-    return PaymentMethodOptions(
-      card: map['card'] != null
-          ? PaymentIntentCard.fromMap(map['card'])
-          : const PaymentIntentCard(),
-    );
-  }
-
+  /// {@macro payment_method_options}
   String toJson() => json.encode(toMap());
-
-  factory PaymentMethodOptions.fromJson(String source) =>
-      PaymentMethodOptions.fromMap(json.decode(source));
-
-  PaymentMethodOptions copyWith({
-    PaymentIntentCard? card,
-  }) {
-    return PaymentMethodOptions(
-      card: card ?? this.card,
-    );
-  }
 
   @override
   bool get stringify => true;

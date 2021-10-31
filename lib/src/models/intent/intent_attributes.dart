@@ -119,9 +119,6 @@ class PaymentIntentOptions {
     this.card = const PaymentIntentCard(),
   });
 
-  ///
-  final PaymentIntentCard card;
-
   /// {@macro payment_intent_options}
   factory PaymentIntentOptions.fromMap(Map<String, dynamic> map) {
     return PaymentIntentOptions(
@@ -132,6 +129,9 @@ class PaymentIntentOptions {
   /// {@macro payment_intent_options}
   factory PaymentIntentOptions.fromJson(String source) =>
       PaymentIntentOptions.fromMap(json.decode(source));
+
+  ///
+  final PaymentIntentCard card;
 
   /// {@macro payment_intent_options}
   PaymentIntentOptions copyWith({

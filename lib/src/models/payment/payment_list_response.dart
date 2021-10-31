@@ -1,16 +1,37 @@
 import 'dart:convert';
 
-import 'package:collection/collection.dart';
 import 'package:paymongo_sdk/src/src.dart';
 
+/// {@template payment_list_response}
+/// {@endtemplate}
 class PaymentListResponse {
-  final bool hasMore;
-  final List<PaymentAttributesResponse> data;
-  PaymentListResponse({
+  /// {@macro payment_list_response}
+  const PaymentListResponse({
     required this.hasMore,
     required this.data,
   });
 
+  /// {@macro payment_list_response}
+  factory PaymentListResponse.fromMap(Map<String, dynamic> map) {
+    return PaymentListResponse(
+      hasMore: map['has_more'] ?? false,
+      data: List<CreatePaymentResponse>.from(
+          map['data']?.map((x) => CreatePaymentResponse.fromMap(x)) ??
+              const []),
+    );
+  }
+
+  /// {@macro payment_list_response}
+  factory PaymentListResponse.fromJson(String source) =>
+      PaymentListResponse.fromMap(json.decode(source));
+
+  /// if has more data
+  final bool hasMore;
+
+  /// payments
+  final List<CreatePaymentResponse> data;
+
+  /// {@macro payment_list_response}
   Map<String, dynamic> toMap() {
     return {
       'has_more': hasMore,
@@ -18,36 +39,13 @@ class PaymentListResponse {
     };
   }
 
-  factory PaymentListResponse.fromMap(Map<String, dynamic> map) {
-    return PaymentListResponse(
-      hasMore: map['has_more'] ?? false,
-      data: List<PaymentAttributesResponse>.from(
-          map['data']?.map((x) => PaymentAttributesResponse.fromMap(x)) ??
-              const []),
-    );
-  }
-
+  /// {@macro payment_list_response}
   String toJson() => json.encode(toMap());
 
-  factory PaymentListResponse.fromJson(String source) =>
-      PaymentListResponse.fromMap(json.decode(source));
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
-
-    return other is PaymentListResponse &&
-        other.hasMore == hasMore &&
-        listEquals(other.data, data);
-  }
-
-  @override
-  int get hashCode => hasMore.hashCode ^ data.hashCode;
-
+  /// {@macro payment_list_response}
   PaymentListResponse copyWith({
     bool? hasMore,
-    List<PaymentAttributesResponse>? data,
+    List<CreatePaymentResponse>? data,
   }) {
     return PaymentListResponse(
       hasMore: hasMore ?? this.hasMore,

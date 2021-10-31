@@ -1,4 +1,4 @@
-import '../src.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 /// Create payment in paymongo using secret key.
 ///
@@ -20,7 +20,7 @@ extension PayMongoPayments on PayMongoSDK {
   /// );
   /// final createPayment = await sdk.createPayment(attributes);
   /// ```
-  Future<PaymentResource> createPayment(PaymentAttributes data,
+  Future<CreatePaymentResponse> createPayment(CreatePaymentAttributes data,
       [int? before, int? after, int? limit]) async {
     final options = PayMongoOptions(
       path: '/payments',
@@ -36,25 +36,25 @@ extension PayMongoPayments on PayMongoSDK {
 
     final response = await post<Map<String, dynamic>>(options);
 
-    return PaymentResource.fromMap(response);
+    return CreatePaymentResponse.fromMap(response);
   }
 
   /// Retreive payment by ID
-  Future<PaymentResource> retreivePayment(int id) async {
+  Future<CreatePaymentResponse> retreivePayment(int id) async {
     final options = PayMongoOptions(
       path: '/payments/$id',
     );
 
     final response = await get<Map<String, dynamic>>(options);
-    return PaymentResource.fromMap(response);
+    return CreatePaymentResponse.fromMap(response);
   }
 
   /// Get all payments
   @Deprecated("Use Payment.listAll")
-  Future<List<PaymentResource>> listPayments() async {
-    final options = PayMongoOptions(path: '/payments');
+  Future<List<CreatePaymentResponse>> listPayments() async {
+    const options = PayMongoOptions(path: '/payments');
     final response = await get<List<Map<String, dynamic>>>(options);
-    return response.map((data) => PaymentResource.fromMap(data)).toList();
+    return response.map((e) => CreatePaymentResponse.fromMap(e)).toList();
   }
 }
 
@@ -64,8 +64,8 @@ class Payment<T extends PaymentGateway>
     with
         PaymentResponseSerializer
     implements
-        SecretPaymentInterface<PaymentAttributesResponse, PaymentAttributes,
-            PaymentListQueryParams> {
+        SecretPaymentInterface<PaymentAttributesResponse,
+            CreatePaymentAttributes, PaymentListQueryParams> {
   ///{@macro secret_payment_client}
   Payment(String apiKey, String url, [T? httpClient])
       : _httpClient =
@@ -73,7 +73,8 @@ class Payment<T extends PaymentGateway>
 
   final T _httpClient;
   @override
-  Future<PaymentAttributesResponse> create(PaymentAttributes attributes) async {
+  Future<PaymentAttributesResponse> create(
+      CreatePaymentAttributes attributes) async {
     final options = PayMongoOptions(
       path: '/payments',
       data: {
@@ -87,7 +88,7 @@ class Payment<T extends PaymentGateway>
   }
 
   @override
-  Future<PaymentAttributesResponse> listAll(PaymentAttributes attributes,
+  Future<PaymentAttributesResponse> listAll(CreatePaymentAttributes attributes,
       [PaymentListQueryParams? queryParams]) async {
     final options = PayMongoOptions(
       path: '/payments',
