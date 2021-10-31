@@ -85,28 +85,22 @@ extension PayMongoPaymentMethod on PayMongoSDK {
 
 /// {@template payment_method_client}
 /// {@endtemplate}
-class PaymentMethod
-    with PaymentSerializer
+class PaymentMethod<T extends PaymentGateway>
+    with PaymentResponseSerializer
     implements
         PublicPaymentInterface<PaymentMethodResponse, PaymentMethodAttributes> {
   /// {@macro payment_method_client}
-  PaymentMethod(String apiKey, String url)
-      : _apiKey = apiKey,
-        _url = url;
-  final String _apiKey;
-
-  final String _url;
+  PaymentMethod(String apiKey, String url, [T? httpClient])
+      : _httpClient =
+            httpClient ?? PaymentGateway(apiKey: apiKey, url: url) as T;
+  final T _httpClient;
   @override
   Future<PaymentMethodResponse> create(
       PaymentMethodAttributes attributes) async {
-    final _http = PayMongoHttp(_apiKey);
     final options = PayMongoOptions(path: '/sources', data: {
       "attributes": attributes.toMap(),
     });
-    final response =
-        await _http.post(Uri.https(_url, "v1${options.path}", options.params));
-    _http.close();
-
+    final response = await _httpClient.post(options);
     final json = serialize<String>(response, options.path);
     return PaymentMethodResponse.fromJson(json);
   }
@@ -114,12 +108,9 @@ class PaymentMethod
   @override
   Future<PaymentMethodResponse> retrieve(int id) async {
     assert(!id.isNegative, "ID must be positive number");
-    final _http = PayMongoHttp(_apiKey);
     final options = PayMongoOptions(path: 'sources/$id');
 
-    final response =
-        await _http.get(Uri.https(_url, "v1${options.path}", options.params));
-    _http.close();
+    final response = await _httpClient.fetch(options);
     final json = serialize<Map<String, dynamic>>(response, options.path);
     return PaymentMethodResponse.fromMap(json);
   }

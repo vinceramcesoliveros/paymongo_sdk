@@ -70,37 +70,37 @@ extension PayMongoPaymentIntent on PayMongoSDK {
 
 /// {@template payment_method_client}
 /// {@endtemplate}
-class PaymentIntent
+class PaymentIntent<T extends PaymentGateway>
     with
-        PaymentSerializer
+        PaymentResponseSerializer
     implements
         PaymentIntentInterface<PaymentIntentResponse, PaymentIntentAttributes,
             PaymentIntentAttach, PaymentIntentAttachResponse> {
   /// {@macro payment_method_client}
-  PaymentIntent(String apiKey, String url)
+  PaymentIntent(String apiKey, String url, [T? httpClient])
       : _apiKey = apiKey,
-        _url = url;
+        _url = url,
+        _http = httpClient ?? PaymentGateway(apiKey: apiKey, url: url) as T;
   final String _apiKey;
   final String _url;
+  final T _http;
   @override
   Future<PaymentIntentResponse> create(
       PaymentIntentAttributes attributes) async {
-    final _http = PayMongoHttp(_apiKey);
     final options = PayMongoOptions(path: '/sources', data: {
       "attributes": attributes.toMap(),
     });
-    final response =
-        await _http.post(Uri.https(_url, "v1${options.path}", options.params));
-    _http.close();
+    final response = await _http.post(options);
 
-    final json = serialize<String>(response, options.path);
-    return PaymentIntentResponse.fromJson(json);
+    final json = serialize<Map<String, dynamic>>(response, options.path);
+    return PaymentIntentResponse.fromMap(json);
   }
 
   /// Shortcut for using Card/PayMaya API. Must create Payment Method first
   Future<PaymentResult?> onPaymentListener({
     required String paymentMethod,
     required PaymentIntentAttributes attributes,
+    Future<bool> Function(String url)? onRedirect,
   }) async {
     try {
       final intent = await create(attributes);
@@ -108,7 +108,9 @@ class PaymentIntent
           intent.attributes.clientKey.split('_client').first;
 
       if (intent.attributes.status == 'awaiting_payment_method' &&
-          (intent.attributes.lastPaymentError?.isNotEmpty ?? false)) {}
+          (intent.attributes.lastPaymentError?.isNotEmpty ?? false)) {
+        throw intent.attributes.lastPaymentError ?? "Something went wrong";
+      }
       final clientKey = intent.attributes.clientKey;
       final attachment = await attach(
         paymentIntentId,
@@ -117,44 +119,102 @@ class PaymentIntent
           clientKey: clientKey,
         ),
       );
-      switch (attachment.attributes.status) {
-        case "succeeded":
-          break;
-        case "awaiting_payment_method":
-          return PaymentResult(
-            id: intent.id,
-            clientKey: intent.attributes.clientKey,
-            status: PaymentMethodStatus.awaitingPaymentMethod,
-            errors: intent.attributes.lastPaymentError,
-            paymentMethod: paymentMethod,
-          );
-
-        case "awaiting_next_action":
-          return PaymentResult(
-            id: intent.id,
-            clientKey: intent.attributes.clientKey,
-            status: PaymentMethodStatus.awaitingPaymentMethod,
-            errors: intent.attributes.lastPaymentError,
-            paymentMethod: paymentMethod,
-            authenticateUrl:
-                "https://api.paymongo.com/v1/payment_intents/$paymentIntentId?client_key=$clientKey",
-            nextAction: attachment.attributes.nextAction,
-          );
-      }
+      final result = await _paymentResult(
+        paymentIntentId,
+        clientKey,
+        onRedirect: onRedirect,
+      );
+      return result;
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<PaymentResult> _paymentResult(
+    String paymentMethodId,
+    String clientKey, {
+    Future<bool> Function(String url)? onRedirect,
+  }) async {
+    final url =
+        "https://api.paymongo.com/v1/payment_intents/$paymentMethodId?client_key=$clientKey";
+    final attachIntent = await retrieveIntentClient(
+      paymentMethodId,
+      clientKey,
+    );
+    switch (attachIntent.attributes.status) {
+      case "succeeded":
+        return PaymentResult(
+          id: attachIntent.id,
+          clientKey: attachIntent.attributes.clientKey,
+          status: PaymentMethodStatus.succeeded,
+          errors: attachIntent.attributes.lastPaymentError,
+          paymentMethod: paymentMethodId,
+          authenticateUrl: url,
+          nextAction: attachIntent.attributes.nextAction,
+        );
+      case "processing":
+        return Future.delayed(const Duration(seconds: 1), () {
+          return _paymentResult(
+            paymentMethodId,
+            clientKey,
+          );
+        });
+      case "awaiting_payment_method":
+        return PaymentResult(
+          id: attachIntent.id,
+          clientKey: attachIntent.attributes.clientKey,
+          status: PaymentMethodStatus.awaitingPaymentMethod,
+          errors: attachIntent.attributes.lastPaymentError,
+          paymentMethod: paymentMethodId,
+          authenticateUrl: url,
+          nextAction: attachIntent.attributes.nextAction,
+        );
+
+      case "awaiting_next_action":
+        final redirectUrl = attachIntent.attributes.nextAction?.redirect?.url;
+        if (redirectUrl != null) {
+          final result = await onRedirect?.call(redirectUrl);
+          if (result ?? false) {
+            return _paymentResult(paymentMethodId, clientKey);
+          }
+          return PaymentResult(
+            id: attachIntent.id,
+            clientKey: attachIntent.attributes.clientKey,
+            status: PaymentMethodStatus.failed,
+            errors: attachIntent.attributes.lastPaymentError,
+            paymentMethod: paymentMethodId,
+            authenticateUrl: url,
+            nextAction: attachIntent.attributes.nextAction,
+          );
+        }
+        return PaymentResult(
+          id: attachIntent.id,
+          clientKey: attachIntent.attributes.clientKey,
+          status: PaymentMethodStatus.failed,
+          errors: attachIntent.attributes.lastPaymentError,
+          paymentMethod: paymentMethodId,
+          authenticateUrl: url,
+          nextAction: attachIntent.attributes.nextAction,
+        );
+      default:
+        return PaymentResult(
+          id: attachIntent.id,
+          clientKey: attachIntent.attributes.clientKey,
+          status: PaymentMethodStatus.failed,
+          errors: attachIntent.attributes.lastPaymentError,
+          paymentMethod: paymentMethodId,
+          authenticateUrl: url,
+          nextAction: attachIntent.attributes.nextAction,
+        );
     }
   }
 
   @override
   Future<PaymentIntentResponse> retrieve(int id) async {
     assert(!id.isNegative, "ID must be positive number");
-    final _http = PayMongoHttp(_apiKey);
     final options = PayMongoOptions(path: 'sources/$id');
 
-    final response =
-        await _http.get(Uri.https(_url, "v1${options.path}", options.params));
-    _http.close();
+    final response = await _http.fetch(options);
     final json = serialize<Map<String, dynamic>>(response, options.path);
     return PaymentIntentResponse.fromMap(json);
   }

@@ -8,10 +8,10 @@ import 'package:webview_flutter/webview_flutter.dart';
 class CheckoutPage extends StatefulWidget {
   // ignore: public_member_api_docs
 
-  const CheckoutPage({required this.url, required this.returnUrl});
+  const CheckoutPage({required this.url, this.returnUrl});
   // ignore: public_member_api_docs
   final String url;
-  final String returnUrl;
+  final String? returnUrl;
 
   @override
   _CheckoutPageState createState() => _CheckoutPageState();

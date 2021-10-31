@@ -1,3 +1,8 @@
+import 'package:equatable/equatable.dart';
+import 'package:http/http.dart';
+import 'package:meta/meta.dart';
+import 'package:paymongo_sdk/lib.dart';
+
 /// Use for Retrieve/Create response via Public Key
 abstract class PublicPaymentInterface<R, P> {
   /// Retrieve data [R]
@@ -22,4 +27,39 @@ abstract class SecretPaymentInterface<R, P, QP>
     extends PublicPaymentInterface<R, P> {
   /// Pagination of Payments
   Future<R> listAll(P attributes, [QP? queryParams]);
+}
+
+/// {@template payment_gateway}
+/// {@endtemplate}
+class PaymentGateway extends Equatable {
+  //// {@macro payment_gateway}
+  const PaymentGateway({
+    required this.url,
+    required this.apiKey,
+  });
+
+  final String url;
+  final String apiKey;
+
+  Future<Response> fetch(PayMongoOptions options) async {
+    final _http = PayMongoHttp(apiKey);
+
+    final response =
+        await _http.get(Uri.https(url, "v1${options.path}", options.params));
+    _http.close();
+    return response;
+  }
+
+  @internal
+  Future<Response> post(PayMongoOptions options) async {
+    final _http = PayMongoHttp(apiKey);
+
+    final response =
+        await _http.post(Uri.https(url, "v1${options.path}", options.params));
+    _http.close();
+    return response;
+  }
+
+  @override
+  List<Object> get props => [url, apiKey];
 }

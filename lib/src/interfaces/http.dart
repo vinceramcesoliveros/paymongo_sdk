@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart';
 
 /// Serialize json from [String] to Dart [Object]
-mixin PaymentSerializer {
+mixin PaymentResponseSerializer {
   /// Convert Json response to [T] and
   /// throws [ClientException] for client error response.
   /// throws [HttpException] for server error response

@@ -13,6 +13,8 @@ const secretKey = String.fromEnvironment('secretKey',
 mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
   final sdk = PayMongoSDK(payMongoKey);
   final secret = PayMongoSDK(secretKey);
+  final publicClient = PaymongoClient<PaymongoPublic>(payMongoKey);
+  final secretClient = PaymongoClient<PaymongoSecret>(secretKey);
   final billing = PayMongoBilling(
     name: 'Vince',
     email: "vince@gmail.com",
@@ -30,8 +32,8 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
     try {
       final _amount = _cart.fold<num>(
           0, (previousValue, element) => previousValue + element.amount);
-      final createdPaymentMethod = await sdk.createPaymentMethod(
-          data: PaymentMethodAttributes(
+      final payment = await publicClient.instance.paymentMethod
+          .create(PaymentMethodAttributes(
         billing: billing,
         details: PaymentMethodDetails(
           cardNumber: '4120000000000007',
@@ -40,55 +42,28 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
           cvc: "123",
         ),
       ));
-
-      final intent = await secret.createPaymentIntent(
-        PaymentIntentAttributes(
-            amount: _amount.toDouble(),
-            description: "Test payment",
-            statementDescriptor: "Test payment descriptor",
-            metadata: {
-              "environment": kReleaseMode ? "LIVE" : "DEV",
-            }),
-      );
-      if (intent.attributes.status == 'awaiting_payment_method' &&
-          (intent.attributes.lastPaymentError?.isNotEmpty ?? false)) {
-        debugPrint('${intent.attributes.lastPaymentError}');
-        return;
-      }
-      final result = await sdk.onPaymentListener(
-        intent: intent,
-        paymentMethod: createdPaymentMethod.id,
-      );
-      final redirect = result?.nextAction?.redirect;
-      if (redirect?.url != null) {
-        debugPrint("${redirect?.url}");
-        final res = await Navigator.push(context,
-            CupertinoPageRoute(builder: (context) {
-          return CheckoutPage(
-            returnUrl: redirect?.returnUrl ?? '',
-            url: redirect?.url ?? '',
-          );
-        }));
-        if (res != null) {
-          debugPrint("$res");
-        }
-      }
-      final paymentIntentId =
-          intent.attributes.clientKey.split('_client').first;
-
-      final clientKey = intent.attributes.clientKey;
-      final requery = await sdk.retrievePaymentIntentClient(
-        clientKey: clientKey,
-        paymentIntentId: paymentIntentId,
-      );
-      debugPrint("$requery");
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text("Payment ${requery.attributes.status}"),
-            );
+      final intent = PaymentIntentAttributes(
+          amount: _amount.toDouble(),
+          description: "Test payment",
+          statementDescriptor: "Test payment descriptor",
+          metadata: {
+            "environment": kReleaseMode ? "LIVE" : "DEV",
           });
+      final result =
+          await secretClient.instance.paymentIntent.onPaymentListener(
+              attributes: intent,
+              paymentMethod: payment.id,
+              onRedirect: (url) async {
+                debugPrint("${url}");
+                final res = await Navigator.push<bool>(context,
+                    CupertinoPageRoute(builder: (context) {
+                  return CheckoutPage(
+                    url: url,
+                  );
+                }));
+                return res ?? false;
+              });
+      debugPrint("${result?.status}");
     } catch (e) {
       debugPrint('$e');
     }

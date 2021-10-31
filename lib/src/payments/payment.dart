@@ -60,23 +60,18 @@ extension PayMongoPayments on PayMongoSDK {
 
 ///{@template secret_payment_client}
 ///{@endtemplate}
-class Payment
+class Payment<T extends PaymentGateway>
     with
-        PaymentSerializer
+        PaymentResponseSerializer
     implements
         SecretPaymentInterface<PaymentAttributesResponse, PaymentAttributes,
             PaymentListQueryParams> {
   ///{@macro secret_payment_client}
-  Payment(String apiKey, String url)
-      : _apiKey = apiKey,
-        _url = url;
+  Payment(String apiKey, String url, [T? httpClient])
+      : _httpClient =
+            httpClient ?? PaymentGateway(apiKey: apiKey, url: url) as T;
 
-  ///
-  final String _apiKey;
-
-  ///
-  final String _url;
-
+  final T _httpClient;
   @override
   Future<PaymentAttributesResponse> create(PaymentAttributes attributes) async {
     final options = PayMongoOptions(
@@ -85,11 +80,7 @@ class Payment
         'attributes': attributes.toMap(),
       },
     );
-
-    final _http = PayMongoHttp(_apiKey);
-    final response =
-        await _http.post(Uri.https(_url, "v1${options.path}", options.params));
-    _http.close();
+    final response = await _httpClient.post(options);
 
     final json = serialize<String>(response, options.path);
     return PaymentAttributesResponse.fromJson(json);
@@ -102,10 +93,7 @@ class Payment
       path: '/payments',
       params: queryParams?.toMap(),
     );
-    final _http = PayMongoHttp(_apiKey);
-    final response =
-        await _http.get(Uri.https(_url, "v1${options.path}", options.params));
-    _http.close();
+    final response = await _httpClient.fetch(options);
 
     final json = serialize<String>(response, options.path);
 
@@ -117,11 +105,8 @@ class Payment
     final options = PayMongoOptions(
       path: '/payments/$id',
     );
-    final _http = PayMongoHttp(_apiKey);
-    final response =
-        await _http.get(Uri.https(_url, "v1${options.path}", options.params));
-    _http.close();
 
+    final response = await _httpClient.fetch(options);
     final json = serialize<String>(response, options.path);
 
     return PaymentAttributesResponse.fromJson(json);
