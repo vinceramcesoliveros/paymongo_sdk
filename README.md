@@ -20,7 +20,7 @@ copy the key and use it in your project.
 | :-------------------------------------------------------------------------: | :-----------: | :--------: |
 |   [GCash](https://developers.paymongo.com/docs/accepting-gcash-payments)    |       🚧       |     ✅      |
 |    [Debit/Credit](https://developers.paymongo.com/docs/accepting-cards)     |       🚧       |     ✅      |
-| [PayMaya](https://developers.paymongo.com/docs/accepting-paymaya-payments)  |       ❌       |     ❌      |
+| [PayMaya](https://developers.paymongo.com/docs/accepting-paymaya-payments)  |       🚧       |     🚧      |
 | [Grab Pay](https://developers.paymongo.com/docs/accepting-grabpay-payments) |       🚧       |     ❌      |
 
 _Let me know if you have concerns with the SDK by creating an [issue](https://github.com/ram231/paymongo_sdk/issues)_

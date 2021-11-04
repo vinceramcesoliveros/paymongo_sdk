@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:paymongo_sdk/lib.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 /// {@template create_payment_response}
 class CreatePaymentResponse extends Equatable {
