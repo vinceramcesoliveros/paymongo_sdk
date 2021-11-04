@@ -59,6 +59,52 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
                     CupertinoPageRoute(builder: (context) {
                   return CheckoutPage(
                     url: url,
+                    iFrameMode: true,
+                  );
+                }));
+                return res ?? false;
+              });
+      debugPrint("${result?.status}");
+    } catch (e) {
+      debugPrint('$e');
+    }
+  }
+
+  Future<void> paymayaPayment(List<Shoe> _cart) async {
+    try {
+      final _amount = _cart.fold<num>(
+          0, (previousValue, element) => previousValue + element.amount);
+      final payment = await publicClient.instance.paymentMethod
+          .create(PaymentMethodAttributes(
+        billing: billing,
+        type: PaymentType.paymaya,
+        details: PaymentMethodDetails(
+          cardNumber: '4120000000000007',
+          expMonth: 2,
+          expYear: 27,
+          cvc: "123",
+        ),
+      ));
+      final intent = PaymentIntentAttributes(
+          amount: _amount.toDouble(),
+          description: "Test payment",
+          statementDescriptor: "Test payment descriptor",
+          metadata: {
+            "environment": kReleaseMode ? "LIVE" : "DEV",
+          });
+      const successUrl = 'https://google.com/success';
+      final result =
+          await secretClient.instance.paymentIntent.onPaymentListener(
+              attributes: intent,
+              paymentMethod: payment.id,
+              returnUrl: successUrl,
+              onRedirect: (url) async {
+                debugPrint("${url}");
+                final res = await Navigator.push<bool>(context,
+                    CupertinoPageRoute(builder: (context) {
+                  return CheckoutPage(
+                    url: url,
+                    returnUrl: successUrl,
                   );
                 }));
                 return res ?? false;
@@ -87,7 +133,7 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
     final paymentUrl = result.attributes?.redirect.checkoutUrl ?? '';
     final successLink = result.attributes?.redirect.success ?? '';
     if (paymentUrl.isNotEmpty) {
-      final response = await Navigator.push<String>(
+      final response = await Navigator.push(
         context,
         CupertinoPageRoute(
           builder: (context) => CheckoutPage(
@@ -96,10 +142,20 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
           ),
         ),
       );
-
-      debugPrint("==============================");
-      debugPrint("||$response||");
-      debugPrint("==============================");
+      if (response) {
+        final paymentSource =
+            PaymentSource(id: result.id ?? '', type: "source");
+        final paymentAttr = CreatePaymentAttributes(
+          amount: _amount.toDouble(),
+          currency: 'PHP',
+          description: "test gcash",
+          source: paymentSource,
+        );
+        final createPayment = await secret.createPayment(paymentAttr);
+        debugPrint("==============================");
+        debugPrint("||${createPayment}||");
+        debugPrint("==============================");
+      }
     }
   }
 }

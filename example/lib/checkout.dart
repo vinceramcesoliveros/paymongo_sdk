@@ -8,11 +8,15 @@ import 'package:webview_flutter/webview_flutter.dart';
 class CheckoutPage extends StatefulWidget {
   // ignore: public_member_api_docs
 
-  const CheckoutPage({required this.url, this.returnUrl});
+  const CheckoutPage({
+    required this.url,
+    this.returnUrl,
+    this.iFrameMode = false,
+  });
   // ignore: public_member_api_docs
   final String url;
   final String? returnUrl;
-
+  final bool iFrameMode;
   @override
   _CheckoutPageState createState() => _CheckoutPageState();
 }
@@ -26,6 +30,11 @@ class _CheckoutPageState extends State<CheckoutPage> with UrlIFrameParser {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
@@ -36,12 +45,17 @@ class _CheckoutPageState extends State<CheckoutPage> with UrlIFrameParser {
           body: SafeArea(
         child: WebView(
           onWebViewCreated: _controller.complete,
-          initialUrl: toCheckoutURL(widget.url),
+          initialUrl:
+              widget.iFrameMode ? toCheckoutURL(widget.url) : widget.url,
           javascriptMode: JavascriptMode.unrestricted,
           debuggingEnabled: kDebugMode,
           navigationDelegate: (request) async {
-            if (request.url == widget.returnUrl) {
-              Navigator.pop(context, widget.returnUrl);
+            if (request.url.contains('success')) {
+              Navigator.pop(context, true);
+              return NavigationDecision.prevent;
+            }
+            if (request.url.contains('failed')) {
+              Navigator.pop(context, false);
               return NavigationDecision.prevent;
             }
             return NavigationDecision.navigate;

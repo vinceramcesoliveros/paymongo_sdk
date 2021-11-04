@@ -105,7 +105,9 @@ class _PaymentOptionListState extends State<PaymentOptionList>
           ),
           ListTile(
             title: Text("PayMaya Payment"),
-            onTap: null,
+            onTap: () async {
+              await paymayaPayment(widget.cart);
+            },
           ),
         ],
       ),
