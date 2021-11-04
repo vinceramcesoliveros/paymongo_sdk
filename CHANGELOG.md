@@ -1,3 +1,7 @@
+[1.3.0] Paymaya Payment Method, BUG FIXES
+- Fix Paymaya Payment Method option
+- Fix example project running with paymaya
+- Fix iframes for card payment that requires 3DS authentication(BETA)
 ## [1.1.1] Update Dependencies & Add Documentation
 - Added docs for Payment Intent Attach
 - Update http dependency
