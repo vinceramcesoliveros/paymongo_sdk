@@ -1,15 +1,29 @@
-import '../src.dart';
-import '../utils/utils.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
-enum WebhookAction { enable, disable }
+///
+enum WebhookAction {
+  ///
+  enable,
 
+  ///
+  disable
+}
+
+///
 extension WebhookExtension on WebhookAction {
+  ///
   String enumToString() {
     return toString().split(".").last;
   }
 }
 
+@Deprecated("Not usable, use `PaymongoClient` instead")
+
+///
 extension PaymongoWebhook on PayMongoSDK {
+  @Deprecated("Not usable, use `PaymongoClient` instead")
+
+  ///
   Future<String?> createWebhook(
     final String url,
     final List<String> events,
@@ -31,6 +45,9 @@ extension PaymongoWebhook on PayMongoSDK {
     return response;
   }
 
+  @Deprecated("Not usable, use `PaymongoClient` instead")
+
+  ///
   Future<String?> retreiveWebhook(int id) async {
     final options = PayMongoOptions(
       data: {
@@ -44,8 +61,11 @@ extension PaymongoWebhook on PayMongoSDK {
     return response;
   }
 
+  @Deprecated("Not usable, use `PaymongoClient` instead")
+
+  ///
   Future<String?> listWebhooks() async {
-    final options = PayMongoOptions(
+    const options = PayMongoOptions(
       path: '/webhooks',
     );
 
@@ -54,6 +74,9 @@ extension PaymongoWebhook on PayMongoSDK {
     return response;
   }
 
+  @Deprecated("Not usable, use `PaymongoClient` instead")
+
+  ///
   Future<String?> toggleWebhook(int id, WebhookAction action) async {
     final options = PayMongoOptions(
       path: '/webhooks/$id/${action.enumToString()}',

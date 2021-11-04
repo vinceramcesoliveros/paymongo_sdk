@@ -1,16 +1,11 @@
 import 'dart:convert';
 
-import '../utils/billing.dart';
+import 'package:equatable/equatable.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
-class PayMongoTokenAttributes {
-  final String number;
-  final int expireMonth;
-  final int expireYear;
-  final String cvc;
-  final PayMongoBilling? billing;
-  final String? name;
-  final String? email;
-  final String? phone;
+///
+class PayMongoTokenAttributes extends Equatable {
+  ///
   const PayMongoTokenAttributes({
     required this.number,
     required this.expireMonth,
@@ -22,6 +17,49 @@ class PayMongoTokenAttributes {
     this.phone,
   });
 
+  ///
+  factory PayMongoTokenAttributes.fromMap(Map<String, dynamic> map) {
+    return PayMongoTokenAttributes(
+      number: map['number'] ?? '',
+      expireMonth: map['expireMonth'] ?? 0,
+      expireYear: map['expireYear'] ?? 0,
+      cvc: map['cvc'] ?? '',
+      billing: PayMongoBilling.fromMap(map['billing']),
+      name: map['name'] ?? '',
+      email: map['email'] ?? '',
+      phone: map['phone'] ?? '',
+    );
+  }
+
+  ///
+  factory PayMongoTokenAttributes.fromJson(String source) =>
+      PayMongoTokenAttributes.fromMap(json.decode(source));
+
+  ///
+  final String number;
+
+  ///
+  final int expireMonth;
+
+  ///
+  final int expireYear;
+
+  ///
+  final String cvc;
+
+  ///
+  final PayMongoBilling? billing;
+
+  ///
+  final String? name;
+
+  ///
+  final String? email;
+
+  ///
+  final String? phone;
+
+  ///
   PayMongoTokenAttributes copyWith({
     String? number,
     int? expireMonth,
@@ -44,6 +82,7 @@ class PayMongoTokenAttributes {
     );
   }
 
+  ///
   Map<String, dynamic> toMap() {
     return {
       'number': number,
@@ -57,53 +96,21 @@ class PayMongoTokenAttributes {
     };
   }
 
-  factory PayMongoTokenAttributes.fromMap(Map<String, dynamic> map) {
-    return PayMongoTokenAttributes(
-      number: map['number'] ?? '',
-      expireMonth: map['expireMonth'] ?? 0,
-      expireYear: map['expireYear'] ?? 0,
-      cvc: map['cvc'] ?? '',
-      billing: PayMongoBilling.fromMap(map['billing']),
-      name: map['name'] ?? '',
-      email: map['email'] ?? '',
-      phone: map['phone'] ?? '',
-    );
-  }
+  ///
 
   String toJson() => json.encode(toMap());
 
-  factory PayMongoTokenAttributes.fromJson(String source) =>
-      PayMongoTokenAttributes.fromMap(json.decode(source));
-
   @override
-  String toString() {
-    return 'PayMongoTokenAttributes(number: $number, expireMonth: $expireMonth, expireYear: $expireYear, cvc: $cvc, billing: $billing, name: $name, email: $email, phone: $phone)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PayMongoTokenAttributes &&
-        other.number == number &&
-        other.expireMonth == expireMonth &&
-        other.expireYear == expireYear &&
-        other.cvc == cvc &&
-        other.billing == billing &&
-        other.name == name &&
-        other.email == email &&
-        other.phone == phone;
-  }
-
-  @override
-  int get hashCode {
-    return number.hashCode ^
-        expireMonth.hashCode ^
-        expireYear.hashCode ^
-        cvc.hashCode ^
-        billing.hashCode ^
-        name.hashCode ^
-        email.hashCode ^
-        phone.hashCode;
+  List<Object?> get props {
+    return [
+      number,
+      expireMonth,
+      expireYear,
+      cvc,
+      billing,
+      name,
+      email,
+      phone,
+    ];
   }
 }

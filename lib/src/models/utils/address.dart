@@ -1,12 +1,11 @@
 import 'dart:convert';
 
+/// {@template customer_address}
+///
+/// customer address
+/// {@endtemplate}
 class PayMongoAddress {
-  final String? city;
-  final String? country;
-  final String? line1;
-  final String? line2;
-  final String? postalCode;
-  final String? state;
+  /// {@macro customer_address}
   const PayMongoAddress({
     this.city,
     this.country,
@@ -16,6 +15,41 @@ class PayMongoAddress {
     this.state,
   });
 
+  /// {@macro customer_address}
+  factory PayMongoAddress.fromMap(Map<String, dynamic> map) {
+    return PayMongoAddress(
+      city: map['city'] ?? '',
+      country: map['country'] ?? '',
+      line1: map['line1'] ?? '',
+      line2: map['line2'] ?? '',
+      postalCode: map['postal_code'] ?? '',
+      state: map['state'] ?? '',
+    );
+  }
+
+  /// {@macro customer_address}
+  factory PayMongoAddress.fromJson(String source) =>
+      PayMongoAddress.fromMap(json.decode(source));
+
+  ///
+  final String? city;
+
+  ///
+  final String? country;
+
+  ///
+  final String? line1;
+
+  ///
+  final String? line2;
+
+  ///
+  final String? postalCode;
+
+  ///
+  final String? state;
+
+  /// {@macro customer_address}
   PayMongoAddress copyWith({
     String? city,
     String? country,
@@ -34,6 +68,7 @@ class PayMongoAddress {
     );
   }
 
+  /// {@macro customer_address}
   Map<String, dynamic> toMap() {
     return {
       'city': city,
@@ -45,47 +80,6 @@ class PayMongoAddress {
     };
   }
 
-  factory PayMongoAddress.fromMap(Map<String, dynamic> map) {
-    return PayMongoAddress(
-      city: map['city'] ?? '',
-      country: map['country'] ?? '',
-      line1: map['line1'] ?? '',
-      line2: map['line2'] ?? '',
-      postalCode: map['postal_code'] ?? '',
-      state: map['state'] ?? '',
-    );
-  }
-
+  /// {@macro customer_address}
   String toJson() => json.encode(toMap());
-
-  factory PayMongoAddress.fromJson(String source) =>
-      PayMongoAddress.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'PayMongoAddress(city: $city, country: $country, line1: $line1, line2: $line2, postalCode: $postalCode, state: $state)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PayMongoAddress &&
-        other.city == city &&
-        other.country == country &&
-        other.line1 == line1 &&
-        other.line2 == line2 &&
-        other.postalCode == postalCode &&
-        other.state == state;
-  }
-
-  @override
-  int get hashCode {
-    return city.hashCode ^
-        country.hashCode ^
-        line1.hashCode ^
-        line2.hashCode ^
-        postalCode.hashCode ^
-        state.hashCode;
-  }
 }

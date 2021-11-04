@@ -1,17 +1,43 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
 
-class SourceResult {
-  final String? id;
-  final String? type;
-  final SourceAttributes? attributes;
+///
+class SourceResult extends Equatable {
+  ///
   const SourceResult({
     this.id,
     this.type,
     this.attributes,
   });
 
+  ///
+
+  factory SourceResult.fromMap(Map<String, dynamic> map) {
+    return SourceResult(
+      id: map['id'] ?? '',
+      type: map['type'] ?? '',
+      attributes: map['attributes'] != null
+          ? SourceAttributes.fromMap(map['attributes'])
+          : null,
+    );
+  }
+
+  ///
+  factory SourceResult.fromJson(String source) =>
+      SourceResult.fromMap(json.decode(source));
+
+  ///
+  final String? id;
+
+  ///
+  final String? type;
+
+  ///
+  final SourceAttributes? attributes;
+
+  ///
   SourceResult copyWith({
     String? id,
     String? type,
@@ -24,6 +50,7 @@ class SourceResult {
     );
   }
 
+  ///
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -32,33 +59,9 @@ class SourceResult {
     };
   }
 
-  factory SourceResult.fromMap(Map<String, dynamic> map) {
-    return SourceResult(
-      id: map['id'] ?? '',
-      type: map['type'] ?? '',
-      attributes: SourceAttributes.fromMap(map['attributes']),
-    );
-  }
-
+  ///
   String toJson() => json.encode(toMap());
 
-  factory SourceResult.fromJson(String source) =>
-      SourceResult.fromMap(json.decode(source));
-
   @override
-  String toString() =>
-      'SourceResult(id: $id, type: $type, attributes: $attributes)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is SourceResult &&
-        other.id == id &&
-        other.type == type &&
-        other.attributes == attributes;
-  }
-
-  @override
-  int get hashCode => id.hashCode ^ type.hashCode ^ attributes.hashCode;
+  List<Object?> get props => [id, type, attributes];
 }

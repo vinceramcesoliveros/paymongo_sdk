@@ -2,6 +2,28 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
+import 'package:paymongo_sdk/src/models/utils/enums.dart';
+
+/// payment option when using card payment
+enum PaymentType {
+  /// default payment option for card payment
+  card,
+
+  /// new version for card payment
+  paymaya,
+
+  /// non-implemented value
+  unknown,
+}
+
+PaymentType _toPaymentEnum(String type) {
+  switch (type) {
+    case 'paymaya':
+      return PaymentType.paymaya;
+    default:
+      return PaymentType.card;
+  }
+}
 
 ///{@template payment_method}
 /// billing for customer
@@ -9,7 +31,7 @@ import 'package:paymongo_sdk/paymongo_sdk.dart';
 class PaymentMethodAttributes extends Equatable {
   /// {@macro payment_method}
   const PaymentMethodAttributes({
-    this.type = 'card',
+    this.type = PaymentType.card,
     required this.details,
     required this.billing,
   });
@@ -17,7 +39,8 @@ class PaymentMethodAttributes extends Equatable {
   /// {@macro payment_method}
   factory PaymentMethodAttributes.fromMap(Map<String, dynamic> map) {
     return PaymentMethodAttributes(
-      type: map['type'] ?? '',
+      type:
+          map['type'] != null ? _toPaymentEnum(map['type']!) : PaymentType.card,
       details: PaymentMethodDetails.fromMap(map['details']),
       billing: PayMongoBilling.fromMap(map['billing']),
     );
@@ -28,7 +51,7 @@ class PaymentMethodAttributes extends Equatable {
       PaymentMethodAttributes.fromMap(json.decode(source));
 
   ///
-  final String type;
+  final PaymentType type;
 
   ///
   final PaymentMethodDetails details;
@@ -41,7 +64,7 @@ class PaymentMethodAttributes extends Equatable {
   /// {@macro payment_method}
   Map<String, dynamic> toMap() {
     return {
-      'type': type,
+      'type': describeEnum(type),
       'details': details.toMap(),
       'billing': billing.toMap(),
     };
@@ -52,7 +75,7 @@ class PaymentMethodAttributes extends Equatable {
 
   /// {@macro payment_method}
   PaymentMethodAttributes copyWith({
-    String? type,
+    PaymentType? type,
     PaymentMethodDetails? details,
     PayMongoBilling? billing,
   }) {

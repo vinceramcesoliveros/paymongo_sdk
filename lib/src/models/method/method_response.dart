@@ -90,7 +90,9 @@ class PaymentMethodAttributesResponse extends Equatable {
       billing: PayMongoBilling.fromMap(map['billing']),
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at']),
       updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updated_at']),
-      details: PaymentMethodDetails.fromMap(map['details']),
+      details: map['details'] != null
+          ? PaymentMethodDetails.fromMap(map['details'])
+          : null,
       metadata: Map<String, dynamic>.from(map['metadata'] ?? const {}),
     );
   }
@@ -139,7 +141,7 @@ class PaymentMethodAttributesResponse extends Equatable {
   final DateTime updatedAt;
 
   ///
-  final PaymentMethodDetails details;
+  final PaymentMethodDetails? details;
 
   ///
   final Map<String, dynamic> metadata;
@@ -152,7 +154,7 @@ class PaymentMethodAttributesResponse extends Equatable {
       'billing': billing.toMap(),
       'created_at': createdAt.millisecondsSinceEpoch,
       'updated_at': updatedAt.millisecondsSinceEpoch,
-      'details': details.toMap(),
+      'details': details?.toMap(),
       'metadata': metadata,
     };
   }
@@ -161,7 +163,7 @@ class PaymentMethodAttributesResponse extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       livemode,
       type,

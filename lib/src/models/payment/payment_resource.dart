@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:paymongo_sdk/lib.dart';
 
 /// {@template create_payment_response}
 class CreatePaymentResponse extends Equatable {
@@ -15,7 +16,8 @@ class CreatePaymentResponse extends Equatable {
   factory CreatePaymentResponse.fromMap(Map<String, dynamic> map) {
     return CreatePaymentResponse(
       id: map['id'],
-      source: map['source'],
+      source:
+          map['source'] != null ? SourceResult.fromMap(map['source']) : null,
       type: map['type'],
     );
   }
@@ -28,7 +30,7 @@ class CreatePaymentResponse extends Equatable {
   final String? id;
 
   ///
-  final String? source;
+  final SourceResult? source;
 
   ///
   final String? type;
@@ -37,7 +39,7 @@ class CreatePaymentResponse extends Equatable {
 
   CreatePaymentResponse copyWith({
     String? id,
-    String? source,
+    SourceResult? source,
     String? type,
   }) {
     return CreatePaymentResponse(
@@ -51,7 +53,7 @@ class CreatePaymentResponse extends Equatable {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'source': source,
+      'source': source?.toMap(),
       'type': type,
     };
   }

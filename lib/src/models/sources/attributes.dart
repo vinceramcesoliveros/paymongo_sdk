@@ -1,13 +1,11 @@
 import 'dart:convert';
 
-import '../models.dart';
+import 'package:equatable/equatable.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
-class SourceAttributes {
-  final String type;
-  final double amount;
-  final String currency;
-  final Redirect redirect;
-  final PayMongoBilling billing;
+/// source response
+class SourceAttributes extends Equatable {
+  ///
   const SourceAttributes({
     required this.type,
     required this.amount,
@@ -16,6 +14,37 @@ class SourceAttributes {
     required this.billing,
   });
 
+  ///
+  factory SourceAttributes.fromMap(Map<String, dynamic> map) {
+    return SourceAttributes(
+      type: map['type'] ?? '',
+      amount: (map['amount'] as num).toDouble(),
+      currency: map['currency'] ?? '',
+      redirect: Redirect.fromMap(map['redirect']),
+      billing: PayMongoBilling.fromMap(map['billing']),
+    );
+  }
+
+  ///
+  factory SourceAttributes.fromJson(String source) =>
+      SourceAttributes.fromMap(json.decode(source));
+
+  ///
+  final String type;
+
+  ///
+  final double amount;
+
+  ///
+  final String currency;
+
+  ///
+  final Redirect redirect;
+
+  ///
+  final PayMongoBilling billing;
+
+  ///
   SourceAttributes copyWith({
     String? type,
     double? amount,
@@ -32,6 +61,7 @@ class SourceAttributes {
     );
   }
 
+  ///
   Map<String, dynamic> toMap() {
     return {
       'type': type,
@@ -42,44 +72,17 @@ class SourceAttributes {
     };
   }
 
-  factory SourceAttributes.fromMap(Map<String, dynamic> map) {
-    return SourceAttributes(
-      type: map['type'] ?? '',
-      amount: (map['amount'] as num).toDouble(),
-      currency: map['currency'] ?? '',
-      redirect: Redirect.fromMap(map['redirect']),
-      billing: PayMongoBilling.fromMap(map['billing']),
-    );
-  }
-
+  ///
   String toJson() => json.encode(toMap());
 
-  factory SourceAttributes.fromJson(String source) =>
-      SourceAttributes.fromMap(json.decode(source));
-
   @override
-  String toString() {
-    return 'Sources(type: $type, amount: $amount, currency: $currency, redirect: $redirect, billing: $billing)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is SourceAttributes &&
-        other.type == type &&
-        other.amount == amount &&
-        other.currency == currency &&
-        other.redirect == redirect &&
-        other.billing == billing;
-  }
-
-  @override
-  int get hashCode {
-    return type.hashCode ^
-        amount.hashCode ^
-        currency.hashCode ^
-        redirect.hashCode ^
-        billing.hashCode;
+  List<Object> get props {
+    return [
+      type,
+      amount,
+      currency,
+      redirect,
+      billing,
+    ];
   }
 }

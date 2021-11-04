@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-class PayMongoPaymentDetails {
-  final int? cardNumber;
-  final int? expMonth;
-  final int? expYear;
-  final String? cvc;
+import 'package:equatable/equatable.dart';
+
+///
+class PayMongoPaymentDetails extends Equatable {
+  ///
   const PayMongoPaymentDetails({
     this.cardNumber,
     this.expMonth,
@@ -12,6 +12,33 @@ class PayMongoPaymentDetails {
     this.cvc,
   });
 
+  ///
+  factory PayMongoPaymentDetails.fromMap(Map<String, dynamic> map) {
+    return PayMongoPaymentDetails(
+      cardNumber: map['card_number'] ?? 0,
+      expMonth: map['exp_month'] ?? 0,
+      expYear: map['exp_year'] ?? 0,
+      cvc: map['cvc'] ?? '',
+    );
+  }
+
+  ///
+  factory PayMongoPaymentDetails.fromJson(String source) =>
+      PayMongoPaymentDetails.fromMap(json.decode(source));
+
+  ///
+  final int? cardNumber;
+
+  ///
+  final int? expMonth;
+
+  ///
+  final int? expYear;
+
+  ///
+  final String? cvc;
+
+  ///
   PayMongoPaymentDetails copyWith({
     int? cardNumber,
     int? expMonth,
@@ -26,6 +53,7 @@ class PayMongoPaymentDetails {
     );
   }
 
+  ///
   Map<String, dynamic> toMap() {
     return {
       'card_number': cardNumber,
@@ -35,41 +63,9 @@ class PayMongoPaymentDetails {
     };
   }
 
-  factory PayMongoPaymentDetails.fromMap(Map<String, dynamic> map) {
-    return PayMongoPaymentDetails(
-      cardNumber: map['card_number'] ?? 0,
-      expMonth: map['exp_month'] ?? 0,
-      expYear: map['exp_year'] ?? 0,
-      cvc: map['cvc'] ?? '',
-    );
-  }
-
+  ///
   String toJson() => json.encode(toMap());
 
-  factory PayMongoPaymentDetails.fromJson(String source) =>
-      PayMongoPaymentDetails.fromMap(json.decode(source));
-
   @override
-  String toString() {
-    return 'PayMongoPaymentDetails(cardNumber: $cardNumber, expMonth: $expMonth, expYear: $expYear, cvc: $cvc)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PayMongoPaymentDetails &&
-        other.cardNumber == cardNumber &&
-        other.expMonth == expMonth &&
-        other.expYear == expYear &&
-        other.cvc == cvc;
-  }
-
-  @override
-  int get hashCode {
-    return cardNumber.hashCode ^
-        expMonth.hashCode ^
-        expYear.hashCode ^
-        cvc.hashCode;
-  }
+  List<Object?> get props => [cardNumber, expMonth, expYear, cvc];
 }

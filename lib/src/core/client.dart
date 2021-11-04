@@ -16,8 +16,6 @@ class PaymongoClient<T extends Paymongo> {
 
   /// Retrieve the instance of [Paymongo] to access private or public APIs.
   T get instance {
-    assert(_sdk != null || (T is PaymongoPublic || T is PaymongoSecret),
-        PaymongoError("SDK is not either Public nor Private. "));
     final keyType = _key.split('_').first;
     if (keyType.contains(privateKey)) {
       return (PaymongoSecret()

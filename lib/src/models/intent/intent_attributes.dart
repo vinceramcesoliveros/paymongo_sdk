@@ -10,7 +10,7 @@ class PaymentIntentAttributes extends Equatable {
   /// {@macro payment_intent_attributes}
   const PaymentIntentAttributes({
     required this.amount,
-    this.paymentMethodAllowed = const ['card'],
+    this.paymentMethodAllowed = const ['card', 'paymaya'],
     this.options = const PaymentIntentOptions(),
     required this.description,
     required this.statementDescriptor,
@@ -39,7 +39,7 @@ class PaymentIntentAttributes extends Equatable {
   ///
   final double amount;
 
-  /// default value must be ['card']
+  /// default value must be ['card','paymaya']
   /// ```dart
   /// List<String> paymenthMethodAllowed = ['cash']
   /// ```

@@ -2,6 +2,9 @@ import 'package:paymongo_sdk/src/src.dart';
 
 /// Payment intent for CREDIT/DEBIT CARD.
 extension PayMongoPaymentIntent on PayMongoSDK {
+  @Deprecated("Use PaymongoClient instead")
+
+  ///
   Future<PaymentIntentResponse> retrievePaymentIntentClient({
     required String paymentIntentId,
     required String clientKey,
@@ -14,6 +17,9 @@ extension PayMongoPaymentIntent on PayMongoSDK {
     return PaymentIntentResponse.fromMap(response);
   }
 
+  @Deprecated("Use PaymongoClient instead")
+
+  ///
   Future<String?> retreivePaymentIntent(int id) async {
     if (id <= 0) {
       throw ArgumentError("ID must be greater than 0");
@@ -27,6 +33,8 @@ extension PayMongoPaymentIntent on PayMongoSDK {
 
     return response;
   }
+
+  @Deprecated("Use PaymongoClient instead")
 
   /// {@template create_payment_intent}
   /// Create payment and call [attachToPaymentIntent] to your backend using
@@ -44,6 +52,8 @@ extension PayMongoPaymentIntent on PayMongoSDK {
     final response = await post<Map<String, dynamic>>(options);
     return PaymentIntentResponse.fromMap(response);
   }
+
+  @Deprecated("Use PaymongoClient instead")
 
   /// {@template attach_payment_intent}
   /// Attach payment intent to receive payment status.
@@ -87,7 +97,7 @@ class PaymentIntent<T extends PaymentGateway>
   @override
   Future<PaymentIntentResponse> create(
       PaymentIntentAttributes attributes) async {
-    final options = PayMongoOptions(path: '/sources', data: {
+    final options = PayMongoOptions(path: '/payment_intents', data: {
       "attributes": attributes.toMap(),
     });
     final response = await _http.post(options);
@@ -101,6 +111,7 @@ class PaymentIntent<T extends PaymentGateway>
     required String paymentMethod,
     required PaymentIntentAttributes attributes,
     Future<bool> Function(String url)? onRedirect,
+    String returnUrl = 'https://www.google.com/success',
   }) async {
     try {
       final intent = await create(attributes);
@@ -109,14 +120,17 @@ class PaymentIntent<T extends PaymentGateway>
 
       if (intent.attributes.status == 'awaiting_payment_method' &&
           (intent.attributes.lastPaymentError?.isNotEmpty ?? false)) {
+        // ignore: only_throw_errors
         throw intent.attributes.lastPaymentError ?? "Something went wrong";
       }
       final clientKey = intent.attributes.clientKey;
+      // ignore: unused_local_variable
       final attachment = await attach(
         paymentIntentId,
         PaymentIntentAttach(
           paymentMethod: paymentMethod,
           clientKey: clientKey,
+          returnUrl: returnUrl,
         ),
       );
       final result = await _paymentResult(
@@ -212,7 +226,7 @@ class PaymentIntent<T extends PaymentGateway>
   @override
   Future<PaymentIntentResponse> retrieve(int id) async {
     assert(!id.isNegative, "ID must be positive number");
-    final options = PayMongoOptions(path: 'sources/$id');
+    final options = PayMongoOptions(path: 'payment_intents/$id');
 
     final response = await _http.fetch(options);
     final json = serialize<Map<String, dynamic>>(response, options.path);
@@ -222,7 +236,6 @@ class PaymentIntent<T extends PaymentGateway>
   @override
   Future<PaymentIntentAttachResponse> attach(
       String id, PaymentIntentAttach attributes) async {
-    final _http = PayMongoHttp(_apiKey);
     final options = PayMongoOptions(
       path: '/payment_intents/$id/attach',
       data: {
@@ -230,9 +243,9 @@ class PaymentIntent<T extends PaymentGateway>
       },
     );
 
-    final response =
-        await _http.post(Uri.https(_url, "v1${options.path}", options.params));
-    _http.close();
+    final response = await _http.post(
+      options,
+    );
     final json = serialize<Map<String, dynamic>>(response, options.path);
 
     return PaymentIntentAttachResponse.fromMap(json);
@@ -248,7 +261,7 @@ class PaymentIntent<T extends PaymentGateway>
     });
 
     final response =
-        await _http.post(Uri.https(_url, "v1${options.path}", options.params));
+        await _http.get(Uri.https(_url, "v1${options.path}", options.params));
     _http.close();
     final json = serialize<Map<String, dynamic>>(response, options.path);
 

@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:http/http.dart';
-import 'package:paymongo_sdk/lib.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 /// Use for Retrieve/Create response via Public Key
 abstract class PublicPaymentInterface<R, P> {
@@ -59,8 +61,10 @@ class PaymentGateway extends Equatable {
   Future<Response> post(PayMongoOptions options) async {
     final _http = PayMongoHttp(apiKey);
 
-    final response =
-        await _http.post(Uri.https(url, "v1${options.path}", options.params));
+    final response = await _http.post(
+      Uri.https(url, "v1${options.path}", options.params),
+      body: jsonEncode({"data": options.data}),
+    );
     _http.close();
     return response;
   }

@@ -2,12 +2,9 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+///
 class Redirect extends Equatable {
-  final String success;
-  final String failed;
-  final String? checkoutUrl;
-  final String? url;
-  final String? returnUrl;
+  ///
   const Redirect({
     required this.success,
     required this.failed,
@@ -16,6 +13,37 @@ class Redirect extends Equatable {
     this.returnUrl,
   });
 
+  ///
+  factory Redirect.fromMap(Map<String, dynamic> map) {
+    return Redirect(
+      success: map['success'] ?? '',
+      failed: map['failed'] ?? '',
+      checkoutUrl: map['checkout_url'],
+      url: map['url'],
+      returnUrl: map['return_url'],
+    );
+  }
+
+  ///
+  factory Redirect.fromJson(String source) =>
+      Redirect.fromMap(json.decode(source));
+
+  ///
+  final String success;
+
+  ///
+  final String failed;
+
+  ///
+  final String? checkoutUrl;
+
+  ///
+  final String? url;
+
+  ///
+  final String? returnUrl;
+
+  ///
   Redirect copyWith({
     String? success,
     String? failed,
@@ -32,6 +60,7 @@ class Redirect extends Equatable {
     );
   }
 
+  ///
   Map<String, dynamic> toMap() {
     return {
       'success': success,
@@ -42,20 +71,8 @@ class Redirect extends Equatable {
     };
   }
 
-  factory Redirect.fromMap(Map<String, dynamic> map) {
-    return Redirect(
-      success: map['success'] ?? '',
-      failed: map['failed'] ?? '',
-      checkoutUrl: map['checkout_url'],
-      url: map['url'],
-      returnUrl: map['return_url'],
-    );
-  }
-
+  ///
   String toJson() => json.encode(toMap());
-
-  factory Redirect.fromJson(String source) =>
-      Redirect.fromMap(json.decode(source));
 
   @override
   List<Object?> get props {

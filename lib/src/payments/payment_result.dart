@@ -1,24 +1,30 @@
 import 'package:equatable/equatable.dart';
-import 'package:paymongo_sdk/src/models/intent/intent.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
+///
 enum PaymentMethodStatus {
+  ///
   awaitingPaymentMethod,
+
+  ///
   processing,
+
+  ///
   succeeded,
+
+  ///
   awaitingNextAction,
+
+  ///
   failed,
+
+  ///
   cancelled,
 }
-typedef PayMongoIntentAuthentication = void Function(String url);
 
+///
 class PaymentResult extends Equatable {
-  final String id;
-  final PaymentMethodStatus status;
-  final String clientKey;
-  final String paymentMethod;
-  final String? errors;
-  final String? authenticateUrl;
-  final PaymentIntentNextAction? nextAction;
+  ///
   const PaymentResult({
     required this.id,
     required this.status,
@@ -29,6 +35,28 @@ class PaymentResult extends Equatable {
     this.nextAction,
   });
 
+  ///
+  final String id;
+
+  ///
+  final PaymentMethodStatus status;
+
+  ///
+  final String clientKey;
+
+  ///
+  final String paymentMethod;
+
+  ///
+  final String? errors;
+
+  ///
+  final String? authenticateUrl;
+
+  ///
+  final PaymentIntentNextAction? nextAction;
+
+  ///
   PaymentResult copyWith({
     String? id,
     PaymentMethodStatus? status,

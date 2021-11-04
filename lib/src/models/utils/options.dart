@@ -1,17 +1,42 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
+@protected
+
+///
 class PayMongoOptions extends Equatable {
-  final Map<String, dynamic>? data;
-  final String path;
-  final Map<String, String>? params;
+  ///
   const PayMongoOptions({
     this.data,
     required this.path,
     this.params,
   });
 
+  ///
+  factory PayMongoOptions.fromMap(Map<String, dynamic> map) {
+    return PayMongoOptions(
+      data: Map<String, dynamic>.from(map['data'] ?? const {}),
+      path: map['path'] ?? '',
+      params: map['params'] ?? '' as Map<String, String>?,
+    );
+  }
+
+  ///
+  factory PayMongoOptions.fromJson(String source) =>
+      PayMongoOptions.fromMap(json.decode(source));
+
+  ///
+  final Map<String, dynamic>? data;
+
+  ///
+  final String path;
+
+  ///
+  final Map<String, String>? params;
+
+  ///
   PayMongoOptions copyWith(
       {Map<String, dynamic>? data,
       String? method,
@@ -24,6 +49,7 @@ class PayMongoOptions extends Equatable {
         params: params as Map<String, String>? ?? this.params);
   }
 
+  ///
   Map<String, dynamic> toMap() {
     return {
       'data': data,
@@ -32,18 +58,8 @@ class PayMongoOptions extends Equatable {
     };
   }
 
-  factory PayMongoOptions.fromMap(Map<String, dynamic> map) {
-    return PayMongoOptions(
-      data: Map<String, dynamic>.from(map['data'] ?? const {}),
-      path: map['path'] ?? '',
-      params: map['params'] ?? '' as Map<String, String>?,
-    );
-  }
-
+  ///
   String toJson() => json.encode(toMap());
-
-  factory PayMongoOptions.fromJson(String source) =>
-      PayMongoOptions.fromMap(json.decode(source));
 
   @override
   List<Object?> get props => [data, path, params];

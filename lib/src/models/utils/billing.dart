@@ -1,12 +1,13 @@
 import 'dart:convert';
 
-import 'address.dart';
+import 'package:equatable/equatable.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
-class PayMongoBilling {
-  final String name;
-  final String phone;
-  final String email;
-  final PayMongoAddress address;
+/// {@template billing}
+/// customer billing
+/// {@endtemplate }
+class PayMongoBilling extends Equatable {
+  ///{@macro billing}
   const PayMongoBilling({
     required this.name,
     required this.phone,
@@ -14,6 +15,33 @@ class PayMongoBilling {
     required this.address,
   });
 
+  ///{@macro billing}
+  factory PayMongoBilling.fromMap(Map<String, dynamic> map) {
+    return PayMongoBilling(
+      name: map['name'] ?? '',
+      phone: map['phone'] ?? '',
+      email: map['email'] ?? '',
+      address: PayMongoAddress.fromMap(map['address']),
+    );
+  }
+
+  ///{@macro billing}
+  factory PayMongoBilling.fromJson(String source) =>
+      PayMongoBilling.fromMap(json.decode(source));
+
+  ///
+  final String name;
+
+  ///
+  final String phone;
+
+  ///
+  final String email;
+
+  ///
+  final PayMongoAddress address;
+
+  ///{@macro billing}
   PayMongoBilling copyWith({
     String? name,
     String? phone,
@@ -28,6 +56,7 @@ class PayMongoBilling {
     );
   }
 
+  ///{@macro billing}
   Map<String, dynamic> toMap() {
     return {
       'name': name,
@@ -37,38 +66,9 @@ class PayMongoBilling {
     };
   }
 
-  factory PayMongoBilling.fromMap(Map<String, dynamic> map) {
-    return PayMongoBilling(
-      name: map['name'] ?? '',
-      phone: map['phone'] ?? '',
-      email: map['email'] ?? '',
-      address: PayMongoAddress.fromMap(map['address']),
-    );
-  }
-
+  ///{@macro billing}
   String toJson() => json.encode(toMap());
 
-  factory PayMongoBilling.fromJson(String source) =>
-      PayMongoBilling.fromMap(json.decode(source));
-
   @override
-  String toString() {
-    return 'PayMongoBilling(name: $name, phone: $phone, email: $email, address: $address)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is PayMongoBilling &&
-        other.name == name &&
-        other.phone == phone &&
-        other.email == email &&
-        other.address == address;
-  }
-
-  @override
-  int get hashCode {
-    return name.hashCode ^ phone.hashCode ^ email.hashCode ^ address.hashCode;
-  }
+  List<Object> get props => [name, phone, email, address];
 }

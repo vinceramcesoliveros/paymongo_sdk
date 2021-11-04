@@ -3,6 +3,8 @@ import 'package:paymongo_sdk/src/models/method/method_response.dart';
 
 ///
 extension PayMongoPaymentMethod on PayMongoSDK {
+  @Deprecated("Use PaymongoClient instead")
+
   ///
   Future<PaymentResult?> onPaymentListener({
     required String paymentMethod,
@@ -56,6 +58,9 @@ extension PayMongoPaymentMethod on PayMongoSDK {
     }
   }
 
+  @Deprecated("Use PaymongoClient instead")
+
+  ///
   Future<PaymentMethodResponse> createPaymentMethod({
     required PaymentMethodAttributes data,
   }) async {
@@ -69,6 +74,9 @@ extension PayMongoPaymentMethod on PayMongoSDK {
     return result;
   }
 
+  @Deprecated("Use PaymongoClient instead")
+
+  ///
   Future<String> retreivePaymentMethod(int id) async {
     if (id <= 0) {
       throw ArgumentError("ID must be real number");
@@ -97,12 +105,12 @@ class PaymentMethod<T extends PaymentGateway>
   @override
   Future<PaymentMethodResponse> create(
       PaymentMethodAttributes attributes) async {
-    final options = PayMongoOptions(path: '/sources', data: {
+    final options = PayMongoOptions(path: '/payment_methods', data: {
       "attributes": attributes.toMap(),
     });
     final response = await _httpClient.post(options);
-    final json = serialize<String>(response, options.path);
-    return PaymentMethodResponse.fromJson(json);
+    final json = serialize<Map<String, dynamic>>(response, options.path);
+    return PaymentMethodResponse.fromMap(json);
   }
 
   @override
