@@ -1,3 +1,6 @@
+[1.3.1] Update Pub score
+- Remove `dart:io` import
+- update version
 [1.3.0] Paymaya Payment Method, BUG FIXES
 - Fix Paymaya Payment Method option
 - Fix example project running with paymaya
