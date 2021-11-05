@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart' as _http;
 import 'package:paymongo_sdk/paymongo_sdk.dart';
@@ -43,7 +42,7 @@ class PayMongoSDK {
       throw _http.ClientException("${json['errors']}", response.request?.url);
     }
     if (json?['errors'] != null) {
-      throw HttpException(json?['errors'], uri: response.request?.url);
+      throw _http.ClientException(json?['errors'], response.request?.url);
     }
     return json?['data'] as T;
   }
