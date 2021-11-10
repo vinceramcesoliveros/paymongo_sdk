@@ -101,7 +101,9 @@ class _PaymentOptionListState extends State<PaymentOptionList>
           ),
           ListTile(
             title: Text('Grab Pay'),
-            onTap: null,
+            onTap: () async {
+              await grabPayment(widget.cart);
+            },
           ),
           ListTile(
             title: Text("PayMaya Payment"),

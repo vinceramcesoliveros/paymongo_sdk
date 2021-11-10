@@ -28,6 +28,50 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
       country: "PH",
     ),
   );
+  Future<void> grabPayment(List<Shoe> _cart) async {
+    final _amount = _cart.fold<num>(
+        0, (previousValue, element) => previousValue + element.amount);
+    final url = 'google.com';
+    final _source = SourceAttributes(
+      type: "grab_pay",
+      amount: _amount.toDouble(),
+      currency: 'PHP',
+      redirect: Redirect(
+        success: "https://$url/success",
+        failed: "https://$url/failed",
+      ),
+      billing: billing,
+    );
+    final result = await sdk.createSource(_source);
+    final paymentUrl = result.attributes?.redirect.checkoutUrl ?? '';
+    final successLink = result.attributes?.redirect.success ?? '';
+    if (paymentUrl.isNotEmpty) {
+      final response = await Navigator.push(
+        context,
+        CupertinoPageRoute(
+          builder: (context) => CheckoutPage(
+            url: paymentUrl,
+            returnUrl: successLink,
+          ),
+        ),
+      );
+      if (response) {
+        final paymentSource =
+            PaymentSource(id: result.id ?? '', type: "source");
+        final paymentAttr = CreatePaymentAttributes(
+          amount: _amount.toDouble(),
+          currency: 'PHP',
+          description: "test gcash",
+          source: paymentSource,
+        );
+        final createPayment = await secret.createPayment(paymentAttr);
+        debugPrint("==============================");
+        debugPrint("||${createPayment}||");
+        debugPrint("==============================");
+      }
+    }
+  }
+
   Future<void> cardPayment(List<Shoe> _cart) async {
     try {
       final _amount = _cart.fold<num>(
