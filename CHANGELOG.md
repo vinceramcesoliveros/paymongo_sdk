@@ -2,6 +2,7 @@
 - Remove default DEVELOPER PAYMONGO KEY
 - Fix `Payment` JSON Serialization
 - Fix Example for 3D Security listener
+
 [1.3.1] Update Pub score
 - Remove `dart:io` import
 - update version
