@@ -9,6 +9,7 @@
 .history
 .svn/
 ./fvm/flutter_sdk
+.vscode/
 # IntelliJ related
 *.iml
 *.ipr
