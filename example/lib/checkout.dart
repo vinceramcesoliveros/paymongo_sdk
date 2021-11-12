@@ -49,7 +49,7 @@ class _CheckoutPageState extends State<CheckoutPage> with UrlIFrameParser {
               widget.iFrameMode ? toCheckoutURL(widget.url) : widget.url,
           javascriptMode: JavascriptMode.unrestricted,
           debuggingEnabled: kDebugMode,
-          navigationDelegate: (request) async {
+          navigationDelegate: (request) {
             if (request.url.contains('success')) {
               Navigator.pop(context, true);
               return NavigationDecision.prevent;
@@ -64,7 +64,9 @@ class _CheckoutPageState extends State<CheckoutPage> with UrlIFrameParser {
             JavascriptChannel(
                 name: 'Paymongo',
                 onMessageReceived: (JavascriptMessage message) {
-                  Navigator.pop(context);
+                  if (message.message == '3DS-authentication-complete') {
+                    Navigator.pop(context, true);
+                  }
                 }),
           },
           onWebResourceError: (error) async {

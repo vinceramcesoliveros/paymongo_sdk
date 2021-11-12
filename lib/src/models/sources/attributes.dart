@@ -9,7 +9,7 @@ class SourceAttributes extends Equatable {
   const SourceAttributes({
     required this.type,
     required this.amount,
-    required this.currency,
+    this.currency = 'PHP',
     required this.redirect,
     required this.billing,
   });

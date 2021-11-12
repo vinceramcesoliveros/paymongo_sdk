@@ -106,7 +106,8 @@ class PaymentIntent<T extends PaymentGateway>
     return PaymentIntentResponse.fromMap(json);
   }
 
-  /// Shortcut for using Card/PayMaya API. Must create Payment Method first
+  /// Shortcut for using Card/PayMaya API. Must have [PaymentMethodResponse] to
+  /// continue..
   Future<PaymentResult?> onPaymentListener({
     required String paymentMethod,
     required PaymentIntentAttributes attributes,

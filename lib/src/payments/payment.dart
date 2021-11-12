@@ -83,8 +83,8 @@ class Payment<T extends PaymentGateway>
     );
     final response = await _httpClient.post(options);
 
-    final json = serialize<String>(response, options.path);
-    return PaymentAttributesResponse.fromJson(json);
+    final json = serialize<Map<String, dynamic>>(response, options.path);
+    return PaymentAttributesResponse.fromMap(json);
   }
 
   @override
@@ -96,9 +96,9 @@ class Payment<T extends PaymentGateway>
     );
     final response = await _httpClient.fetch(options);
 
-    final json = serialize<String>(response, options.path);
+    final json = serialize<Map<String, dynamic>>(response, options.path);
 
-    return PaymentAttributesResponse.fromJson(json);
+    return PaymentAttributesResponse.fromMap(json);
   }
 
   @override
@@ -108,8 +108,8 @@ class Payment<T extends PaymentGateway>
     );
 
     final response = await _httpClient.fetch(options);
-    final json = serialize<String>(response, options.path);
+    final json = serialize<Map<String, dynamic>>(response, options.path);
 
-    return PaymentAttributesResponse.fromJson(json);
+    return PaymentAttributesResponse.fromMap(json);
   }
 }

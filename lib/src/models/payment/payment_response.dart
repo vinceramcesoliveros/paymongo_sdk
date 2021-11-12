@@ -47,7 +47,9 @@ class PaymentAttributesResponse extends Equatable {
       accessUrl: map['access_url'],
       amount: map['amount'] ?? 0,
       balanceTransactionId: map['balance_transaction_id'] ?? '',
-      billing: PayMongoBilling.fromMap(map['billing']),
+      billing: map['billing'] != null
+          ? PayMongoBilling.fromMap(map['billing'])
+          : null,
       currency: map['currency'] ?? '',
       description: map['description'] ?? '',
       disputed: map['disputed'] ?? false,
@@ -59,14 +61,24 @@ class PaymentAttributesResponse extends Equatable {
       origin: map['origin'] ?? '',
       paymentIntentId: map['payment_intent_id'] ?? '',
       payout: map['payout'] ?? '',
-      source: PaymentAttributeSourceResponse.fromMap(map['source']),
+      source: map['source'] != null
+          ? PaymentAttributeSourceResponse.fromMap(map['source'])
+          : null,
       statementDescriptor: map['statement_descriptor'] ?? '',
       status: map['status'] ?? '',
       taxAmount: map['tax_amount'],
-      availableAt: DateTime.fromMillisecondsSinceEpoch(map['available_at']),
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at']),
-      paidAt: DateTime.fromMillisecondsSinceEpoch(map['paid_at']),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updated_at']),
+      availableAt: map['available_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['available_at'])
+          : null,
+      createdAt: map['created_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['created_at'])
+          : null,
+      paidAt: map['paid_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['paid_at'])
+          : null,
+      updatedAt: map['updated_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['updated_at'])
+          : null,
       refunds: map['refunds'] != null
           ? List<PaymentRefundResponse>.from(
               map['refunds']?.map((x) => PaymentRefundResponse.fromMap(x)))
@@ -88,7 +100,7 @@ class PaymentAttributesResponse extends Equatable {
   final String balanceTransactionId;
 
   ///
-  final PayMongoBilling billing;
+  final PayMongoBilling? billing;
 
   ///
   final String currency;
@@ -124,7 +136,7 @@ class PaymentAttributesResponse extends Equatable {
   final String payout;
 
   ///
-  final PaymentAttributeSourceResponse source;
+  final PaymentAttributeSourceResponse? source;
 
   ///
   final String statementDescriptor;
@@ -142,16 +154,16 @@ class PaymentAttributesResponse extends Equatable {
   final List<PaymentTaxResponse>? taxes;
 
   ///
-  final DateTime availableAt;
+  final DateTime? availableAt;
 
   ///
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   ///
-  final DateTime paidAt;
+  final DateTime? paidAt;
 
   ///
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   ///
   PaymentAttributesResponse copyWith({
@@ -217,7 +229,7 @@ class PaymentAttributesResponse extends Equatable {
       'accessUrl': accessUrl,
       'amount': amount,
       'balanceTransactionId': balanceTransactionId,
-      'billing': billing.toMap(),
+      'billing': billing?.toMap(),
       'currency': currency,
       'description': description,
       'disputed': disputed,
@@ -229,16 +241,16 @@ class PaymentAttributesResponse extends Equatable {
       'origin': origin,
       'paymentIntentId': paymentIntentId,
       'payout': payout,
-      'source': source.toMap(),
+      'source': source?.toMap(),
       'statementDescriptor': statementDescriptor,
       'status': status,
       'taxAmount': taxAmount,
       'refunds': refunds?.map((x) => x.toMap()).toList(),
       'taxes': taxes?.map((x) => x.toMap()).toList(),
-      'availableAt': availableAt.millisecondsSinceEpoch,
-      'createdAt': createdAt.millisecondsSinceEpoch,
-      'paidAt': paidAt.millisecondsSinceEpoch,
-      'updatedAt': updatedAt.millisecondsSinceEpoch,
+      'availableAt': availableAt?.millisecondsSinceEpoch,
+      'createdAt': createdAt?.millisecondsSinceEpoch,
+      'paidAt': paidAt?.millisecondsSinceEpoch,
+      'updatedAt': updatedAt?.millisecondsSinceEpoch,
     };
   }
 

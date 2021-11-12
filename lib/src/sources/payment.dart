@@ -80,8 +80,8 @@ class Source<T extends PaymentGateway>
       "attributes": attributes.toMap(),
     });
     final response = await _httpClient.post(options);
-    final json = serialize<String>(response, options.path);
-    return SourceResult.fromJson(json);
+    final json = serialize<Map<String, dynamic>>(response, options.path);
+    return SourceResult.fromMap(json);
   }
 
   @override

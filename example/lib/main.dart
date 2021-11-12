@@ -94,7 +94,7 @@ class _PaymentOptionListState extends State<PaymentOptionList>
             },
           ),
           ListTile(
-            title: Text("Credit/Deibt Payment"),
+            title: Text("Credit/Debit Payment"),
             onTap: () async {
               await cardPayment(widget.cart);
             },

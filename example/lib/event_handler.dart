@@ -6,15 +6,17 @@ import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 import 'checkout.dart';
 
-const payMongoKey = String.fromEnvironment('apiKey',
-    defaultValue: 'pk_test_Dpe7cKewo7JpHyF2iBra5Sjm');
-const secretKey = String.fromEnvironment('secretKey',
-    defaultValue: 'sk_test_8Fk9xMNRXDChC4b1XBsHpUEm');
+const publicKey = String.fromEnvironment(
+  'PUBLIC_KEY',
+  defaultValue: '',
+);
+const secretKey = String.fromEnvironment(
+  'SECRET_KEY',
+  defaultValue: '',
+);
 mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
-  final sdk = PayMongoSDK(payMongoKey);
-  final secret = PayMongoSDK(secretKey);
-  final publicClient = PaymongoClient<PaymongoPublic>(payMongoKey);
-  final secretClient = PaymongoClient<PaymongoSecret>(secretKey);
+  final publicClient = const PaymongoClient<PaymongoPublic>(publicKey);
+  final secretClient = const PaymongoClient<PaymongoSecret>(secretKey);
   final billing = PayMongoBilling(
     name: 'Vince',
     email: "vince@gmail.com",
@@ -42,7 +44,7 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
       ),
       billing: billing,
     );
-    final result = await sdk.createSource(_source);
+    final result = await publicClient.instance.source.create(_source);
     final paymentUrl = result.attributes?.redirect.checkoutUrl ?? '';
     final successLink = result.attributes?.redirect.success ?? '';
     if (paymentUrl.isNotEmpty) {
@@ -64,7 +66,8 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
           description: "test gcash",
           source: paymentSource,
         );
-        final createPayment = await secret.createPayment(paymentAttr);
+        final createPayment =
+            await secretClient.instance.payment.create(paymentAttr);
         debugPrint("==============================");
         debugPrint("||${createPayment}||");
         debugPrint("==============================");
@@ -173,7 +176,7 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
       ),
       billing: billing,
     );
-    final result = await sdk.createSource(_source);
+    final result = await publicClient.instance.source.create(_source);
     final paymentUrl = result.attributes?.redirect.checkoutUrl ?? '';
     final successLink = result.attributes?.redirect.success ?? '';
     if (paymentUrl.isNotEmpty) {
@@ -195,7 +198,8 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
           description: "test gcash",
           source: paymentSource,
         );
-        final createPayment = await secret.createPayment(paymentAttr);
+        final createPayment =
+            await secretClient.instance.payment.create(paymentAttr);
         debugPrint("==============================");
         debugPrint("||${createPayment}||");
         debugPrint("==============================");
