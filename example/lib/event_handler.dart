@@ -48,18 +48,18 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
     final paymentUrl = result.attributes?.redirect.checkoutUrl ?? '';
     final successLink = result.attributes?.redirect.success ?? '';
     if (paymentUrl.isNotEmpty) {
-      final response = await Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => CheckoutPage(
-            url: paymentUrl,
-            returnUrl: successLink,
-          ),
-        ),
-      );
+      final response = await Navigator.push<bool>(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => CheckoutPage(
+                url: paymentUrl,
+                returnUrl: successLink,
+              ),
+            ),
+          ) ??
+          false;
       if (response) {
-        final paymentSource =
-            PaymentSource(id: result.id ?? '', type: "source");
+        final paymentSource = PaymentSource(id: result.id, type: "source");
         final paymentAttr = CreatePaymentAttributes(
           amount: _amount.toDouble(),
           currency: 'PHP',
@@ -190,8 +190,7 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
         ),
       );
       if (response) {
-        final paymentSource =
-            PaymentSource(id: result.id ?? '', type: "source");
+        final paymentSource = PaymentSource(id: result.id, type: "source");
         final paymentAttr = CreatePaymentAttributes(
           amount: _amount.toDouble(),
           currency: 'PHP',

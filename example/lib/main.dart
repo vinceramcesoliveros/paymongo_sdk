@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'event_handler.dart';
+import 'payments/scaffold.dart';
 import 'shoes.dart';
 
 void main() {
@@ -37,6 +38,21 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tap to pay'),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            ListTile(
+              title: Text("Payments"),
+              onTap: () {
+                Navigator.push(context,
+                    PageRouteBuilder(pageBuilder: (context, _, __) {
+                  return PaymentScaffold();
+                }));
+              },
+            ),
+          ],
+        ),
       ),
       body: GridView.builder(
         itemCount: _shoes.length,
