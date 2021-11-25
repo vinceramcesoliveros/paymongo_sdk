@@ -1,3 +1,8 @@
+[1.3.3] Update GET request for all payments
+- fix `listAll` method from Payment API.
+- Added Payments Page Example
+- Added `onSerializeCallback` to return specific data of a json.
+- Added return type for Payment list.
 [1.3.2] Update JSON serialization for payment
 - Remove default DEVELOPER PAYMONGO KEY
 - Fix `Payment` JSON Serialization
