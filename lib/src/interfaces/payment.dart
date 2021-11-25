@@ -24,10 +24,12 @@ abstract class PaymentIntentInterface<R, P, A, AR>
 }
 
 /// Use for [retrieve],[create],[listAll] endpoints via Secret Key
-abstract class SecretPaymentInterface<R, P, QP>
+abstract class SecretPaymentInterface<R, P, QP, LR>
     extends PublicPaymentInterface<R, P> {
-  /// Pagination of Payments
-  Future<R> listAll(P attributes, [QP? queryParams]);
+  /// https://developers.paymongo.com/reference/list-all-payments
+  ///
+  /// Use secret API key to retrieve a list of Payments.
+  Future<LR> listAll([QP? queryParams]);
 }
 
 /// {@template payment_gateway}

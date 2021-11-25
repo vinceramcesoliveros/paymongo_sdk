@@ -7,8 +7,8 @@ import 'package:paymongo_sdk/paymongo_sdk.dart';
 class SourceResult extends Equatable {
   ///
   const SourceResult({
-    this.id,
-    this.type,
+    required this.id,
+    required this.type,
     this.attributes,
   });
 
@@ -29,10 +29,10 @@ class SourceResult extends Equatable {
       SourceResult.fromMap(json.decode(source));
 
   ///
-  final String? id;
+  final String id;
 
   ///
-  final String? type;
+  final String type;
 
   ///
   final SourceAttributes? attributes;
@@ -55,7 +55,7 @@ class SourceResult extends Equatable {
     return {
       'id': id,
       'type': type,
-      'attributes': attributes!.toMap(),
+      'attributes': attributes?.toMap(),
     };
   }
 

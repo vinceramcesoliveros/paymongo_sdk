@@ -64,8 +64,11 @@ class Payment<T extends PaymentGateway>
     with
         PaymentResponseSerializer
     implements
-        SecretPaymentInterface<PaymentAttributesResponse,
-            CreatePaymentAttributes, PaymentListQueryParams> {
+        SecretPaymentInterface<
+            PaymentAttributesResponse,
+            CreatePaymentAttributes,
+            PaymentListQueryParams,
+            PaymentListAllResponse> {
   ///{@macro secret_payment_client}
   Payment(String apiKey, String url, [T? httpClient])
       : _httpClient =
@@ -88,7 +91,7 @@ class Payment<T extends PaymentGateway>
   }
 
   @override
-  Future<PaymentAttributesResponse> listAll(CreatePaymentAttributes attributes,
+  Future<PaymentListAllResponse> listAll(
       [PaymentListQueryParams? queryParams]) async {
     final options = PayMongoOptions(
       path: '/payments',
@@ -96,9 +99,9 @@ class Payment<T extends PaymentGateway>
     );
     final response = await _httpClient.fetch(options);
 
-    final json = serialize<Map<String, dynamic>>(response, options.path);
-
-    return PaymentAttributesResponse.fromMap(json);
+    final json = serialize<Map<String, dynamic>>(response, options.path,
+        onSerializedCallback: (json) => json as Map<String, dynamic>);
+    return PaymentListAllResponse.fromMap(json);
   }
 
   @override

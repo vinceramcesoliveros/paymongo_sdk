@@ -320,7 +320,7 @@ class PaymentTaxResponse extends Equatable {
       PaymentTaxResponse.fromMap(json.decode(source));
 
   ///
-  final double amount;
+  final num amount;
 
   /// defaults to PHP
   final String currency;
@@ -406,10 +406,18 @@ class PaymentRefundResponse extends Equatable {
       id: map['id'] ?? '',
       type: map['type'] ?? 'refund',
       attributes: PaymentRefundResponseAttributes.fromMap(map['attributes']),
-      availableAt: DateTime.fromMillisecondsSinceEpoch(map['available_at']),
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at']),
-      paidAt: DateTime.fromMillisecondsSinceEpoch(map['paid_at']),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updated_at']),
+      availableAt: map['available_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['available_at'])
+          : null,
+      createdAt: map['created_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['created_at'])
+          : null,
+      paidAt: map['paid_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['paid_at'])
+          : null,
+      updatedAt: map['updated_at'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['updated_at'])
+          : null,
     );
   }
 
@@ -427,16 +435,16 @@ class PaymentRefundResponse extends Equatable {
   final PaymentRefundResponseAttributes attributes;
 
   ///
-  final DateTime availableAt;
+  final DateTime? availableAt;
 
   ///
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   ///
-  final DateTime paidAt;
+  final DateTime? paidAt;
 
   ///
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   ///
   PaymentRefundResponse copyWith({
@@ -465,10 +473,10 @@ class PaymentRefundResponse extends Equatable {
       'id': id,
       'type': type,
       'attributes': attributes.toMap(),
-      'available_at': availableAt.millisecondsSinceEpoch,
-      'created_at': createdAt.millisecondsSinceEpoch,
-      'paid_at': paidAt.millisecondsSinceEpoch,
-      'updated_at': updatedAt.millisecondsSinceEpoch,
+      'available_at': availableAt?.millisecondsSinceEpoch,
+      'created_at': createdAt?.millisecondsSinceEpoch,
+      'paid_at': paidAt?.millisecondsSinceEpoch,
+      'updated_at': updatedAt?.millisecondsSinceEpoch,
     };
   }
 
@@ -479,7 +487,7 @@ class PaymentRefundResponse extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       id,
       type,
@@ -518,7 +526,7 @@ class PaymentRefundResponseAttributes extends Equatable {
   ///
   factory PaymentRefundResponseAttributes.fromMap(Map<String, dynamic> map) {
     return PaymentRefundResponseAttributes(
-      amount: map['amount'] ?? 0.0,
+      amount: map['amount'] ?? 0,
       balanceTransactionId: map['balance_transaction_id'] ?? '',
       currency: map['currency'] ?? 'PHP',
       livemode: map['livemode'] ?? false,
@@ -537,7 +545,7 @@ class PaymentRefundResponseAttributes extends Equatable {
   }
 
   ///
-  final double amount;
+  final num amount;
 
   ///
   final String balanceTransactionId;
