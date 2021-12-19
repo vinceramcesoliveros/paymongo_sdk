@@ -1,5 +1,4 @@
-import 'package:paymongo_sdk/src/core/sdk.dart';
-import 'package:paymongo_sdk/src/core/utils.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 /// {@template paymongo_client_sdk}
 /// {@endtemplate}
@@ -30,13 +29,4 @@ class PaymongoClient<T extends Paymongo> {
     }
     throw PaymongoError("Key does not match with private or secret key");
   }
-}
-
-/// Throws Error
-class PaymongoError extends Error {
-  /// Throws Error
-  PaymongoError(this.error);
-
-  /// Error message
-  final String error;
 }
