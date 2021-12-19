@@ -18,22 +18,14 @@ mixin PaymentResponseSerializer {
     T Function(Object json)? onSerializedCallback,
   }) {
     final json = jsonDecode(response.body);
-    if (response.statusCode != 200) {
-      throw ClientException("${json['errors']}", response.request?.url);
-    }
     if (json?['errors'] != null) {
       final jsonErrors = json['errors'] as List;
-      final errors = jsonErrors.map(
-        (e) => PaymongoError(
-          "$e",
-          code: e['code'],
-          details: e['details'],
-          source: PaymongoErrorSource.fromMap(
-            e['source'],
-          ),
-        ),
+      final errors =
+          jsonErrors.map((e) => PaymongoErrorCodes.fromMap(e)).toList();
+      throw PaymongoError(
+        "Error ${response.statusCode}",
+        paymongoErrors: errors,
       );
-      throw errors;
     }
     return onSerializedCallback?.call(json) ?? json?['data'] as T;
   }

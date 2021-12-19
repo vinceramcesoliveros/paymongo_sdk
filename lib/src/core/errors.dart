@@ -7,13 +7,51 @@ class PaymongoError extends Error {
   /// Throws Error
   PaymongoError(
     this.error, {
-    this.source,
-    this.code,
-    this.details,
+    this.paymongoErrors,
   });
 
   /// Error message
   final String error;
+
+  /// errors from paymongo
+  final List<PaymongoErrorCodes?>? paymongoErrors;
+}
+
+/// {@template paymongo_error_codes}
+///
+/// PayMongo API is RESTful and uses conventional HTTP response codes
+/// to indicate the success or failure of API requests.
+/// The table below will help you identify the meaning and the implication
+/// of error responses. As a general rule of thumb: Codes in the 2xx range
+///  indicate success. Codes in the 4xx range indicate a failure from the
+/// given information (e.g. missing API keys, invalid parameters, failed
+/// transaction, etc.). Codes in the 5xx range mean that there's an unexpected
+/// error on the PayMongo servers. These shouldn't happen, but when they do,
+/// please inform us right away.
+///
+/// {@endtemplate}
+class PaymongoErrorCodes extends Equatable {
+  /// {@macro paymongo_error_codes}
+  const PaymongoErrorCodes({
+    this.code,
+    this.details,
+    this.source,
+  });
+
+  /// {@macro paymongo_error_codes}
+  factory PaymongoErrorCodes.fromJson(String source) =>
+      PaymongoErrorCodes.fromMap(json.decode(source));
+
+  /// {@macro paymongo_error_codes}
+  factory PaymongoErrorCodes.fromMap(Map<String, dynamic> map) {
+    return PaymongoErrorCodes(
+      code: map['code'],
+      details: map['details'],
+      source: map['source'] != null
+          ? PaymongoErrorSource.fromMap(map['source'])
+          : null,
+    );
+  }
 
   /// A string representation of a single error. This can be used as a reference
   ///  in conditional statements if you prefer to use your own error message
@@ -29,6 +67,34 @@ class PaymongoError extends Error {
 
   /// [PaymongoErrorSource] data
   final PaymongoErrorSource? source;
+
+  ///
+  PaymongoErrorCodes copyWith({
+    String? code,
+    String? details,
+    PaymongoErrorSource? source,
+  }) {
+    return PaymongoErrorCodes(
+      code: code ?? this.code,
+      details: details ?? this.details,
+      source: source ?? this.source,
+    );
+  }
+
+  ///
+  Map<String, dynamic> toMap() {
+    return {
+      'code': code,
+      'details': details,
+      'source': source?.toMap(),
+    };
+  }
+
+  ///
+  String toJson() => json.encode(toMap());
+
+  @override
+  List<Object?> get props => [code, details, source];
 }
 
 /// {@template error_source}
@@ -91,6 +157,7 @@ class PaymongoErrorSource extends Equatable {
     );
   }
 
+  ///
   Map<String, dynamic> toMap() {
     return {
       'pointer': pointer,
