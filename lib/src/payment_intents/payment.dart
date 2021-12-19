@@ -9,10 +9,12 @@ extension PayMongoPaymentIntent on PayMongoSDK {
     required String paymentIntentId,
     required String clientKey,
   }) async {
-    final options =
-        PayMongoOptions(path: '/payment_intents/$paymentIntentId', params: {
-      'client_key': clientKey,
-    });
+    final options = PayMongoOptions(
+      path: '/payment_intents/$paymentIntentId',
+      params: {
+        'client_key': clientKey,
+      },
+    );
     final response = await get<Map<String, dynamic>>(options);
     return PaymentIntentResponse.fromMap(response);
   }
@@ -42,13 +44,17 @@ extension PayMongoPaymentIntent on PayMongoSDK {
   ///
   /// {@endtemplate}
   Future<PaymentIntentResponse> createPaymentIntent(
-      PaymentIntentAttributes attributes) async {
+    PaymentIntentAttributes attributes,
+  ) async {
     if (attributes.amount <= 100) {
       throw ArgumentError("Amount should be at least above P 100.00");
     }
-    final options = PayMongoOptions(path: '/payment_intents', data: {
-      'attributes': attributes.toMap(),
-    });
+    final options = PayMongoOptions(
+      path: '/payment_intents',
+      data: {
+        'attributes': attributes.toMap(),
+      },
+    );
     final response = await post<Map<String, dynamic>>(options);
     return PaymentIntentResponse.fromMap(response);
   }
@@ -96,10 +102,14 @@ class PaymentIntent<T extends PaymentGateway>
   final T _http;
   @override
   Future<PaymentIntentResponse> create(
-      PaymentIntentAttributes attributes) async {
-    final options = PayMongoOptions(path: '/payment_intents', data: {
-      "attributes": attributes.toMap(),
-    });
+    PaymentIntentAttributes attributes,
+  ) async {
+    final options = PayMongoOptions(
+      path: '/payment_intents',
+      data: {
+        "attributes": attributes.toMap(),
+      },
+    );
     final response = await _http.post(options);
 
     final json = serialize<Map<String, dynamic>>(response, options.path);
@@ -236,7 +246,9 @@ class PaymentIntent<T extends PaymentGateway>
 
   @override
   Future<PaymentIntentAttachResponse> attach(
-      String id, PaymentIntentAttach attributes) async {
+    String id,
+    PaymentIntentAttach attributes,
+  ) async {
     final options = PayMongoOptions(
       path: '/payment_intents/$id/attach',
       data: {
@@ -254,12 +266,16 @@ class PaymentIntent<T extends PaymentGateway>
 
   @override
   Future<PaymentIntentResponse> retrieveIntentClient(
-      String paymentIntentId, String clientKey) async {
+    String paymentIntentId,
+    String clientKey,
+  ) async {
     final _http = PayMongoHttp(_apiKey);
-    final options =
-        PayMongoOptions(path: '/payment_intents/$paymentIntentId', params: {
-      "client_key": clientKey,
-    });
+    final options = PayMongoOptions(
+      path: '/payment_intents/$paymentIntentId',
+      params: {
+        "client_key": clientKey,
+      },
+    );
 
     final response =
         await _http.get(Uri.https(_url, "v1${options.path}", options.params));

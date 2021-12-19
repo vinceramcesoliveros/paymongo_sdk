@@ -76,9 +76,12 @@ class Source<T extends PaymentGateway>
   final T _httpClient;
   @override
   Future<SourceResult> create(SourceAttributes attributes) async {
-    final options = PayMongoOptions(path: '/sources', data: {
-      "attributes": attributes.toMap(),
-    });
+    final options = PayMongoOptions(
+      path: '/sources',
+      data: {
+        "attributes": attributes.toMap(),
+      },
+    );
     final response = await _httpClient.post(options);
     final json = serialize<Map<String, dynamic>>(response, options.path);
     return SourceResult.fromMap(json);

@@ -1,5 +1,4 @@
 import 'package:paymongo_sdk/paymongo_sdk.dart';
-import 'package:paymongo_sdk/src/models/method/method_response.dart';
 
 ///
 extension PayMongoPaymentMethod on PayMongoSDK {
@@ -104,10 +103,14 @@ class PaymentMethod<T extends PaymentGateway>
   final T _httpClient;
   @override
   Future<PaymentMethodResponse> create(
-      PaymentMethodAttributes attributes) async {
-    final options = PayMongoOptions(path: '/payment_methods', data: {
-      "attributes": attributes.toMap(),
-    });
+    PaymentMethodAttributes attributes,
+  ) async {
+    final options = PayMongoOptions(
+      path: '/payment_methods',
+      data: {
+        "attributes": attributes.toMap(),
+      },
+    );
     final response = await _httpClient.post(options);
     final json = serialize<Map<String, dynamic>>(response, options.path);
     return PaymentMethodResponse.fromMap(json);

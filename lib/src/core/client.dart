@@ -4,9 +4,11 @@ import 'package:paymongo_sdk/paymongo_sdk.dart';
 /// {@endtemplate}
 class PaymongoClient<T extends Paymongo> {
   /// {@macro paymongo_client_sdk}
-  const PaymongoClient(String key,
-      {String url = 'api.paymongo.com', T? defaultSDK})
-      : _key = key,
+  const PaymongoClient(
+    String key, {
+    String url = 'api.paymongo.com',
+    T? defaultSDK,
+  })  : _key = key,
         _sdk = defaultSDK,
         _url = url;
   final String _key;

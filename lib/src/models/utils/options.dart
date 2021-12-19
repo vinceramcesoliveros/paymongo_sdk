@@ -37,16 +37,18 @@ class PayMongoOptions extends Equatable {
   final Map<String, String>? params;
 
   ///
-  PayMongoOptions copyWith(
-      {Map<String, dynamic>? data,
-      String? method,
-      String? path,
-      String? secret,
-      Map<String, dynamic>? params}) {
+  PayMongoOptions copyWith({
+    Map<String, dynamic>? data,
+    String? method,
+    String? path,
+    String? secret,
+    Map<String, dynamic>? params,
+  }) {
     return PayMongoOptions(
-        data: data ?? this.data,
-        path: path ?? this.path,
-        params: params as Map<String, String>? ?? this.params);
+      data: data ?? this.data,
+      path: path ?? this.path,
+      params: params as Map<String, String>? ?? this.params,
+    );
   }
 
   ///

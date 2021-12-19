@@ -81,9 +81,10 @@ class PaymentsIntentResponse extends Equatable {
   ///{@macro payment_intent_response}
   factory PaymentsIntentResponse.fromMap(Map<String, dynamic> map) {
     return PaymentsIntentResponse(
-        id: map['id'] ?? '',
-        type: map['type'] ?? '',
-        attributes: CreatePaymentResponse.fromMap(map['attributes']));
+      id: map['id'] ?? '',
+      type: map['type'] ?? '',
+      attributes: CreatePaymentResponse.fromMap(map['attributes']),
+    );
   }
 
   ///{@macro payment_intent_response}
@@ -153,8 +154,9 @@ class PaymentIntentResponseAttributes extends Equatable {
       paymentMethodAllowed:
           List<String>.from(map['payment_method_allowed'] ?? const []),
       payments: List<PaymentsIntentResponse>.from(
-          map['payments']?.map((x) => PaymentsIntentResponse.fromMap(x)) ??
-              const []),
+        map['payments']?.map((x) => PaymentsIntentResponse.fromMap(x)) ??
+            const [],
+      ),
       nextAction: map['next_action'] != null
           ? PaymentIntentNextAction.fromMap(map['next_action'])
           : null,

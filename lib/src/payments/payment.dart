@@ -20,8 +20,12 @@ extension PayMongoPayments on PayMongoSDK {
   /// );
   /// final createPayment = await sdk.createPayment(attributes);
   /// ```
-  Future<CreatePaymentResponse> createPayment(CreatePaymentAttributes data,
-      [int? before, int? after, int? limit]) async {
+  Future<CreatePaymentResponse> createPayment(
+    CreatePaymentAttributes data, [
+    int? before,
+    int? after,
+    int? limit,
+  ]) async {
     final options = PayMongoOptions(
       path: '/payments',
       data: {
@@ -77,7 +81,8 @@ class Payment<T extends PaymentGateway>
   final T _httpClient;
   @override
   Future<PaymentAttributesResponse> create(
-      CreatePaymentAttributes attributes) async {
+    CreatePaymentAttributes attributes,
+  ) async {
     final options = PayMongoOptions(
       path: '/payments',
       data: {
@@ -91,16 +96,20 @@ class Payment<T extends PaymentGateway>
   }
 
   @override
-  Future<PaymentListAllResponse> listAll(
-      [PaymentListQueryParams? queryParams]) async {
+  Future<PaymentListAllResponse> listAll([
+    PaymentListQueryParams? queryParams,
+  ]) async {
     final options = PayMongoOptions(
       path: '/payments',
       params: queryParams?.toMap(),
     );
     final response = await _httpClient.fetch(options);
 
-    final json = serialize<Map<String, dynamic>>(response, options.path,
-        onSerializedCallback: (json) => json as Map<String, dynamic>);
+    final json = serialize<Map<String, dynamic>>(
+      response,
+      options.path,
+      onSerializedCallback: (json) => json as Map<String, dynamic>,
+    );
     return PaymentListAllResponse.fromMap(json);
   }
 
