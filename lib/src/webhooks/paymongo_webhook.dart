@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:paymongo_sdk/paymongo_sdk.dart';
+import 'package:paymongo_sdk/src/interfaces/webhook_interface.dart';
 
 ///
 enum WebhookAction {
@@ -9,81 +12,58 @@ enum WebhookAction {
   disable
 }
 
-///
-extension WebhookExtension on WebhookAction {
-  ///
-  String enumToString() {
-    return toString().split(".").last;
-  }
-}
+/// {@template paymongo_webhook}
+/// {@endtemplate}
+class PaymongoWebhook<T extends PaymentGateway>
+    implements WebhookInterface<WebhookResponse> {
+  /// {@macro paymongo_webhook}
+  PaymongoWebhook(String apiKey, String url, {T? httpClient})
+      : _httpClient =
+            httpClient ?? PaymentGateway(url: url, apiKey: apiKey) as T;
 
-@Deprecated("Not usable, use `PaymongoClient` instead")
-
-///
-extension PaymongoWebhook on PayMongoSDK {
-  @Deprecated("Not usable, use `PaymongoClient` instead")
-
-  ///
-  Future<String?> createWebhook(
-    final String url,
-    final List<String> events,
-  ) async {
-    final options = PayMongoOptions(
-      path: '/webhooks',
-      data: {
-        'attributes': {
-          "url": url,
-          "events": events,
-        },
-        "url": url,
-        "events": events,
-      },
-    );
-
-    final response = await post(options);
-
-    return response;
+  final T _httpClient;
+  @override
+  Stream<WebhookResponse> create() {
+    return _httpClient
+        .post(const PayMongoOptions(path: "/webhooks"))
+        .asStream()
+        .asyncMap((event) => WebhookResponse.fromJson(event.body));
   }
 
-  @Deprecated("Not usable, use `PaymongoClient` instead")
-
-  ///
-  Future<String?> retreiveWebhook(int id) async {
-    final options = PayMongoOptions(
-      data: {
-        'id': id,
-      },
-      path: '/webhooks/$id',
-    );
-
-    final response = await get(options);
-
-    return response;
+  @override
+  Future<WebhookResponse> disable(String id) async {
+    final result =
+        await _httpClient.post(PayMongoOptions(path: "/webhook/$id/disable"));
+    return WebhookResponse.fromJson(result.body);
   }
 
-  @Deprecated("Not usable, use `PaymongoClient` instead")
-
-  ///
-  Future<String?> listWebhooks() async {
-    const options = PayMongoOptions(
-      path: '/webhooks',
-    );
-
-    final response = await get(options);
-
-    return response;
+  @override
+  Future<WebhookResponse> enable(String id) async {
+    final result =
+        await _httpClient.post(PayMongoOptions(path: "/webhook/$id/enable"));
+    return WebhookResponse.fromJson(result.body);
   }
 
-  @Deprecated("Not usable, use `PaymongoClient` instead")
+  @override
+  Stream<List<WebhookResponse>> listAll() {
+    return _httpClient
+        .fetch(const PayMongoOptions(path: "/webhooks"))
+        .asStream()
+        .asyncMap((event) {
+      final json = event.body;
+      final items = jsonDecode(json);
+      if (items is List) {
+        return items.map((e) => WebhookResponse.fromMap(e)).toList();
+      }
+      return [];
+    });
+  }
 
-  ///
-  Future<String?> toggleWebhook(int id, WebhookAction action) async {
-    final options = PayMongoOptions(
-      path: '/webhooks/$id/${action.enumToString()}',
-    );
-
-    final response = await post(options);
-
-    return response;
+  @override
+  Stream<WebhookResponse> retrieve(String id) {
+    return _httpClient
+        .fetch(PayMongoOptions(path: "/webhook/$id"))
+        .asStream()
+        .asyncMap((event) => WebhookResponse.fromJson(event.body));
   }
 }
