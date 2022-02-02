@@ -1,5 +1,4 @@
 import 'package:example/shoe_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'event_handler.dart';
@@ -54,24 +53,27 @@ class _MyAppState extends State<MyApp> {
           ],
         ),
       ),
-      body: GridView.builder(
-        itemCount: _shoes.length,
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemBuilder: (context, index) {
-          final shoe = _shoes[index];
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                if (!_cart.contains(shoe)) {
-                  _cart.add(shoe);
-                }
-              });
-            },
-            child: ShoeCard(shoe: shoe),
-          );
-        },
-      ),
+      body: LayoutBuilder(builder: (context, constraints) {
+        return GridView.builder(
+          itemCount: _shoes.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+          ),
+          itemBuilder: (context, index) {
+            final shoe = _shoes[index];
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  if (!_cart.contains(shoe)) {
+                    _cart.add(shoe);
+                  }
+                });
+              },
+              child: ShoeCard(shoe: shoe),
+            );
+          },
+        );
+      }),
       floatingActionButton: _totalAmount > 100
           ? FloatingActionButton.extended(
               onPressed: () async {

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_web/webview_flutter_web.dart';
 
 // ignore: public_member_api_docs
 class CheckoutPage extends StatefulWidget {
@@ -11,7 +12,7 @@ class CheckoutPage extends StatefulWidget {
   const CheckoutPage({
     required this.url,
     this.returnUrl,
-    this.iFrameMode = false,
+    this.iFrameMode = true,
   });
   // ignore: public_member_api_docs
   final String url;
@@ -26,6 +27,7 @@ class _CheckoutPageState extends State<CheckoutPage> with UrlIFrameParser {
 
   @override
   void initState() {
+    if (kIsWeb) WebView.platform = WebWebViewPlatform();
     super.initState();
   }
 
@@ -66,6 +68,14 @@ class _CheckoutPageState extends State<CheckoutPage> with UrlIFrameParser {
                 onMessageReceived: (JavascriptMessage message) {
                   if (message.message == '3DS-authentication-complete') {
                     Navigator.pop(context, true);
+                    return;
+                  }
+                  if (message.message.contains('success')) {
+                    Navigator.pop(context, true);
+                    return;
+                  }
+                  if (message.message.contains('failed')) {
+                    Navigator.pop(context, false);
                   }
                 }),
           },
@@ -133,15 +143,16 @@ mixin UrlIFrameParser<T extends StatefulWidget> on State<T> {
 
     <iframe style="width:100%;height:100%;top:0;left:0;position:absolute;" frameborder="0" allowfullscreen="1"
         allow="accelerometer;  encrypted-media;" webkitallowfullscreen mozallowfullscreen allowfullscreen
-        src="${url}"></iframe>
+        src="${url}" ></iframe>
 </body>
 <script>
     window.addEventListener('message', ev => {
         Paymongo.postMessage(ev.data);
-        return;
     })
-</script>
 
+   
+
+</script>
 </html>
     
     

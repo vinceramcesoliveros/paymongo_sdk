@@ -1,18 +1,17 @@
 import 'package:example/shoes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 import 'checkout.dart';
 
 const publicKey = String.fromEnvironment(
   'PUBLIC_KEY',
-  defaultValue: '',
+  defaultValue: 'pk_test_Dpe7cKewo7JpHyF2iBra5Sjm',
 );
 const secretKey = String.fromEnvironment(
   'SECRET_KEY',
-  defaultValue: '',
+  defaultValue: 'sk_test_8Fk9xMNRXDChC4b1XBsHpUEm',
 );
 mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
   final publicClient = const PaymongoClient<PaymongoPublic>(publicKey);
@@ -165,14 +164,14 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
   Future<void> gcashPayment(List<Shoe> _cart) async {
     final _amount = _cart.fold<num>(
         0, (previousValue, element) => previousValue + element.amount);
-    final url = 'google.com';
+    final url = 'https://google.com';
     final _source = SourceAttributes(
       type: "gcash",
       amount: _amount.toDouble(),
       currency: 'PHP',
       redirect: Redirect(
-        success: "https://$url/success",
-        failed: "https://$url/failed",
+        success: "${url}/success",
+        failed: "${url}/failed",
       ),
       billing: billing,
     );
