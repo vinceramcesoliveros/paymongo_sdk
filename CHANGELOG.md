@@ -1,3 +1,8 @@
+[1.4.0] ADDED WEBHOOKS API
+- initialize example project for web
+- added webhooks API
+- update dependencies
+
 [1.3.3] Update GET request for all payments
 - fix `listAll` method from Payment API.
 - Added Payments Page Example
