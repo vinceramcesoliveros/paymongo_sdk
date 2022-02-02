@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
-import 'package:paymongo_sdk/src/models/utils/enums.dart';
 
 /// payment option when using card payment
 enum PaymentType {
