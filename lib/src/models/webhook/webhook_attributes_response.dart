@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 /// {@template webhook_response_attribute}
 ///  response attribute from the receiving API
@@ -25,8 +26,8 @@ class WebhookResponseAttribute extends Equatable {
       status: map['status'] ?? '',
       url: map['url'] ?? '',
       events: List<String>.from(map['events'] ?? const []),
-      createdAt: map['createdAt']?.toInt() ?? 0,
-      updatedAt: map['updatedAt']?.toInt() ?? 0,
+      createdAt: fromTimeStamp(map['created_at']),
+      updatedAt: fromTimeStamp(map['updated_at']),
     );
   }
 
@@ -50,10 +51,10 @@ class WebhookResponseAttribute extends Equatable {
   final List<String> events;
 
   ///
-  final int createdAt;
+  final DateTime? createdAt;
 
   ///
-  final int updatedAt;
+  final DateTime? updatedAt;
 
   /// {@macro webhook_response_attribute}
   Map<String, dynamic> toMap() {
@@ -78,8 +79,8 @@ class WebhookResponseAttribute extends Equatable {
     String? status,
     String? url,
     List<String>? events,
-    int? createdAt,
-    int? updatedAt,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return WebhookResponseAttribute(
       livemode: livemode ?? this.livemode,
@@ -93,7 +94,7 @@ class WebhookResponseAttribute extends Equatable {
   }
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       livemode,
       secretKey,

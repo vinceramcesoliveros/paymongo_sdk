@@ -148,8 +148,8 @@ class PaymentIntentResponseAttributes extends Equatable {
       status: map['status'] ?? '',
       livemode: map['livemode'] ?? false,
       clientKey: map['client_key'] ?? '',
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at']),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updated_at']),
+      createdAt: fromTimeStamp(map['created_at']) ?? DateTime.now(),
+      updatedAt: fromTimeStamp(map['updated_at']) ?? DateTime.now(),
       lastPaymentError: map['last_payment_error'] ?? '',
       paymentMethodAllowed:
           List<String>.from(map['payment_method_allowed'] ?? const []),

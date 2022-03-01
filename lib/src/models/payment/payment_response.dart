@@ -70,15 +70,9 @@ class PaymentAttributesResponse extends Equatable {
       availableAt: map['available_at'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['available_at'])
           : null,
-      createdAt: map['created_at'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['created_at'])
-          : null,
-      paidAt: map['paid_at'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['paid_at'])
-          : null,
-      updatedAt: map['updated_at'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['updated_at'])
-          : null,
+      createdAt: fromTimeStamp(map['created_at']),
+      updatedAt: fromTimeStamp(map['updated_at']),
+      paidAt: fromTimeStamp(map['paid_at']),
       refunds: map['refunds'] != null
           ? List<PaymentRefundResponse>.from(
               map['refunds']?.map((x) => PaymentRefundResponse.fromMap(x)),
@@ -411,15 +405,9 @@ class PaymentRefundResponse extends Equatable {
       availableAt: map['available_at'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['available_at'])
           : null,
-      createdAt: map['created_at'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['created_at'])
-          : null,
-      paidAt: map['paid_at'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['paid_at'])
-          : null,
-      updatedAt: map['updated_at'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['updated_at'])
-          : null,
+      createdAt: fromTimeStamp(map['created_at']),
+      updatedAt: fromTimeStamp(map['updated_at']),
+      paidAt: fromTimeStamp(map['paid_at']),
     );
   }
 

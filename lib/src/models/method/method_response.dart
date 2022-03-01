@@ -88,8 +88,8 @@ class PaymentMethodAttributesResponse extends Equatable {
       livemode: map['livemode'] ?? false,
       type: map['type'] ?? '',
       billing: PayMongoBilling.fromMap(map['billing']),
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at']),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updated_at']),
+      createdAt: fromTimeStamp(map['created_at']) ?? DateTime.now(),
+      updatedAt: fromTimeStamp(map['updated_at']) ?? DateTime.now(),
       details: map['details'] != null
           ? PaymentMethodDetails.fromMap(map['details'])
           : null,

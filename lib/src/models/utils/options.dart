@@ -19,7 +19,7 @@ class PayMongoOptions extends Equatable {
     return PayMongoOptions(
       data: Map<String, dynamic>.from(map['data'] ?? const {}),
       path: map['path'] ?? '',
-      params: map['params'] ?? '' as Map<String, String>?,
+      params: map['params'] ?? '' as Map<String, dynamic>?,
     );
   }
 
@@ -34,7 +34,7 @@ class PayMongoOptions extends Equatable {
   final String path;
 
   ///
-  final Map<String, String>? params;
+  final Map<String, dynamic>? params;
 
   ///
   PayMongoOptions copyWith({
