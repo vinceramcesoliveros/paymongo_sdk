@@ -45,4 +45,7 @@ class PaymongoSecret extends Paymongo {
 
   /// After [PaymentMethod] response, create and attach to get the url.
   PaymentIntent get paymentIntent => PaymentIntent(key, url);
+
+  /// Webhooks API
+  PaymongoWebhook get webhook => PaymongoWebhook(key, url);
 }
