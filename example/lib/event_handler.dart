@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 import 'checkout.dart';
+import 'utils/utils.dart';
 
 const publicKey = String.fromEnvironment(
   'PUBLIC_KEY',
@@ -164,7 +165,7 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
   Future<void> gcashPayment(List<Shoe> _cart) async {
     final _amount = _cart.fold<num>(
         0, (previousValue, element) => previousValue + element.amount);
-    final url = 'https://google.com';
+    final url = kIsWeb ? currentUrl : 'https://google.com';
     final _source = SourceAttributes(
       type: "gcash",
       amount: _amount.toDouble(),
@@ -185,6 +186,7 @@ mixin PaymongoEventHandler<T extends StatefulWidget> on State<T> {
           builder: (context) => CheckoutPage(
             url: paymentUrl,
             returnUrl: successLink,
+            iFrameMode: !kIsWeb,
           ),
         ),
       );

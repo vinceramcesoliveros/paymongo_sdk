@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_web/webview_flutter_web.dart';
 
 // ignore: public_member_api_docs
 class CheckoutPage extends StatefulWidget {
@@ -24,10 +23,8 @@ class CheckoutPage extends StatefulWidget {
 
 class _CheckoutPageState extends State<CheckoutPage> with UrlIFrameParser {
   final Completer<WebViewController> _controller = Completer();
-
   @override
   void initState() {
-    if (kIsWeb) WebView.platform = WebWebViewPlatform();
     super.initState();
   }
 
