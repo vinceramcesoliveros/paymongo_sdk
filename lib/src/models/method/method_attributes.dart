@@ -63,7 +63,7 @@ class PaymentMethodAttributes extends Equatable {
   /// {@macro payment_method}
   Map<String, dynamic> toMap() {
     return {
-      'type': describeEnum(type),
+      'type': type.describeEnum(),
       'details': details.toMap(),
       'billing': billing.toMap(),
     };
