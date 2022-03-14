@@ -1,3 +1,7 @@
+[1.5.1] Fix `enums` affecting flutter projects
+- use describeEnum as extension rather than a function
+- fix refunds api instance
+
 [1.5.0] Refunds API
 - Added Refunds API(experimental)
 - Added `fromTimeStamp` for createdAt and updatedAt properties
