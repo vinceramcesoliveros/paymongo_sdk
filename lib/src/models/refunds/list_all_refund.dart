@@ -54,8 +54,7 @@ class ListAllRefundResponse extends Equatable {
     return ListAllRefundResponse(
       hasMore: map['hasMore'] ?? false,
       data: List<RefundResponseAttributes>.from(
-        map['data']?.map((x) => RefundResponseAttributes.fromMap(x)) ??
-            const [],
+        map['data']?.map(RefundResponseAttributes.fromMap) ?? const [],
       ),
     );
   }

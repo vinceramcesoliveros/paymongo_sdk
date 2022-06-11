@@ -58,7 +58,7 @@ extension PayMongoPayments on PayMongoSDK {
   Future<List<CreatePaymentResponse>> listPayments() async {
     const options = PayMongoOptions(path: '/payments');
     final response = await get<List<Map<String, dynamic>>>(options);
-    return response.map((e) => CreatePaymentResponse.fromMap(e)).toList();
+    return response.map(CreatePaymentResponse.fromMap).toList();
   }
 }
 

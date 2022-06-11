@@ -75,12 +75,12 @@ class PaymentAttributesResponse extends Equatable {
       paidAt: fromTimeStamp(map['paid_at']),
       refunds: map['refunds'] != null
           ? List<PaymentRefundResponse>.from(
-              map['refunds']?.map((x) => PaymentRefundResponse.fromMap(x)),
+              map['refunds']?.map(PaymentRefundResponse.fromMap),
             )
           : null,
       taxes: map['taxes'] != null
           ? List<PaymentTaxResponse>.from(
-              map['taxes']?.map((x) => PaymentTaxResponse.fromMap(x)),
+              map['taxes']?.map(PaymentTaxResponse.fromMap),
             )
           : null,
     );

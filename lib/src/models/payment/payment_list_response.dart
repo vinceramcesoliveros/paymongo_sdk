@@ -17,7 +17,7 @@ class PaymentListResponse {
     return PaymentListResponse(
       hasMore: map['has_more'] ?? false,
       data: List<PaymentListAllResponse>.from(
-        map['data']?.map((x) => PaymentListAllResponse.fromMap(x)) ?? const [],
+        map['data']?.map(PaymentListAllResponse.fromMap) ?? const [],
       ),
     );
   }
@@ -69,7 +69,7 @@ class PaymentListAllResponse extends Equatable {
     return PaymentListAllResponse(
       hasMore: map['hasMore'] ?? false,
       data: List<PaymentDataResponse?>.from(
-        map['data']?.map((x) => PaymentDataResponse.fromMap(x)) ?? const [],
+        map['data']?.map(PaymentDataResponse.fromMap) ?? const [],
       ),
     );
   }

@@ -148,15 +148,14 @@ class LinkResponseAttributes extends Equatable {
       status: map['status'],
       taxAmount: map['taxAmount']?.toInt(),
       taxes: List<PaymentTaxResponse?>.from(
-        map['taxes']?.map((x) => PaymentTaxResponse.fromMap(x)) ?? const [],
+        map['taxes']?.map(PaymentTaxResponse.fromMap) ?? const [],
       ),
       checkoutUrl: map['checkoutUrl'],
       referenceNumber: map['referenceNumber'],
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
       updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updatedAt']),
       payments: List<PaymentListAllResponse>.from(
-        map['payments']?.map((x) => PaymentListAllResponse.fromMap(x)) ??
-            const [],
+        map['payments']?.map(PaymentListAllResponse.fromMap) ?? const [],
       ),
     );
   }

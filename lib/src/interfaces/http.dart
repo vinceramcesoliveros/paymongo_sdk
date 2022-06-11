@@ -19,9 +19,9 @@ mixin PaymentResponseSerializer {
   }) {
     final json = jsonDecode(response.body);
     if (json?['errors'] != null) {
-      final jsonErrors = json['errors'] as List;
-      final errors =
-          jsonErrors.map((e) => PaymongoErrorCodes.fromMap(e)).toList();
+      final jsonErrors =
+          List<Map<String, dynamic>>.from(json['errors'] as List).toList();
+      final errors = jsonErrors.map(PaymongoErrorCodes.fromMap).toList();
       throw PaymongoError(
         "Error ${response.statusCode}",
         paymongoErrors: errors,

@@ -50,9 +50,10 @@ class PaymongoWebhook<T extends PaymentGateway>
         .asStream()
         .asyncMap((event) {
       final json = event.body;
-      final items = jsonDecode(json);
-      if (items is List) {
-        return items.map((e) => WebhookResponse.fromMap(e)).toList();
+      final decoded = jsonDecode(json);
+      if (decoded is List) {
+        final items = List<Map<String, dynamic>>.from(decoded);
+        return items.map(WebhookResponse.fromMap).toList();
       }
       return [];
     });
