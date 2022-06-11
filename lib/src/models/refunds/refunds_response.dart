@@ -4,14 +4,26 @@ import 'package:equatable/equatable.dart';
 import 'package:paymongo_sdk/paymongo_sdk.dart';
 
 class RefundResponse extends Equatable {
-  final String id;
-  final String type;
-  final RefundResponseAttributes attributes;
   const RefundResponse({
     required this.id,
     required this.type,
     required this.attributes,
   });
+
+  factory RefundResponse.fromMap(Map<String, dynamic> map) {
+    return RefundResponse(
+      id: map['id'] ?? '',
+      type: map['type'] ?? '',
+      attributes: RefundResponseAttributes.fromMap(map['attributes']),
+    );
+  }
+
+  factory RefundResponse.fromJson(String source) =>
+      RefundResponse.fromMap(json.decode(source));
+
+  final String id;
+  final String type;
+  final RefundResponseAttributes attributes;
 
   RefundResponse copyWith({
     String? id,
@@ -33,18 +45,7 @@ class RefundResponse extends Equatable {
     };
   }
 
-  factory RefundResponse.fromMap(Map<String, dynamic> map) {
-    return RefundResponse(
-      id: map['id'] ?? '',
-      type: map['type'] ?? '',
-      attributes: RefundResponseAttributes.fromMap(map['attributes']),
-    );
-  }
-
   String toJson() => json.encode(toMap());
-
-  factory RefundResponse.fromJson(String source) =>
-      RefundResponse.fromMap(json.decode(source));
 
   @override
   String toString() =>
@@ -55,17 +56,6 @@ class RefundResponse extends Equatable {
 }
 
 class RefundResponseAttributes extends Equatable {
-  final int amount;
-  final String currency;
-  final bool livemode;
-  final String? notes;
-  final String paymentId;
-  final String? payoutId;
-  final String reason;
-  final String status;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final String? balanceTransactionId;
   const RefundResponseAttributes({
     required this.amount,
     required this.currency,
@@ -79,22 +69,6 @@ class RefundResponseAttributes extends Equatable {
     required this.updatedAt,
     this.balanceTransactionId,
   });
-
-  Map<String, dynamic> toMap() {
-    return {
-      'amount': amount,
-      'currency': currency,
-      'livemode': livemode,
-      'notes': notes,
-      'payment_id': paymentId,
-      'payout_id': payoutId,
-      'reason': reason,
-      'status': status,
-      'created_at': createdAt?.millisecondsSinceEpoch,
-      'updated_at': updatedAt?.millisecondsSinceEpoch,
-      'balance_transaction_id': balanceTransactionId,
-    };
-  }
 
   factory RefundResponseAttributes.fromMap(Map<String, dynamic> map) {
     return RefundResponseAttributes(
@@ -112,10 +86,37 @@ class RefundResponseAttributes extends Equatable {
     );
   }
 
-  String toJson() => json.encode(toMap());
-
   factory RefundResponseAttributes.fromJson(String source) =>
       RefundResponseAttributes.fromMap(json.decode(source));
+
+  final int amount;
+  final String currency;
+  final bool livemode;
+  final String? notes;
+  final String paymentId;
+  final String? payoutId;
+  final String reason;
+  final String status;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final String? balanceTransactionId;
+  Map<String, dynamic> toMap() {
+    return {
+      'amount': amount,
+      'currency': currency,
+      'livemode': livemode,
+      'notes': notes,
+      'payment_id': paymentId,
+      'payout_id': payoutId,
+      'reason': reason,
+      'status': status,
+      'created_at': createdAt?.millisecondsSinceEpoch,
+      'updated_at': updatedAt?.millisecondsSinceEpoch,
+      'balance_transaction_id': balanceTransactionId,
+    };
+  }
+
+  String toJson() => json.encode(toMap());
 
   RefundResponseAttributes copyWith({
     int? amount,
@@ -143,11 +144,6 @@ class RefundResponseAttributes extends Equatable {
       updatedAt: updatedAt ?? this.updatedAt,
       balanceTransactionId: balanceTransactionId ?? this.balanceTransactionId,
     );
-  }
-
-  @override
-  String toString() {
-    return 'RefundResponseAttributes(amount: $amount, currency: $currency, livemode: $livemode, notes: $notes, paymentId: $paymentId, payoutId: $payoutId, reason: $reason, status: $status, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override

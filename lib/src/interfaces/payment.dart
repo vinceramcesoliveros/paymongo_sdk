@@ -32,6 +32,13 @@ abstract class SecretPaymentInterface<R, P, QP, LR>
   Future<LR> listAll([QP? queryParams]);
 }
 
+abstract class LinkInterface<R, P> extends PublicPaymentInterface<R, P> {
+  Future<R> getLink(String referenceNumber);
+
+  Future<R> archiveLink(String id);
+  Future<R> unarchiveLink(String id);
+}
+
 /// {@template payment_gateway}
 /// Http Client for [fetch]-ing and [post]-ing API.
 /// handles opening and closing http

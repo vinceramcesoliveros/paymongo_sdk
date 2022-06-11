@@ -3,11 +3,6 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
 class CreateRefundAttributes extends Equatable {
-  final int amount;
-  final String? notes;
-  final String paymentId;
-  final String reason;
-  final Map<String, dynamic> metadata;
   const CreateRefundAttributes({
     required this.amount,
     this.notes,
@@ -15,6 +10,24 @@ class CreateRefundAttributes extends Equatable {
     required this.reason,
     required this.metadata,
   });
+  factory CreateRefundAttributes.fromMap(Map<String, dynamic> map) {
+    return CreateRefundAttributes(
+      amount: map['amount']?.toInt() ?? 0,
+      notes: map['notes'],
+      paymentId: map['payment_id'] ?? '',
+      reason: map['reason'] ?? '',
+      metadata: Map<String, dynamic>.from(map['metadata'] ?? const {}),
+    );
+  }
+
+  factory CreateRefundAttributes.fromJson(String source) =>
+      CreateRefundAttributes.fromMap(json.decode(source));
+
+  final int amount;
+  final String? notes;
+  final String paymentId;
+  final String reason;
+  final Map<String, dynamic> metadata;
 
   CreateRefundAttributes copyWith({
     int? amount,
@@ -42,25 +55,7 @@ class CreateRefundAttributes extends Equatable {
     };
   }
 
-  factory CreateRefundAttributes.fromMap(Map<String, dynamic> map) {
-    return CreateRefundAttributes(
-      amount: map['amount']?.toInt() ?? 0,
-      notes: map['notes'],
-      paymentId: map['payment_id'] ?? '',
-      reason: map['reason'] ?? '',
-      metadata: Map<String, dynamic>.from(map['metadata'] ?? const {}),
-    );
-  }
-
   String toJson() => json.encode(toMap());
-
-  factory CreateRefundAttributes.fromJson(String source) =>
-      CreateRefundAttributes.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'CreateRefundAttributes(amount: $amount, notes: $notes, paymentId: $paymentId, reason: $reason, metadata: $metadata)';
-  }
 
   @override
   List<Object?> get props {

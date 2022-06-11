@@ -55,6 +55,7 @@ extension PayMongoPaymentMethod on PayMongoSDK {
     } catch (e) {
       rethrow;
     }
+    return null;
   }
 
   @Deprecated("Use PaymongoClient instead")

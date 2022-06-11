@@ -17,7 +17,7 @@ class PaymentListResponse {
     return PaymentListResponse(
       hasMore: map['has_more'] ?? false,
       data: List<PaymentListAllResponse>.from(
-        map['data']?.map((x) => CreatePaymentResponse.fromMap(x)) ?? const [],
+        map['data']?.map((x) => PaymentListAllResponse.fromMap(x)) ?? const [],
       ),
     );
   }

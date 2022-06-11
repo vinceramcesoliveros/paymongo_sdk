@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:paymongo_sdk/paymongo_sdk.dart';
-import 'package:paymongo_sdk/src/interfaces/webhook_interface.dart';
 
 ///
 enum WebhookAction {

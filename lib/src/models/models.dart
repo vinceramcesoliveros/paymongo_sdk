@@ -1,4 +1,5 @@
 export 'intent/intent.dart';
+export 'link/link.dart';
 export 'method/method.dart';
 export 'payment/payment.dart';
 export 'refunds/refunds.dart';

@@ -1,4 +1,5 @@
 import 'package:paymongo_sdk/paymongo_sdk.dart';
+import 'package:paymongo_sdk/src/links/link.dart';
 import 'package:paymongo_sdk/src/refunds/refund.dart';
 
 /// A relationship of [PaymongoPublic] and [PaymongoSecret]
@@ -52,4 +53,7 @@ class PaymongoSecret extends Paymongo {
 
   /// Refund API
   Refund get refund => Refund(key, url);
+
+  /// Link API
+  PaymongoLink get link => PaymongoLink(url: url, apiKey: key);
 }
