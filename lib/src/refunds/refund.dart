@@ -1,19 +1,25 @@
 import 'package:paymongo_sdk/paymongo_sdk.dart';
 
+///{@template refund}
+///{@endtemplate}
 class Refund<T extends PaymentGateway>
     with
         PaymentResponseSerializer
     implements
         SecretPaymentInterface<RefundResponse, CreateRefundAttributes,
             ListAllRefundQueryParams, ListAllRefundResponse> {
-  Refund(String apiKey, String url, [T? httpClient])
-      : _apiKey = apiKey,
-        _url = url,
-        _http = httpClient ?? PaymentGateway(url: url, apiKey: apiKey) as T;
+  ///{@macro refund}
+  Refund(
+    String apiKey,
+    String url, [
+    T? httpClient,
+  ]) : _http = httpClient ??
+            PaymentGateway(
+              url: url,
+              apiKey: apiKey,
+            ) as T;
 
   final T _http;
-  final String _apiKey;
-  final String _url;
   @override
   Future<RefundResponse> create(CreateRefundAttributes attributes) async {
     final options = PayMongoOptions(
