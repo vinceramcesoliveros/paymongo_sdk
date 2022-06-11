@@ -1,3 +1,8 @@
+[1.6.0]
+- Added **Links** API
+- Fix lints
+- update sdk version
+
 [1.5.1] Fix `enums` affecting flutter projects
 - use describeEnum as extension rather than a function
 - fix refunds api instance
