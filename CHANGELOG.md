@@ -1,3 +1,6 @@
+[1.6.1]
+- Fix `PaymentIntentAttachResponseAttributes`, `PaymentIntentResponseAttributes`, `PaymentListAllResponse`, `PaymentAttributesResponse` JSON serialization
+
 [1.6.0]
 - Added **Links** API
 - Fix lints
