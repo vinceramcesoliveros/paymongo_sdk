@@ -265,9 +265,9 @@ class PaymentIntentAttachResponseAttributes extends Equatable {
       lastPaymentError: map['last_payment_error'] ?? '',
       paymentMethodAllowed:
           List<String>.from(map['payment_method_allowed'] ?? const []),
-      payments: List<CreatePaymentResponse>.from(
-        map['payments']?.map(CreatePaymentResponse.fromMap) ?? const [],
-      ),
+      payments: List<Map<String, dynamic>>.from(
+        map['payments'] ?? [],
+      ).map(CreatePaymentResponse.fromMap).toList(),
       nextAction: map['next_action'] != null
           ? PaymentIntentNextAction.fromMap(map['next_action'])
           : null,

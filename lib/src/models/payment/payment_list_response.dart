@@ -68,9 +68,9 @@ class PaymentListAllResponse extends Equatable {
   factory PaymentListAllResponse.fromMap(Map<String, dynamic> map) {
     return PaymentListAllResponse(
       hasMore: map['hasMore'] ?? false,
-      data: List<PaymentDataResponse?>.from(
-        map['data']?.map(PaymentDataResponse.fromMap) ?? const [],
-      ),
+      data: List<Map<String, dynamic>>.from(
+        map['data'] ?? [],
+      ).map(PaymentDataResponse.fromMap).toList(),
     );
   }
 
